@@ -1,25 +1,25 @@
 <?php
 
 /**
- * クローラー動画マスターモデル
+ * カテゴリー情報モデル
  */
-class Crawler_video_master_model extends CI_Model
+class Category_info_model extends CI_Model
 {
 	function __construct()
 	{
 		parent::__construct();
-		$this->table_name = 'crawler_video_master';
+		$this->table_name = 'category_info';
 	}
 
 	/**
-	 * レコード取得
+	 * カテゴリーIDによるレコード取得
 	 */
-	public function get()
+	public function get_by_category_id($category_id)
 	{
 		// select
-		$this->db->select('crawler_master_id, duration, create_time');
+		$this->db->select('name');
 		// where
-		$this->db->where('delete_time', null);
+		$this->db->where('category_id', $category_id);
 
 		// クエリの実行
 		$query = $this->db->get($this->table_name);
@@ -35,12 +35,14 @@ class Crawler_video_master_model extends CI_Model
 	}
 
 	/**
-	 * 次のクローラー動画マスターID取得
+	 * カテゴリー名によるレコード取得
 	 */
-	public function get_next_crawler_master_id()
+	public function get_by_name($name)
 	{
-		// select max
-		$this->db->select_max('crawler_master_id');
+		// select
+		$this->db->select('category_id');
+		// where
+		$this->db->where('name', $name);
 
 		// クエリの実行
 		$query = $this->db->get($this->table_name);
@@ -48,12 +50,11 @@ class Crawler_video_master_model extends CI_Model
 		if ($query->num_rows() > 0)
 		{
 			$row = $query->row_array();
-			return (int)$row['crawler_master_id'] + 1;
+			return $row['category_id'];
 		}
-		// 該当レコードがない場合は最初のレコード
 		else
 		{
-			return 1;
+			return null;
 		}
 	}
 
@@ -65,23 +66,22 @@ class Crawler_video_master_model extends CI_Model
 		// 作成日時と更新日時をセットする
 		$data['create_time'] = $data['update_time'] = date('Y-m-d H:i:s');
 
-		$insert_query = $this->db->insert_string($this->table_name, $data);
-
 		// クエリの実行
-		$this->db->query($insert_query);
+		$this->db->insert($this->table_name, $data);
 
-		return $this->db->affected_rows();
+		// 挿入したID番号を返す
+		return $this->db->insert_id();
 	}
 
 	/**
 	 * レコード削除
 	 */
-	public function delete($crawler_master_id)
+	public function delete($category_id)
 	{
 		// set
 		$this->db->set('delete_time', date("Y-m-d H:i:s"));
 		// where
-		$this->db->where('crawler_master_id', $crawler_master_id);
+		$this->db->where('category_id', $category_id);
 
 		// クエリの実行
 		$this->db->update($this->table_name);

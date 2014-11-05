@@ -48,10 +48,10 @@
 $active_group = 'default';
 $active_record = TRUE;
 
-$db['default']['hostname'] = 'sekusoku.localhost';
+$db['default']['hostname'] = 'lezsoku.localhost';
 $db['default']['username'] = 'root';
 $db['default']['password'] = '9rza5g3a3dhu';
-$db['default']['database'] = 'sekusoku';
+$db['default']['database'] = 'lezsoku';
 $db['default']['dbdriver'] = 'mysql';
 $db['default']['dbprefix'] = '';
 $db['default']['pconnect'] = TRUE;

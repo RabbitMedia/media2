@@ -23,18 +23,26 @@ class Crawler extends CI_Controller
 	 */
 	public function get_videos()
 	{
+		// デバッグ(ブラウザ表示文字化け回避)用
+		// header("Content-Type: text/html; charset=UTF-8");
+
 		// 実行開始時刻をログに出力する
 		echo '開始: '.date("Y-m-d H:i:s")."\n";
 
 		// 配列
-		$contents = array();
+		$products = array();
 
-		// 指定サイトから動画情報を取得する
-		$contents[] = $this->logiccrawler->get_from_tengoku();
-		$contents[] = $this->logiccrawler->get_from_nukist();
+		// 作品情報を取得する
+		$products = $this->logiccrawler->get_products();
 
-		// クローラーが集めてきた動画を登録する
-		$this->logiccrawler->set_crawled_videos($contents);
+		// 作品情報を取得できない場合は処理を終了する
+		if (!$products)
+		{
+			return;
+		}
+
+		// 作品情報を登録する
+		$this->logiccrawler->set_products($products);
 
 		// 実行終了時刻をログに出力する
 		echo '終了: '.date("Y-m-d H:i:s")."\n";

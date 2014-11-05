@@ -1,14 +1,14 @@
 <?php
 
 /**
- * 動画マスターモデル
+ * 作品マスター情報モデル
  */
-class Video_master_model extends CI_Model
+class Product_master_model extends CI_Model
 {
 	function __construct()
 	{
 		parent::__construct();
-		$this->table_name = 'video_master';
+		$this->table_name = 'product_master';
 	}
 
 	/**
@@ -17,7 +17,7 @@ class Video_master_model extends CI_Model
 	public function get()
 	{
 		// select
-		$this->db->select('master_id, title, thumbnail_url, duration, create_time');
+		$this->db->select('master_id, product_id, title, product_url, create_time');
 		// where
 		$this->db->where('delete_time', null);
 
@@ -35,7 +35,53 @@ class Video_master_model extends CI_Model
 	}
 
 	/**
-	 * レコード取得(有効なmaster_idと更新日時を取得)
+	 * マスターIDによるレコード取得
+	 */
+	public function get_by_master_id($master_id)
+	{
+		// select
+		$this->db->select('master_id, product_id, title, product_url, create_time');
+		// where
+		$this->db->where('master_id', $master_id);
+
+		// クエリの実行
+		$query = $this->db->get($this->table_name);
+		// 該当するレコードがある場合は結果を配列で返す
+		if ($query->num_rows() > 0)
+		{
+			return $query->result_array();
+		}
+		else
+		{
+			return null;
+		}
+	}
+
+	/**
+	 * 作品IDによるレコード取得
+	 */
+	public function get_by_product_id($product_id)
+	{
+		// select
+		$this->db->select('master_id');
+		// where
+		$this->db->where('product_id', $product_id);
+
+		// クエリの実行
+		$query = $this->db->get($this->table_name);
+		// 該当するレコードがある場合は結果を配列で返す
+		if ($query->num_rows() > 0)
+		{
+			return $query->result_array();
+		}
+		else
+		{
+			return null;
+		}
+	}
+
+	/**
+	 * レコード取得(サイトマップ用)
 	 */
 	public function get_valid_master_id()
 	{
@@ -43,29 +89,6 @@ class Video_master_model extends CI_Model
 		$this->db->select('master_id, update_time');
 		// where
 		$this->db->where('delete_time', null);
-
-		// クエリの実行
-		$query = $this->db->get($this->table_name);
-		// 該当するレコードがある場合は結果を配列で返す
-		if ($query->num_rows() > 0)
-		{
-			return $query->result_array();
-		}
-		else
-		{
-			return null;
-		}
-	}
-
-	/**
-	 * 動画マスターIDによるレコード取得
-	 */
-	public function get_by_id($master_id)
-	{
-		// select
-		$this->db->select('master_id, title, thumbnail_url, duration, create_time');
-		// where
-		$this->db->where('master_id', $master_id);
 
 		// クエリの実行
 		$query = $this->db->get($this->table_name);

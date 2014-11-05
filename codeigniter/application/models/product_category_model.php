@@ -1,27 +1,25 @@
 <?php
 
 /**
- * クローラー動画IDモデル
+ * 作品カテゴリーID情報モデル
  */
-class Crawler_video_id_model extends CI_Model
+class Product_category_model extends CI_Model
 {
-	const TYPE_XVIDEOS = 1;
-
 	function __construct()
 	{
 		parent::__construct();
-		$this->table_name = 'crawler_video_id';
+		$this->table_name = 'product_category';
 	}
 
 	/**
-	 * レコード取得
+	 * マスターIDによるレコード取得
 	 */
-	public function get($crawler_master_id)
+	public function get_by_master_id($master_id)
 	{
 		// select
-		$this->db->select('type, video_url_id');
+		$this->db->select('category_id');
 		// where
-		$this->db->where('crawler_master_id', $crawler_master_id);
+		$this->db->where('master_id', $master_id);
 
 		// クエリの実行
 		$query = $this->db->get($this->table_name);
@@ -37,24 +35,21 @@ class Crawler_video_id_model extends CI_Model
 	}
 
 	/**
-	 * 動画タイプと動画URLIDによるレコード取得
+	 * カテゴリーIDによるレコード取得
 	 */
-	public function get_by_url($type, $video_url_id)
+	public function get_by_category_id($category_id)
 	{
 		// select
-		$this->db->select('crawler_master_id');
+		$this->db->select('master_id');
 		// where
-		$this->db->where('type', $type);
-		$this->db->where('video_url_id', $video_url_id);
-		$this->db->where('delete_time', null);
+		$this->db->where('category_id', $category_id);
 
 		// クエリの実行
 		$query = $this->db->get($this->table_name);
 		// 該当するレコードがある場合は結果を配列で返す
 		if ($query->num_rows() > 0)
 		{
-			$row = $query->row_array();
-			return $row['crawler_master_id'];
+			return $query->result_array();
 		}
 		else
 		{
@@ -70,25 +65,25 @@ class Crawler_video_id_model extends CI_Model
 		// 作成日時と更新日時をセットする
 		$data['create_time'] = $data['update_time'] = date('Y-m-d H:i:s');
 
-		// INSERT IGNORE クエリの生成
+		// クエリの生成
 		$insert_query = $this->db->insert_string($this->table_name, $data);
-		$insert_query = str_replace('INSERT INTO', 'INSERT IGNORE INTO', $insert_query);
 
 		// クエリの実行
 		$this->db->query($insert_query);
 
+		// 処理された行数を返す
 		return $this->db->affected_rows();
 	}
 
 	/**
 	 * レコード削除
 	 */
-	public function delete($crawler_master_id)
+	public function delete($master_id)
 	{
 		// set
 		$this->db->set('delete_time', date("Y-m-d H:i:s"));
 		// where
-		$this->db->where('crawler_master_id', $crawler_master_id);
+		$this->db->where('master_id', $master_id);
 
 		// クエリの実行
 		$this->db->update($this->table_name);

@@ -1,383 +1,194 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class LogicCrawler {
-
+class LogicCrawler
+{
 	protected $CI;
 
-	const CRAWL_PAGE_NUM			=	2;				// クロールするページ数
-
-	const BASE_URL_TENGOKU			=	'http://www.tengokudouga.com/';
-	const PAGE_URL_TENGOKU			=	'http://www.tengokudouga.com/?p=%page_num%';
-
-	const BASE_URL_NUKIST			=	'http://www.nukistream.com/';
-	const PAGE_URL_NUKIST			=	'http://www.nukistream.com/?p=%page_num%';
+	// csvダウンロードURL
+	// const CSV_DOWNLOAD_URL = 'http://duga.jp/productcsv/type=mp4/category=11/'; // 初回
+	const CSV_DOWNLOAD_URL	= 'http://duga.jp/productcsv/type=mp4/category=11/openstt=%YYYYmm%01/';
 
 	function __construct()
 	{
 		$this->CI =& get_instance();
-	}
 
-	/**
-	 * 指定サイトから動画情報を取得する
-	 */
-	public function get_from_tengoku()
-	{
-		// 動画配列
-		$videos = array();
-		// カウント
-		$count = 0;
-
-		// CRAWL_PAGE_NUMに定義されてるページ数分クロールする
-		for ($i=1; $i <= self::CRAWL_PAGE_NUM; $i++)
-		{ 
-			// ページを取得
-			$url = str_replace('%page_num%', $i, self::PAGE_URL_TENGOKU);
-			$html = file_get_contents($url);
-			// ページの取得に失敗したらfalseを返す
-			if (!$html)
-			{
-				return false;
-			}
-
-			// 文字コードをSJISに変換
-			// $html = mb_convert_encoding($html, 'SJIS', 'auto');
-			// 改行コードを削除
-			$html = preg_replace('/(\n|\r)/', '', $html);
-
-			// 動画情報を正規表現で抽出
-			if (preg_match_all('/(?<=cntInfo).*?(?=\<\/a>\<\/h2)/', $html, $elements))
-			{
-				foreach ($elements[0] as $element)
-				{
-					// PRコンテンツは除外
-					if (strpos($element, '>PR<'))
-					{
-						continue;
-					}
-					else
-					{
-						// タイトルとコンテンツページURLを抽出
-						if (preg_match('/(?<=<h2>).*/', $element, $matches))
-						{
-							// タイトルを抽出
-							if (preg_match('/(?<=>).*/', $matches[0], $title))
-							{
-								$videos[$count]['title'] = $title[0];
-							}
-							// コンテンツページURLを抽出
-							if (preg_match('/(?<=<a href=").*?(?=">.*)/', $matches[0], $contents_page_url))
-							{
-								// コンテンツページURLから動画IDを抽出
-								$videos[$count]['video_url_id'] = $this->_get_xvideos_id(self::BASE_URL_TENGOKU.$contents_page_url[0]);
-								// nullじゃなければタイプをセットする
-								if (!is_null($videos[$count]['video_url_id']))
-								{
-									$videos[$count]['type'] = 1; // モデル名::TYPE_XVIDEOSみたいに書く
-								}
-							}
-						}
-						else
-						{
-							continue;
-						}
-
-						// 再生時間を抽出
-						if (preg_match('/(?<=labelUpdate">).*?(?=<\/span)/', $element, $matches))
-						{
-							$videos[$count]['duration'] = null;
-
-							// 時間を"h"で表現している場合
-							if (strpos($matches[0], 'h'))
-							{
-								if (preg_match('/.*(?=h)/', $matches[0], $hours) && preg_match('/(?<=h ).*?(?=:)/', $matches[0], $minutes) && preg_match('/(?<=:).*/', $matches[0], $seconds))
-								{
-									// 時間は全て"分"に直していたが、mysqlのTIME型に入れるため変更
-									// $videos[$count]['duration'] = (((int)$hours[0] * 60) + (int)$minutes[0]).':'.$seconds[0];
-									$videos[$count]['duration'] = $hours[0].':'.$minutes[0].':'.$seconds[0];
-								}
-							}
-							else
-							{
-								if (preg_match('/.*?(?=:)/', $matches[0], $minutes) && preg_match('/(?<=:).*/', $matches[0], $seconds))
-								{
-									// "分"表示で60分を超えるものは時間として変換する
-									if ($minutes[0] >= 60)
-									{
-										$videos[$count]['duration'] = floor((int)$minutes[0] / 60).':'.((int)$minutes[0] % 60).':'.$seconds[0];
-									}
-									else
-									{
-										$videos[$count]['duration'] = '00:'.$minutes[0].':'.$seconds[0];
-									}
-								}
-							}
-						}
-
-						// 情報が入っていればメディアをセットする
-						if (isset($videos[$count]))
-						{
-							$videos[$count]['media'] = 1; // モデル名::MEDIA_TENGOKUみたいに書く
-						}
-
-						// カウントをインクリメント
-						$count++;
-					}
-				}
-			}
-			else
-			{
-				return false;
-			}
-		}
-
-		// 掲載古い順に入れ替える
-		$reversed = array_reverse($videos);
-
-		return $reversed;
-	}
-
-	/**
-	 * 指定サイトから動画情報を取得する
-	 */
-	public function get_from_nukist()
-	{
-		// 動画配列
-		$videos = array();
-		// カウント
-		$count = 0;
-
-		// CRAWL_PAGE_NUMに定義されてるページ数分クロールする
-		for ($i=1; $i <= self::CRAWL_PAGE_NUM; $i++)
-		{ 
-			// ページを取得
-			$url = str_replace('%page_num%', $i, self::PAGE_URL_NUKIST);
-			$html = file_get_contents($url);
-			// ページの取得に失敗したらfalseを返す
-			if (!$html)
-			{
-				return false;
-			}
-
-			// 文字コードをSJISに変換
-			// $html = mb_convert_encoding($html, 'SJIS', 'auto');
-			// 改行コードを削除
-			$html = preg_replace('/(\n|\r)/', '', $html);
-
-			// 動画情報を正規表現で抽出
-			if (preg_match_all('/(?<=cntInfo).*?(?=\<\/a>\<\/h2)/', $html, $elements))
-			{
-				foreach ($elements[0] as $element)
-				{
-					// xvideosコンテンツ以外は除外
-					if (!strpos($element, 'xv.png'))
-					{
-						continue;
-					}
-					else
-					{
-						// タイトルとコンテンツページURLを抽出
-						if (preg_match('/(?<=<h2>).*/', $element, $matches))
-						{
-							// タイトルを抽出
-							if (preg_match('/(?<=>).*/', $matches[0], $title))
-							{
-								$videos[$count]['title'] = $title[0];
-							}
-							// コンテンツページURLを抽出
-							if (preg_match('/(?<=<a href=").*?(?=">.*)/', $matches[0], $contents_page_url))
-							{
-								// コンテンツページURLから動画IDを抽出
-								$videos[$count]['video_url_id'] = $this->_get_xvideos_id(self::BASE_URL_NUKIST.$contents_page_url[0]);
-								// nullじゃなければタイプをセットする
-								if (!is_null($videos[$count]['video_url_id']))
-								{
-									$videos[$count]['type'] = 1; // モデル名::TYPE_XVIDEOSみたいに書く
-								}
-							}
-						}
-						else
-						{
-							continue;
-						}
-
-						// 再生時間を抽出
-						if (preg_match('/(?<=labelUpdate">).*?(?=<\/span)/', $element, $matches))
-						{
-							$videos[$count]['duration'] = null;
-
-							if (preg_match('/.*?(?=:)/', $matches[0], $minutes) && preg_match('/(?<=:).*/', $matches[0], $seconds))
-							{
-								// "分"表示で60分を超えるものは時間に変換する
-								if ($minutes[0] >= 60)
-								{
-									$videos[$count]['duration'] = floor((int)$minutes[0] / 60).':'.((int)$minutes[0] % 60).':'.$seconds[0];
-								}
-								else
-								{
-									$videos[$count]['duration'] = '00:'.$minutes[0].':'.$seconds[0];
-								}
-							}
-						}
-
-						// 情報が入っていればメディアをセットする
-						if (isset($videos[$count]))
-						{
-							$videos[$count]['media'] = 2; // モデル名::MEDIA_NUKISTみたいに書く
-						}
-
-						// カウントをインクリメント
-						$count++;
-					}
-				}
-			}
-			else
-			{
-				return false;
-			}
-		}
-
-		// 掲載古い順に入れ替える
-		$reversed = array_reverse($videos);
-
-		return $reversed;
-	}
-
-	/**
-	 * クローラーが集めてきた動画を登録する
-	 */
-	public function set_crawled_videos($contents)
-	{
 		// ロード
-		$this->CI->load->model('crawler_video_master_model');
-		$this->CI->load->model('crawler_video_id_model');
-		$this->CI->load->model('crawler_video_title_model');
+		$this->CI->load->model('product_master_model');
+		$this->CI->load->model('product_text_model');
+		$this->CI->load->model('product_category_model');
+		$this->CI->load->model('category_info_model');
+	}
 
-		foreach ($contents as $c_key => $videos)
+	/**
+	 * 作品情報を取得する
+	 */
+	public function get_products()
+	{
+		// 指定URLからcsvを取得する(当月分)
+		// $csv = file_get_contents(self::CSV_DOWNLOAD_URL); // 初回
+		$csv = file_get_contents(str_replace('%YYYYmm%', date('Ym', strtotime("-1 month")), self::CSV_DOWNLOAD_URL));
+		// 取得したcsvの文字コードをUTF-8に変更して保存する
+		file_put_contents(APPPATH.'resource/csv/product.csv', mb_convert_encoding($csv, 'UTF-8', 'ASCII,JIS,UTF-8,EUC-JP,SJIS'));
+
+		// 保存したcsvを配列で取得する
+		$product_csv = AppCsvLoader::load('product.csv');
+
+		// 当月に新作が公開されていない場合はfalseを返す
+		if (!$product_csv)
 		{
-			foreach ($videos as $v_key => $video)
+			return false;
+		}
+
+		// 新作情報配列
+		$products = array();
+		// 公開日配列
+		$release_date = array();
+		// 新作登録カウント
+		$cnt = 0;
+
+		foreach ($product_csv as $key => $value)
+		{
+			// 作品IDによるレコード取得
+			$result = $this->CI->product_master_model->get_by_product_id($value['商品ID']);
+			// 作品IDが登録されていない作品（新作）を対象とする
+			if (!$result)
 			{
-				// 次のクローラー動画マスターIDを取得する
-				$next_crawler_master_id = $this->CI->crawler_video_master_model->get_next_crawler_master_id();
+				// 新作情報配列に入れていく
+				$products[$cnt]['product_id']	= $value['商品ID'];
+				$products[$cnt]['title']		= $value['タイトル'];
+				$products[$cnt]['product_url']	= $value['商品URL'];
+				$products[$cnt]['text']			= $value['紹介文'];
+				$products[$cnt]['category']		= explode(",", $value['出演者']);
+				$products[$cnt]['release_date']	= $value['公開開始日'];
 
-				// トランザクション begin
-				$this->CI->db->trans_begin();
+				// 公開日でソートするための準備
+				$release_date[$cnt] = $value['公開開始日'];
 
-				// crawler_video_idに登録する
-				$results = array();
-				foreach ($video['video_url_id'] as $video_url_id)
-				{
-					$data = array(
-						'crawler_master_id'	=> $next_crawler_master_id,
-						'type'				=> $video['type'],
-						'video_url_id'		=> $video_url_id,
-						);
-					$results[] = $this->CI->crawler_video_id_model->insert($data);
-				}
-
-				// crawler_video_idに登録成功フラグ
-				$crawler_video_id_insert_flag = true;
-
-				// resultsが正常でなければinsertに失敗している
-				foreach ($results as $key => $result)
-				{
-					if (!$result)
-					{
-						// crawler_video_idに登録成功フラグ
-						$crawler_video_id_insert_flag = false;
-
-						// INSERT IGNORE により弾かれたのか確認する
-						$exist_crawler_master_id = $this->CI->crawler_video_id_model->get_by_url($video['type'], $video['video_url_id'][$key]);
-
-						// INSERT IGNORE により弾かれた場合はタイトルを登録する
-						if ($exist_crawler_master_id)
-						{
-							// 同じタイトルが既に存在する場合は登録しない
-							$exist_titles = $this->CI->crawler_video_title_model->get($exist_crawler_master_id);
-							foreach ($exist_titles as $e_key => $value)
-							{
-								if ($value['title'] == $video['title'])
-								{
-									break 2;
-								}
-							}
-
-							// crawler_video_titleに登録する
-							$data = array(
-								'crawler_master_id'	=> $exist_crawler_master_id,
-								'media'				=> $video['media'],
-								'title'				=> $video['title'],
-								);
-							$affected_rows = $this->CI->crawler_video_title_model->insert($data);
-
-							// affected_rowsがなければinsertに失敗している
-							if (!$affected_rows)
-							{
-								// トランザクション rollback
-								$this->CI->db->trans_rollback();
-
-								break;
-							}
-						}
-						else
-						{
-							// トランザクション rollback
-							$this->CI->db->trans_rollback();
-
-							// ログを残す
-							foreach ($video['video_url_id'] as $video_url_id)
-							{
-								log_message('error', '[set_crawled_videos crawler_video_id_model->insert ERROR] type:'.$video['type'].' video_url_id:'.$video_url_id);
-							}
-
-							break;
-						}
-					}
-				}
-
-				if (!$crawler_video_id_insert_flag)
-				{
-					// トランザクション commit
-					$this->CI->db->trans_commit();
-
-					continue;
-				}
-
-				// crawler_video_masterに登録する
-				$data = array(
-					'crawler_master_id'	=> $next_crawler_master_id,
-					'duration'			=> $video['duration'],
-					);
-				$affected_rows = $this->CI->crawler_video_master_model->insert($data);
-
-				// affected_rowsがなければinsertに失敗している
-				if (!$affected_rows)
-				{
-					// トランザクション rollback
-					$this->CI->db->trans_rollback();
-
-					continue;
-				}
-
-				// crawler_video_titleに登録する
-				$data = array(
-					'crawler_master_id'	=> $next_crawler_master_id,
-					'media'				=> $video['media'],
-					'title'				=> $video['title'],
-					);
-				$affected_rows = $this->CI->crawler_video_title_model->insert($data);
-
-				// affected_rowsがなければinsertに失敗している
-				if (!$affected_rows)
-				{
-					// トランザクション rollback
-					$this->CI->db->trans_rollback();
-
-					continue;
-				}
-
-				// トランザクション commit
-				$this->CI->db->trans_commit();
+				$cnt++;
 			}
+		}
+
+		// 公開開始日でソートする(昇順)
+		array_multisort($release_date, SORT_ASC, $products);
+
+		return $products;
+	}
+
+	/**
+	 * 作品情報を登録する
+	 */
+	public function set_products($products)
+	{
+		foreach ($products as $key => $product)
+		{
+			// トランザクション begin
+			$this->CI->db->trans_begin();
+
+			// product_masterに登録する
+			$data = array(
+				'product_id'	=> $product['product_id'],
+				'title'			=> $product['title'],
+				'product_url'	=> $product['product_url'],
+				);
+			$master_id = $this->CI->product_master_model->insert($data);
+
+			// 正常なmaster_idが返ってこない場合はinsertに失敗している
+			if (!$master_id)
+			{
+				// トランザクション rollback
+				$this->CI->db->trans_rollback();
+
+				// ログ
+				log_message('error', '[logiccrawler->set_products product_master_model->insert ERROR]');
+				log_message('error', print_r($data, true));
+
+				continue;
+			}
+
+			// product_textに登録する
+			$data = array(
+				'master_id'	=> $master_id,
+				'text'		=> $product['text'],
+				);
+			$affected_rows = $this->CI->product_text_model->insert($data);
+
+			// affected_rowsがなければinsertに失敗している
+			if (!$affected_rows)
+			{
+				// トランザクション rollback
+				$this->CI->db->trans_rollback();
+
+				// ログ
+				log_message('error', '[logiccrawler->set_products product_text_model->insert ERROR]');
+				log_message('error', print_r($data, true));
+
+				continue;
+			}
+
+			// category_infoからカテゴリーIDを取得
+			foreach ($product['category'] as $key => $category_name)
+			{
+				// カテゴリー名が無ければ「その他」に統一
+				$category_name = (!$category_name) ? 'その他' : $category_name;
+				$category_id = $this->CI->category_info_model->get_by_name($category_name);
+
+				// 該当カテゴリーがあればカテゴリーIDを配列に入れる
+				if ($category_id)
+				{
+					$product['category_id'][$key] = $category_id;
+				}
+				// 該当カテゴリーがなければ新しく追加する
+				else
+				{
+					// category_infoに登録する
+					$data = array(
+						'name'	=> $category_name,
+						);
+					$category_id = $this->CI->category_info_model->insert($data);
+
+					// 新しく追加されたカテゴリーIDを配列に入れる
+					$product['category_id'][$key] = $category_id;
+				}
+			}
+
+			// product_categoryに登録する
+			$results = array();
+			foreach ($product['category_id'] as $key => $category_id)
+			{
+				$data = array(
+					'master_id'		=> $master_id,
+					'category_id'	=> $category_id,
+					);
+				$results[] = $this->CI->product_category_model->insert($data);
+			}
+
+			// product_category登録結果フラグ
+			$product_category_insert_result = true;
+
+			// resultsが正常でなければinsertに失敗している
+			foreach ($results as $key => $result)
+			{
+				if (!$result)
+				{
+					// product_category登録結果フラグ
+					$product_category_insert_result = false;
+
+					// ログ
+					log_message('error', '[logiccrawler->set_products product_category_model->insert ERROR]');
+					log_message('error', print_r($data, true));
+				}
+			}
+			// insertに失敗している場合はrollback
+			if (!$product_category_insert_result)
+			{
+				// トランザクション rollback
+				$this->CI->db->trans_rollback();
+
+				continue;
+			}
+
+			// トランザクション commit
+			$this->CI->db->trans_commit();
 		}
 	}
 
@@ -432,37 +243,4 @@ class LogicCrawler {
 
 		return $videos;
 	}
-
-	/**
-	 * 指定サイトのコンテンツページからxvideosの動画IDを取得する
-	 */
-	private function _get_xvideos_id($url)
-	{
-		// 動画ID
-		$video_id = null;
-
-		// ページを取得
-		$html = file_get_contents($url);
-		// ページの取得に失敗したらnullを返す
-		if (!$html)
-		{
-			return null;
-		}
-
-		// 改行コードを削除
-		$html = preg_replace('/(\n|\r)/', '', $html);
-
-		// 動画IDを抽出する
-		if (preg_match_all('/(?<=embedframe\/).*?(?=")/', $html, $matches))
-		{
-			foreach ($matches[0] as $match)
-			{
-				$video_id[] = $match;
-			}
-		}
-
-		return $video_id;
-	}
 }
-
-/* End of file LogicThumbnail.php */

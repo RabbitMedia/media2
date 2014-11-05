@@ -1,54 +1,25 @@
 <?php
 
 /**
- * 動画カテゴリーモデル
+ * 作品本文情報モデル
  */
-class Video_category_model extends CI_Model
+class Product_text_model extends CI_Model
 {
-	const DISPLAY_ON	= 1;
-	const DISPLAY_OFF	= 0;
-
 	function __construct()
 	{
 		parent::__construct();
-		$this->table_name = 'video_category';
+		$this->table_name = 'product_text';
 	}
 
 	/**
-	 * 動画マスターIDによるレコード取得
+	 * マスターIDによるレコード取得
 	 */
-	public function get_by_id($master_id)
+	public function get_by_master_id($master_id)
 	{
 		// select
-		$this->db->select('category');
+		$this->db->select('text');
 		// where
 		$this->db->where('master_id', $master_id);
-		$this->db->where('display_flag', self::DISPLAY_ON);
-		$this->db->where('delete_time', null);
-
-		// クエリの実行
-		$query = $this->db->get($this->table_name);
-		// 該当するレコードがある場合は結果を配列で返す
-		if ($query->num_rows() > 0)
-		{
-			return $query->result_array();
-		}
-		else
-		{
-			return null;
-		}
-	}
-
-	/**
-	 * 動画カテゴリーによるレコード取得
-	 */
-	public function get_by_category($category)
-	{
-		// select
-		$this->db->select('master_id, display_flag');
-		// where
-		$this->db->where('category', $category);
-		$this->db->where('delete_time', null);
 
 		// クエリの実行
 		$query = $this->db->get($this->table_name);
