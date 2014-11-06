@@ -17,7 +17,7 @@ class Product_master_model extends CI_Model
 	public function get()
 	{
 		// select
-		$this->db->select('master_id, product_id, title, product_url, create_time');
+		$this->db->select('master_id, product_id, title, product_url, label_id, create_time');
 		// where
 		$this->db->where('delete_time', null);
 
@@ -40,7 +40,7 @@ class Product_master_model extends CI_Model
 	public function get_by_master_id($master_id)
 	{
 		// select
-		$this->db->select('master_id, product_id, title, product_url, create_time');
+		$this->db->select('master_id, product_id, title, product_url, labal_id, create_time');
 		// where
 		$this->db->where('master_id', $master_id);
 
@@ -66,6 +66,30 @@ class Product_master_model extends CI_Model
 		$this->db->select('master_id');
 		// where
 		$this->db->where('product_id', $product_id);
+
+		// クエリの実行
+		$query = $this->db->get($this->table_name);
+		// 該当するレコードがある場合は結果を配列で返す
+		if ($query->num_rows() > 0)
+		{
+			return $query->result_array();
+		}
+		else
+		{
+			return null;
+		}
+	}
+
+	/**
+	 * レーベルIDによるレコード取得
+	 */
+	public function get_by_label_id($label_id)
+	{
+		// select
+		$this->db->select('master_id, product_id, title, product_url, label_id, create_time');
+		// where
+		$this->db->where('label_id', $label_id);
+		$this->db->where('delete_time', null);
 
 		// クエリの実行
 		$query = $this->db->get($this->table_name);

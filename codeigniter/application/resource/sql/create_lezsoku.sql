@@ -8,11 +8,13 @@ CREATE TABLE `product_master` (
   `product_id`  VARCHAR(128)     NOT NULL                COMMENT '作品ID',
   `title`       VARCHAR(128)     NOT NULL                COMMENT '作品タイトル',
   `product_url` VARCHAR(128)     NOT NULL                COMMENT '作品URL',
+  `label_id`    TINYINT(3)       NOT NULL                COMMENT 'レーベルID',
   `create_time` DATETIME         NOT NULL                COMMENT '作成日時',
   `update_time` DATETIME         NOT NULL                COMMENT '更新日時',
   `delete_time` DATETIME         DEFAULT NULL            COMMENT '削除日時',
   PRIMARY KEY (`master_id`),
-  KEY `product_master_idx_01` (`product_id`)
+  KEY `product_master_idx_01` (`product_id`),
+  KEY `product_master_idx_02` (`label_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '作品マスター情報';
 
 CREATE TABLE `product_text` (
@@ -24,25 +26,35 @@ CREATE TABLE `product_text` (
   KEY `product_text_idx_01` (`master_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '作品本文情報';
 
-CREATE TABLE `product_category` (
+CREATE TABLE `product_actress` (
   `master_id`   INT(10)    UNSIGNED NOT NULL             COMMENT 'マスターID',
-  `category_id` TINYINT(3) UNSIGNED NOT NULL             COMMENT 'カテゴリーID',
+  `actress_id`  TINYINT(3) UNSIGNED NOT NULL             COMMENT '女優ID',
   `create_time` DATETIME            NOT NULL             COMMENT '作成日時',
   `update_time` DATETIME            NOT NULL             COMMENT '更新日時',
   `delete_time` DATETIME            DEFAULT NULL         COMMENT '削除日時',
-  KEY `product_category_idx_01` (`master_id`),
-  KEY `product_category_idx_02` (`category_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '作品カテゴリーID情報';
+  KEY `product_actress_idx_01` (`master_id`),
+  KEY `product_actress_idx_02` (`actress_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '作品女優ID情報';
 
-CREATE TABLE `category_info` (
-  `category_id` TINYINT(3)  UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'カテゴリーID',
-  `name`        VARCHAR(32) NOT NULL                         COMMENT 'カテゴリー名',
+CREATE TABLE `actress_list` (
+  `actress_id`   TINYINT(3)  UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '女優ID',
+  `actress_name` VARCHAR(32) NOT NULL                         COMMENT '女優名',
+  `create_time`  DATETIME    NOT NULL                         COMMENT '作成日時',
+  `update_time`  DATETIME    NOT NULL                         COMMENT '更新日時',
+  `delete_time`  DATETIME    DEFAULT NULL                     COMMENT '削除日時',
+  PRIMARY KEY (`actress_id`),
+  KEY `actress_list_idx_01` (`actress_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '女優リスト';
+
+CREATE TABLE `label_list` (
+  `label_id`    TINYINT(3)  UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'レーベルID',
+  `label_name`  VARCHAR(64) NOT NULL                         COMMENT 'レーベル名',
   `create_time` DATETIME    NOT NULL                         COMMENT '作成日時',
   `update_time` DATETIME    NOT NULL                         COMMENT '更新日時',
   `delete_time` DATETIME    DEFAULT NULL                     COMMENT '削除日時',
-  PRIMARY KEY (`category_id`),
-  KEY `category_info_idx_01` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT 'カテゴリー情報';
+  PRIMARY KEY (`label_id`),
+  KEY `label_list_idx_01` (`label_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT 'レーベルリスト';
 
 CREATE TABLE `dashboard` (
   `id`          TINYINT(1)  UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID',

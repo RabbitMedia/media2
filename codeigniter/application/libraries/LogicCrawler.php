@@ -15,8 +15,9 @@ class LogicCrawler
 		// ロード
 		$this->CI->load->model('product_master_model');
 		$this->CI->load->model('product_text_model');
-		$this->CI->load->model('product_category_model');
-		$this->CI->load->model('category_info_model');
+		$this->CI->load->model('product_actress_model');
+		$this->CI->load->model('actress_list_model');
+		$this->CI->load->model('label_list_model');
 	}
 
 	/**
@@ -26,7 +27,7 @@ class LogicCrawler
 	{
 		// 指定URLからcsvを取得する(当月分)
 		// $csv = file_get_contents(self::CSV_DOWNLOAD_URL); // 初回
-		$csv = file_get_contents(str_replace('%YYYYmm%', date('Ym', strtotime("-1 month")), self::CSV_DOWNLOAD_URL));
+		$csv = file_get_contents(str_replace('%YYYYmm%', date('Ym'), self::CSV_DOWNLOAD_URL));
 		// 取得したcsvの文字コードをUTF-8に変更して保存する
 		file_put_contents(APPPATH.'resource/csv/product.csv', mb_convert_encoding($csv, 'UTF-8', 'ASCII,JIS,UTF-8,EUC-JP,SJIS'));
 
@@ -57,6 +58,7 @@ class LogicCrawler
 				$products[$cnt]['product_id']	= $value['商品ID'];
 				$products[$cnt]['title']		= $value['タイトル'];
 				$products[$cnt]['product_url']	= $value['商品URL'];
+				$products[$cnt]['label_name']	= $value['レーベル名'];
 				$products[$cnt]['text']			= $value['紹介文'];
 				$products[$cnt]['category']		= explode(",", $value['出演者']);
 				$products[$cnt]['release_date']	= $value['公開開始日'];
@@ -84,11 +86,34 @@ class LogicCrawler
 			// トランザクション begin
 			$this->CI->db->trans_begin();
 
+			// レーベル名が無ければ「その他」に統一
+			$product['label_name'] = (!$product['label_name']) ? 'その他' : $product['label_name'];
+			$label_id = $this->CI->label_list_model->get_by_label_name($product['label_name']);
+
+			// 該当レーベルがあればレーベルIDを配列に入れる
+			if ($label_id)
+			{
+				$product['label_id'] = $label_id;
+			}
+			// 該当レーベルがなければ新しく追加する
+			else
+			{
+				// label_listに登録する
+				$data = array(
+					'label_name'	=> $product['label_name'],
+					);
+				$label_id = $this->CI->label_list_model->insert($data);
+
+				// 新しく追加されたレーベルIDを配列に入れる
+				$product['label_id'] = $label_id;
+			}
+
 			// product_masterに登録する
 			$data = array(
 				'product_id'	=> $product['product_id'],
 				'title'			=> $product['title'],
 				'product_url'	=> $product['product_url'],
+				'label_id'		=> $product['label_id'],
 				);
 			$master_id = $this->CI->product_master_model->insert($data);
 
@@ -125,61 +150,61 @@ class LogicCrawler
 				continue;
 			}
 
-			// category_infoからカテゴリーIDを取得
-			foreach ($product['category'] as $key => $category_name)
+			// actress_listから女優IDを取得
+			foreach ($product['category'] as $key => $actress_name)
 			{
-				// カテゴリー名が無ければ「その他」に統一
-				$category_name = (!$category_name) ? 'その他' : $category_name;
-				$category_id = $this->CI->category_info_model->get_by_name($category_name);
+				// 女優名が無ければ「その他」に統一
+				$actress_name = (!$actress_name) ? 'その他' : $actress_name;
+				$actress_id = $this->CI->actress_list_model->get_by_actress_name($actress_name);
 
-				// 該当カテゴリーがあればカテゴリーIDを配列に入れる
-				if ($category_id)
+				// 該当女優があれば女優IDを配列に入れる
+				if ($actress_id)
 				{
-					$product['category_id'][$key] = $category_id;
+					$product['actress_id'][$key] = $actress_id;
 				}
-				// 該当カテゴリーがなければ新しく追加する
+				// 該当女優がなければ新しく追加する
 				else
 				{
-					// category_infoに登録する
+					// actress_listに登録する
 					$data = array(
-						'name'	=> $category_name,
+						'actress_name'	=> $actress_name,
 						);
-					$category_id = $this->CI->category_info_model->insert($data);
+					$actress_id = $this->CI->actress_list_model->insert($data);
 
-					// 新しく追加されたカテゴリーIDを配列に入れる
-					$product['category_id'][$key] = $category_id;
+					// 新しく追加された女優IDを配列に入れる
+					$product['actress_id'][$key] = $actress_id;
 				}
 			}
 
-			// product_categoryに登録する
+			// product_actressに登録する
 			$results = array();
-			foreach ($product['category_id'] as $key => $category_id)
+			foreach ($product['actress_id'] as $key => $actress_id)
 			{
 				$data = array(
 					'master_id'		=> $master_id,
-					'category_id'	=> $category_id,
+					'actress_id'	=> $actress_id,
 					);
-				$results[] = $this->CI->product_category_model->insert($data);
+				$results[] = $this->CI->product_actress_model->insert($data);
 			}
 
-			// product_category登録結果フラグ
-			$product_category_insert_result = true;
+			// product_actress登録結果フラグ
+			$product_actress_insert_result = true;
 
 			// resultsが正常でなければinsertに失敗している
 			foreach ($results as $key => $result)
 			{
 				if (!$result)
 				{
-					// product_category登録結果フラグ
-					$product_category_insert_result = false;
+					// product_actress登録結果フラグ
+					$product_actress_insert_result = false;
 
 					// ログ
-					log_message('error', '[logiccrawler->set_products product_category_model->insert ERROR]');
+					log_message('error', '[logiccrawler->set_products product_actress_model->insert ERROR]');
 					log_message('error', print_r($data, true));
 				}
 			}
 			// insertに失敗している場合はrollback
-			if (!$product_category_insert_result)
+			if (!$product_actress_insert_result)
 			{
 				// トランザクション rollback
 				$this->CI->db->trans_rollback();

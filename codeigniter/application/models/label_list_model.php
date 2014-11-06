@@ -1,32 +1,33 @@
 <?php
 
 /**
- * 作品カテゴリーID情報モデル
+ * レーベルリストモデル
  */
-class Product_category_model extends CI_Model
+class Label_list_model extends CI_Model
 {
 	function __construct()
 	{
 		parent::__construct();
-		$this->table_name = 'product_category';
+		$this->table_name = 'label_list';
 	}
 
 	/**
-	 * マスターIDによるレコード取得
+	 * レーベルIDによるレコード取得
 	 */
-	public function get_by_master_id($master_id)
+	public function get_by_label_id($label_id)
 	{
 		// select
-		$this->db->select('category_id');
+		$this->db->select('label_name');
 		// where
-		$this->db->where('master_id', $master_id);
+		$this->db->where('label_id', $label_id);
 
 		// クエリの実行
 		$query = $this->db->get($this->table_name);
 		// 該当するレコードがある場合は結果を配列で返す
 		if ($query->num_rows() > 0)
 		{
-			return $query->result_array();
+			$row = $query->row_array();
+			return $row['label_name'];
 		}
 		else
 		{
@@ -35,21 +36,22 @@ class Product_category_model extends CI_Model
 	}
 
 	/**
-	 * カテゴリーIDによるレコード取得
+	 * レーベル名によるレコード取得
 	 */
-	public function get_by_category_id($category_id)
+	public function get_by_label_name($label_name)
 	{
 		// select
-		$this->db->select('master_id');
+		$this->db->select('label_id');
 		// where
-		$this->db->where('category_id', $category_id);
+		$this->db->where('label_name', $label_name);
 
 		// クエリの実行
 		$query = $this->db->get($this->table_name);
-		// 該当するレコードがある場合は結果を配列で返す
+		// 該当するレコードがある場合は結果を返す
 		if ($query->num_rows() > 0)
 		{
-			return $query->result_array();
+			$row = $query->row_array();
+			return $row['label_id'];
 		}
 		else
 		{
@@ -65,25 +67,22 @@ class Product_category_model extends CI_Model
 		// 作成日時と更新日時をセットする
 		$data['create_time'] = $data['update_time'] = date('Y-m-d H:i:s');
 
-		// クエリの生成
-		$insert_query = $this->db->insert_string($this->table_name, $data);
-
 		// クエリの実行
-		$this->db->query($insert_query);
+		$this->db->insert($this->table_name, $data);
 
-		// 処理された行数を返す
-		return $this->db->affected_rows();
+		// 挿入したID番号を返す
+		return $this->db->insert_id();
 	}
 
 	/**
 	 * レコード削除
 	 */
-	public function delete($master_id)
+	public function delete($label_id)
 	{
 		// set
 		$this->db->set('delete_time', date("Y-m-d H:i:s"));
 		// where
-		$this->db->where('master_id', $master_id);
+		$this->db->where('label_id', $label_id);
 
 		// クエリの実行
 		$this->db->update($this->table_name);

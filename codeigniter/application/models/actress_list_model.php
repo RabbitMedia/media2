@@ -1,32 +1,33 @@
 <?php
 
 /**
- * カテゴリー情報モデル
+ * 女優リストモデル
  */
-class Category_info_model extends CI_Model
+class Actress_list_model extends CI_Model
 {
 	function __construct()
 	{
 		parent::__construct();
-		$this->table_name = 'category_info';
+		$this->table_name = 'actress_list';
 	}
 
 	/**
-	 * カテゴリーIDによるレコード取得
+	 * 女優IDによるレコード取得
 	 */
-	public function get_by_category_id($category_id)
+	public function get_by_actress_id($actress_id)
 	{
 		// select
-		$this->db->select('name');
+		$this->db->select('actress_name');
 		// where
-		$this->db->where('category_id', $category_id);
+		$this->db->where('actress_id', $actress_id);
 
 		// クエリの実行
 		$query = $this->db->get($this->table_name);
 		// 該当するレコードがある場合は結果を配列で返す
 		if ($query->num_rows() > 0)
 		{
-			return $query->result_array();
+			$row = $query->row_array();
+			return $row['actress_name'];
 		}
 		else
 		{
@@ -35,14 +36,14 @@ class Category_info_model extends CI_Model
 	}
 
 	/**
-	 * カテゴリー名によるレコード取得
+	 * 女優名によるレコード取得
 	 */
-	public function get_by_name($name)
+	public function get_by_actress_name($actress_name)
 	{
 		// select
-		$this->db->select('category_id');
+		$this->db->select('actress_id');
 		// where
-		$this->db->where('name', $name);
+		$this->db->where('actress_name', $actress_name);
 
 		// クエリの実行
 		$query = $this->db->get($this->table_name);
@@ -50,7 +51,7 @@ class Category_info_model extends CI_Model
 		if ($query->num_rows() > 0)
 		{
 			$row = $query->row_array();
-			return $row['category_id'];
+			return $row['actress_id'];
 		}
 		else
 		{
@@ -76,12 +77,12 @@ class Category_info_model extends CI_Model
 	/**
 	 * レコード削除
 	 */
-	public function delete($category_id)
+	public function delete($actress_id)
 	{
 		// set
 		$this->db->set('delete_time', date("Y-m-d H:i:s"));
 		// where
-		$this->db->where('category_id', $category_id);
+		$this->db->where('actress_id', $actress_id);
 
 		// クエリの実行
 		$this->db->update($this->table_name);
