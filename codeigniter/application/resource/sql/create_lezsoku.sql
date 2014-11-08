@@ -56,6 +56,27 @@ CREATE TABLE `label_list` (
   KEY `label_list_idx_01` (`label_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT 'レーベルリスト';
 
+CREATE TABLE `ranking` (
+  `id`          INT(10)      UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `ranking_id`  MEDIUMINT(8) UNSIGNED NOT NULL                COMMENT 'ランキングID',
+  `product_id`  VARCHAR(128)          NOT NULL                COMMENT '作品ID',
+  `prev_rank`   VARCHAR(16)           NOT NULL                COMMENT '前回のランク',
+  `create_time` DATETIME              NOT NULL                COMMENT '作成日時',
+  `update_time` DATETIME              NOT NULL                COMMENT '更新日時',
+  `delete_time` DATETIME              DEFAULT NULL            COMMENT '削除日時',
+  PRIMARY KEY (`id`),
+  KEY `ranking_idx_01` (`ranking_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT 'ランキング';
+
+CREATE TABLE `ranking_control` (
+  `id`          TINYINT(1)   UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `ranking_id`  MEDIUMINT(8) UNSIGNED NOT NULL                COMMENT 'ランキングID',
+  `create_time` DATETIME              NOT NULL                COMMENT '作成日時',
+  `update_time` DATETIME              NOT NULL                COMMENT '更新日時',
+  `delete_time` DATETIME              DEFAULT NULL            COMMENT '削除日時',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT 'ランキングコントロール';
+
 CREATE TABLE `dashboard` (
   `id`          TINYINT(1)  UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `username`    VARCHAR(32)          NOT NULL                COMMENT 'ユーザー名',

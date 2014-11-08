@@ -19,9 +19,9 @@ class Crawler extends CI_Controller
 	}
 
 	/**
-	 * 動画コンテンツを取得する
+	 * 作品情報を取得する
 	 */
-	public function get_videos()
+	public function get_products()
 	{
 		// デバッグ(ブラウザ表示文字化け回避)用
 		// header("Content-Type: text/html; charset=UTF-8");
@@ -43,6 +43,36 @@ class Crawler extends CI_Controller
 
 		// 作品情報を登録する
 		$this->logiccrawler->set_products($products);
+
+		// 実行終了時刻をログに出力する
+		echo '終了: '.date("Y-m-d H:i:s")."\n";
+	}
+
+	/**
+	 * ランキングを取得する
+	 */
+	public function get_ranking()
+	{
+		// デバッグ(ブラウザ表示文字化け回避)用
+		// header("Content-Type: text/html; charset=UTF-8");
+
+		// 実行開始時刻をログに出力する
+		echo '開始: '.date("Y-m-d H:i:s")."\n";
+
+		// 配列
+		$products = array();
+
+		// ランキングを取得する
+		$products = $this->logiccrawler->get_ranking();
+
+		// ランキングを取得できない場合は処理を終了する
+		if (!$products)
+		{
+			return;
+		}
+
+		// ランキングを登録する
+		$this->logiccrawler->set_ranking($products);
 
 		// 実行終了時刻をログに出力する
 		echo '終了: '.date("Y-m-d H:i:s")."\n";

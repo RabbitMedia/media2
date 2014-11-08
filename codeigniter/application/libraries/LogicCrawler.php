@@ -4,10 +4,6 @@ class LogicCrawler
 {
 	protected $CI;
 
-	// csvダウンロードURL
-	// const CSV_DOWNLOAD_URL = 'http://duga.jp/productcsv/type=mp4/category=11/'; // 初回
-	const CSV_DOWNLOAD_URL	= 'http://duga.jp/productcsv/type=mp4/category=11/openstt=%YYYYmm%01/';
-
 	function __construct()
 	{
 		$this->CI =& get_instance();
@@ -18,6 +14,9 @@ class LogicCrawler
 		$this->CI->load->model('product_actress_model');
 		$this->CI->load->model('actress_list_model');
 		$this->CI->load->model('label_list_model');
+		$this->CI->load->model('ranking_model');
+		$this->CI->load->model('ranking_control_model');
+		$this->app_ini = parse_ini_file(APPPATH.'resource/ini/app.ini', true);
 	}
 
 	/**
@@ -25,9 +24,11 @@ class LogicCrawler
 	 */
 	public function get_products()
 	{
-		// 指定URLからcsvを取得する(当月分)
-		// $csv = file_get_contents(self::CSV_DOWNLOAD_URL); // 初回
-		$csv = file_get_contents(str_replace('%YYYYmm%', date('Ym'), self::CSV_DOWNLOAD_URL));
+		// 指定URLからcsvを取得する(初回は全期間分、2回目以降は当月分のみ)
+		$csv = ($this->app_ini['flag']['initial_crawl']) ?
+		file_get_contents($this->app_ini['url']['csv_all']) :
+		file_get_contents(str_replace('%YYYYmm%', date('Ym'), $this->app_ini['url']['csv_month']));
+
 		// 取得したcsvの文字コードをUTF-8に変更して保存する
 		file_put_contents(APPPATH.'resource/csv/product.csv', mb_convert_encoding($csv, 'UTF-8', 'ASCII,JIS,UTF-8,EUC-JP,SJIS'));
 
@@ -212,6 +213,129 @@ class LogicCrawler
 				continue;
 			}
 
+			// トランザクション commit
+			$this->CI->db->trans_commit();
+		}
+	}
+
+	/**
+	 * ランキングを取得する
+	 */
+	public function get_ranking()
+	{
+		// ランキングページURLからhtmlを取得する
+		$html = file_get_contents($this->app_ini['url']['ranking']);
+
+		// ページの取得に失敗したらfalseを返す
+		if (!$html)
+		{
+			return false;
+		}
+
+		// ランキング配列
+		$products = array();
+		// ランキング登録カウント
+		$cnt = 0;
+
+		// 改行コードを削除する
+		$html = preg_replace('/(\n|\r)/', '', $html);
+
+		// ランキング情報を正規表現で抽出する
+		if (preg_match_all('/(?<=contentslistrank).*?(?=scoped)/', $html, $elements))
+		{
+			foreach ($elements[0] as $element)
+			{
+				// 作品IDを抽出する
+				$product_id = null;
+				if (preg_match('/(?<=pid=").*?(?=")/', $element, $matches))
+				{
+					// 作品IDによるレコード取得
+					$result = $this->CI->product_master_model->get_by_product_id($matches[0]);
+					// 作品IDが登録されていない場合はランキング対象から外す
+					if (!$result)
+					{
+						continue;
+					}
+
+					$products[$cnt]['product_id'] = $matches[0];
+				}
+
+				// 前週のランキングを抽出する
+				$prev_rank = '-';
+				if (preg_match('/(?<=rankprev">前週).*?(?=位)/', $element, $matches))
+				{
+					$products[$cnt]['prev_rank'] = $matches[0];
+				}
+
+				$cnt++;
+			}
+		}
+
+		return $products;
+	}
+
+	/**
+	 * ランキングを登録する
+	 */
+	public function set_ranking($products)
+	{
+		// トランザクション begin
+		$this->CI->db->trans_begin();
+
+		// 現在のランキングIDを取得する
+		$ranking_id = $this->CI->ranking_control_model->get();
+
+		// ランキングIDが存在すればインクリメントして更新する
+		if ($ranking_id)
+		{
+			(int)$ranking_id++;
+			$this->CI->ranking_control_model->update($ranking_id);
+		}
+		// ランキングIDが存在しなければ初回レコードを挿入する
+		else
+		{
+			$data['ranking_id'] = $ranking_id = 1;
+			$this->CI->ranking_control_model->insert($data);
+		}
+
+		// rankingに登録する
+		$data = array();
+		$results = array();
+		foreach ($products as $key => $product)
+		{
+			$data = array(
+				'ranking_id'	=> $ranking_id,
+				'product_id'	=> $product['product_id'],
+				'prev_rank'		=> $product['prev_rank'],
+				);
+			$results[] = $this->CI->ranking_model->insert($data);
+		}
+
+		// ranking登録結果フラグ
+		$ranking_insert_result = true;
+
+		// resultsが正常でなければinsertに失敗している
+		foreach ($results as $key => $result)
+		{
+			if (!$result)
+			{
+				// product_actress登録結果フラグ
+				$ranking_insert_result = false;
+
+				// ログ
+				log_message('error', '[logiccrawler->set_ranking ranking_model->insert ERROR]');
+				log_message('error', print_r($data, true));
+			}
+		}
+
+		// insertに失敗している場合はrollback
+		if (!$ranking_insert_result)
+		{
+			// トランザクション rollback
+			$this->CI->db->trans_rollback();
+		}
+		else
+		{
 			// トランザクション commit
 			$this->CI->db->trans_commit();
 		}
