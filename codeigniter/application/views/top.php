@@ -5,11 +5,7 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="copyright" content="&copy;セックル速報" />
-		<?php if ($page <= 1): ?>
-			<meta name="description" content="セックル速報は、無料でセックス動画を楽しめるセックス動画まとめサイトです。" />
-		<?php else: ?>
-			<meta name="description" content="セックル速報は、無料でセックス動画を楽しめるセックス動画まとめサイトです。 (<?=$page?>ページ目)" />
-		<?php endif; ?>
+		<meta name="description" content="セックル速報は、無料でセックス動画を楽しめるセックス動画まとめサイトです。" />
 		<meta name="keywords" content="セックス動画,セックル速報" />
 		<meta property="og:title" content="セックル速報 - 無料セックス動画まとめ" />
 		<meta property="og:type" content="website" />
@@ -19,34 +15,19 @@
 		<meta property="og:site_name" content="セックル速報 - 無料セックス動画まとめ" />
 		<meta name="twitter:card" content="summary">
 		<meta name="twitter:site" content="@sekusoku">
-		<?php if ($page <= 1): ?>
-			<link rel="canonical" href="http://sekusoku.com/" />
-		<?php else: ?>
-			<link rel="canonical" href="http://sekusoku.com/<?=$page?>" />
-		<?php endif; ?>
-		<?php if ($page > 1): ?>
-			<?php if ($page == 2): ?>
-				<link rel="prev" href="http://sekusoku.com/" />
-			<?php else: ?>
-				<link rel="prev" href="http://sekusoku.com/<?=$page-1?>" />
-			<?php endif; ?>
-		<?php endif; ?>
-		<?php if ($page_next_flag): ?>
-			<link rel="next" href="http://sekusoku.com/<?=$page+1?>" />
-		<?php endif; ?>
-		<?php if ($page <= 1): ?>
-			<title>セックル速報 - 無料セックス動画まとめ</title>
-		<?php else: ?>
-			<title>セックル速報 - 無料セックス動画まとめ (<?=$page?>ページ目)</title>
-		<?php endif; ?>
+		<link rel="canonical" href="http://sekusoku.com/" />
+		<title>タイトル</title>
 		<link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico" />
 		<link rel="icon" type="image/png" href="/images/favicon.png" />
 		<link rel="apple-touch-icon" href="/images/apple-touch-icon.png" />
 
 		<!-- Bootstrap -->
 		<link rel="stylesheet" href="/css/bootstrap.min.css">
-		<!-- Custom styles for Sticky footer with fixed navbar -->
-		<link rel="stylesheet" href="/css/sticky-footer-navbar.css">
+		<!-- Custom styles -->
+		<link rel="stylesheet" href="/css/style.css">
+		<link rel="stylesheet" href="/css/style-responsive.css">
+		<!-- Font Awesome -->
+		<link rel="stylesheet" href="/css/font-awesome.min.css">
 
 		<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 		<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -58,134 +39,204 @@
 	<body>
 
 		<!-- Google Tag Manager -->
-		<noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-PQJKB4" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-		<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-PQJKB4');</script>
+		<!-- <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-PQJKB4" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+		<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-PQJKB4');</script> -->
 
-		<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-			<div class="container">
-				<div class="navbar-header">
-					<button type="button" class="btn btn-default navbar-btn" data-toggle="modal" data-target=".openmodal"><span class="glyphicon glyphicon-th-list"></span></button>
-					<a class="navbar-brand" href="/"><img src="/images/logo.png" alt="セックル速報" width="160" height="25"></a>
-				</div>
-				<div class="collapse navbar-collapse">
-					<p class="navbar-text navbar-right">無料セックス動画を毎日更新！</p>
-				</div>
-			</div>
-		</nav>
+		<section id="container">
 
-		<div class="container">
+			<header class="header black-bg">
 
-			<div class="row">
-
-				<div class="col-xs-12">
-					<h1><?=$total_count?>件の無料セックス動画</h1>
+				<div class="sidebar-toggle-box">
+					<div class="fa fa-bars"></div>
 				</div>
 
-			</div>
+				<a href="/" class="logo">動画速報</a>
 
-			<div class="row">
-
-				<?php foreach ($videos as $id => $video): ?>
-					<div class="col-xs-12 col-sm-6 col-md-3">
-						<div class="thumbnail">
-							<a href="/video/<?=$video['master_id']?>"><img src="<?=$video['thumbnail_url']?>" alt="<?=$video['title']?>" class="img-rounded img-responsive" width="240" height="180"></a>
-							<div class="caption">
-								<h2><a href="/video/<?=$video['master_id']?>"><?=$video['title']?></a></h2>
-								<p>
-									<?php foreach ($video['category'] as $key => $category): ?>
-										<a href="/category/<?=$category['id']?>"><span class="label label-default"><?=$category['name']?></span></a>&nbsp;
-									<?php endforeach; ?>
-								</p>
-								<p><?=$video['create_time']?></p>
-							</div>
-						</div>
-					</div>
-				<?php endforeach; ?>
-
-			</div>
-
-			<div class="row">
-
-				<div class="col-xs-12 hidden-xs text-center">
-					<ul class="pagination pagination-lg">
-						<?=$pagination?>
-					</ul>
-				</div>
-				<div class="col-xs-12 visible-xs text-center">
-					<ul class="pagination">
-						<?=$pagination?>
+				<div class="nav notify-row" id="top_menu">
+					<ul class="nav top-menu">
+						<li id="header_inbox_bar" class="dropdown">
+							<a data-toggle="dropdown" class="dropdown-toggle" href="#">
+								<i class="fa fa-envelope-o"></i>
+								<span class="badge bg-theme">99</span>
+							</a>
+						</li>
 					</ul>
 				</div>
 
-			</div>
+			</header>
 
-		</div>
+			<aside>
 
-		<div class="footer">
-			<div class="container text-center">
-				<p class="text-muted">Copyright &copy; <?php echo date("Y"); ?> セックル速報 - 無料セックス動画まとめ All Rights Reserved.</p>
-			</div>
-		</div>
+				<div id="sidebar" class="nav-collapse ">
+					<ul class="sidebar-menu" id="nav-accordion">
 
-		<div class="modal fade openmodal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-			<div class="modal-dialog modal-lg">
-				<div class="modal-content">
+						<li class="mt">
+							<a class="active">
+								<i class="fa fa-home"></i>
+								<span>ホーム</span>
+							</a>
+						</li>
+						<li class="sub-menu">
+							<a href="/">
+								<i class="fa fa-video-camera"></i>
+								<span>新着動画</span>
+							</a>
+						</li>
+						<li class="sub-menu">
+							<a href="/">
+								<i class="fa fa-sort-amount-asc"></i>
+								<span>ランキング</span>
+							</a>
+						</li>
+						<li class="sub-menu">
+							<a href="javascript:;">
+								<i class="fa fa-folder-open"></i>
+								<span>カテゴリー</span>
+							</a>
+							<ul class="sub">
+								<li><a href="/">ジャンル</a></li>
+								<li><a href="/">女優</a></li>
+								<li><a href="/">レーベル</a></li>
+							</ul>
+						</li>
+						<li class="sub-menu">
+							<a href="javascript:;" >
+								<i class="fa fa-gear"></i>
+								<span>このサイトについて</span>
+							</a>
+							<ul class="sub">
+								<li><a href="/">サイトポリシー</a></li>
+								<li><a href="/">広告掲載について</a></li>
+								<li><a href="/">お問い合わせ</a></li>
+							</ul>
+						</li>
 
-					<nav class="navbar navbar-default" role="navigation">
-						<div class="container">
-							<div class="navbar-header">
-								<button type="button" class="btn btn-default navbar-btn navbar-left" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span></button>
-							</div>
-						</div>
-					</nav>
+					</ul>
+				</div>
 
-					<div class="container">
+			</aside>
 
-						<div class="row">
+			<section id="main-content">
+				<section class="wrapper">
 
-							<!-- <div class="col-xs-12">
-								<h3>キーワード検索</h3>
-								<div class="col-xs-12">
-									<form class="form-horizontal" role="form">
-										<div class="form-group">
-											<div class="input-group">
-												<input type="text" class="form-control" placeholder="無料セックス動画の検索はこちらから">
-												<span class="input-group-btn">
-													<button class="btn btn-default" type="button"><span class="glyphicon glyphicon-search"></span></button>
-												</span>
-											</div>
+					<div class="row">
+						<div class="col-lg-9 main-chart">
+
+							<h3><i class="fa fa-chevron-circle-right"></i> 新着ピックアップ</h3>
+							
+							<div class="row mt">
+
+								<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 mb">
+									<div class="white-panel pn">
+										<div class="text-center">
+											<a href=""><img src="http://placehold.jp/240x180.png" alt="" class="img-responsive" width="240" height="180"></a>
 										</div>
-									</form>
+										<div class="text-left">
+											<p><a href="">タイトルタイトルタイトル</a></p>
+											<p>2014年12月31日</p>
+										</div>
+									</div>
 								</div>
+								<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 mb">
+									<div class="white-panel pn">
+										<div class="text-center">
+											<a href=""><img src="http://placehold.jp/240x180.png" alt="" class="img-responsive" width="240" height="180"></a>
+										</div>
+										<div class="text-left">
+											<p><a href="">タイトルタイトルタイトル</a></p>
+											<p>2014年12月31日</p>
+										</div>
+									</div>
+								</div>
+								<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 mb">
+									<div class="white-panel pn">
+										<div class="text-center">
+											<a href=""><img src="http://placehold.jp/240x180.png" alt="" class="img-responsive" width="240" height="180"></a>
+										</div>
+										<div class="text-left">
+											<p><a href="">タイトルタイトルタイトル</a></p>
+											<p>2014年12月31日</p>
+										</div>
+									</div>
+								</div>
+								<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 mb">
+									<div class="white-panel pn">
+										<div class="text-center">
+											<a href=""><img src="http://placehold.jp/240x180.png" alt="" class="img-responsive" width="240" height="180"></a>
+										</div>
+										<div class="text-left">
+											<p><a href="">タイトルタイトルタイトル</a></p>
+											<p>2014年12月31日</p>
+										</div>
+									</div>
+								</div>
+								<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 mb">
+									<div class="white-panel pn">
+										<div class="text-center">
+											<a href=""><img src="http://placehold.jp/240x180.png" alt="" class="img-responsive" width="240" height="180"></a>
+										</div>
+										<div class="text-left">
+											<p><a href="">タイトルタイトルタイトル</a></p>
+											<p>2014年12月31日</p>
+										</div>
+									</div>
+								</div>
+								<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 mb">
+									<div class="white-panel pn">
+										<div class="text-center">
+											<a href=""><img src="http://placehold.jp/240x180.png" alt="" class="img-responsive" width="240" height="180"></a>
+										</div>
+										<div class="text-left">
+											<p><a href="">タイトルタイトルタイトル</a></p>
+											<p>2014年12月31日</p>
+										</div>
+									</div>
+								</div>
+
+							</div>
+
+						</div>
+
+						<div class="col-lg-3 ds">
+
+							<h3>レーベル紹介</h3>
+
+							<!-- <div class="desc">
+								<div class="text-center">
+									<p class="hidden-md hidden-sm"><a href="http://click.duga.jp/ppv/ladylady/22125-01" target="_blank"><img src="http://ad.duga.jp/banner/ladylady/190-90.gif" alt="LADY×LADY"></a></p>
+									<p class="hidden-lg hidden-xs"><a href="http://click.duga.jp/ppv/ladylady/22125-01" target="_blank"><img src="http://ad.duga.jp/banner/ladylady/468-60.gif" alt="LADY×LADY"></a></p>
+									<p><a href="http://click.duga.jp/ppv/ladylady/22125-01" target="_blank">LADY×LADY</a></p>
+								</div>
+								<p>ターゲットはオンナを知らない純白LADY。かわいい女の子が“初めて”を経験し、“戸惑い”ながらも身を委ね、“未知の興奮”に恍惚の表情を浮かべる…。全身に淫らな電流が走り抜ける女のカラダは本当にエロい。業界初！女性スタッフのみでお届けする“オンナだけのセカイ”！！</p>
+							</div>
+							<div class="desc">
+								<div class="text-center">
+									<p class="hidden-md hidden-sm"><a href="http://click.duga.jp/ppv/ladiesroom/22125-01" target="_blank"><img src="http://ad.duga.jp/banner/ladiesroom/190-90.gif" alt="LADIES♀ROOM"></a></p>
+									<p class="hidden-lg hidden-xs"><a href="http://click.duga.jp/ppv/ladiesroom/22125-01" target="_blank"><img src="http://ad.duga.jp/banner/ladiesroom/468-60.gif" alt="LADIES♀ROOM"></a></p>
+									<p><a href="http://click.duga.jp/ppv/ladiesroom/22125-01" target="_blank">LADIES♀ROOM</a></p>
+								</div>
+								<p>♀×♀＝エロエロ。雌が揃えばエロさも2乗。男女では成し得ない快感ループ、禁じられた秘密の悦びに耽るレズビアンたち…ディープでコアな美レズエロの世界が繰り広げられる、レズビアン官能劇場！</p>
+							</div>
+							<div class="desc">
+								<div class="text-center">
+									<p class="hidden-md hidden-sm"><a href="http://click.duga.jp/ppv/lezule/22125-01" target="_blank"><img src="http://ad.duga.jp/banner/lezule/190-90.gif" alt="レズれ！"></a></p>
+									<p class="hidden-lg hidden-xs"><a href="http://click.duga.jp/ppv/lezule/22125-01" target="_blank"><img src="http://ad.duga.jp/banner/lezule/468-60.gif" alt="レズれ！"></a></p>
+									<p><a href="http://click.duga.jp/ppv/lezule/22125-01" target="_blank">レズれ！</a></p>
+								</div>
+								<p>百合は百合のまま、薔薇は薔薇のまま、女が女に欲情する。余計なものは必要ない。男の立ち入れない空間を作るレズ総合メーカー『レズれ！』。魅力的な女性の容姿、仕草、裸体や熱のあるキス、クンニ、こすり合わせなどレズプレイから、震えるような女性の心模様を赤裸々にとらえたレズドキュメントまで、女同士でしかイケないナイショの領域をお楽しみください。</p>
 							</div> -->
 
-							<div class="col-xs-12">
-								<h3>カテゴリー検索</h3>
-								<div class="well">
-									<ul class="pager">
-										<?php foreach ($categories as $category): ?>
-											<li><a href="/category/<?=$category['id']?>"><?=$category['name']?></a></li>
-										<?php endforeach; ?>
-									</ul>
-								</div>
-							</div>
-
-							<div class="col-xs-12">
-								<ul class="nav nav-pills">
-									<li><a href="/">ホーム</a></li>
-									<li><a href="/about">セックル速報について</a></li>
-									<li><a href="/ad">広告掲載について</a></li>
-									<li><a href="/contact">お問い合わせ</a></li>
-								</ul>
-							</div>
-
 						</div>
-
 					</div>
 
-				</div>
+				</section>
+			</section>
+
+			<footer class="site-footer text-center">
+				Copyright &copy; <?php echo date("Y"); ?> レズ動画速報 - レズ動画まとめ All Rights Reserved.
 			</div>
-		</div>
+
+		</section>
 
 		<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
@@ -194,6 +245,13 @@
 		<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 		<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 		<script src="/js/ie10-viewport-bug-workaround.js"></script>
+		<!--common script for all pages -->
+		<script src="/js/common-scripts.js"></script>
+		<!-- scroll -->
+		<script src="/js/jquery.scrollTo.min.js"></script>
+		<script src="/js/jquery.nicescroll.js"></script>
+		<!-- Vertical Accordion Menu -->
+		<script class="include" src="/js/jquery.dcjqaccordion.2.7.js"></script>
 		<!-- EqualHeight.js -->
 		<script src="/js/jquery.equalheight.min.js"></script>
 		<!-- EqualHeight.js -->

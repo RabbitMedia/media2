@@ -7,65 +7,64 @@ class LogicVideoManage
 	function __construct()
 	{
 		$this->CI =& get_instance();
-		$this->CI->load->model('video_master_model');
-		$this->CI->load->model('video_id_model');
-		$this->CI->load->model('video_category_model');
-		$this->CI->load->model('crawler_video_master_model');
-		$this->CI->load->model('crawler_video_id_model');
-		$this->CI->load->model('crawler_video_title_model');
-		$this->CI->load->library('LogicEmbed');
+
+		// ロード
+		$this->CI->load->model('product_master_model');
+		$this->CI->load->model('product_text_model');
+		$this->CI->load->model('product_actress_model');
+		$this->CI->load->model('actress_list_model');
+		$this->CI->load->model('label_list_model');
 	}
 
 	/**
-	 * 最新のトップページ動画リストを取得する
+	 * 全作品を取得する(新着順)
 	 */
-	public function get_top_list()
+	public function get()
 	{
-		// 動画配列
-		$videos = array();
+		// 作品配列
+		$products = array();
 
-		// カテゴリーcsvロード
-		$category_csv = AppCsvLoader::load('category.csv');
+		// 作品マスター情報を取得する
+		$products = $this->CI->product_master_model->get();
 
-		// 動画マスター情報を取得する
-		$videos = $this->CI->video_master_model->get();
-
-		// 動画がなければそのまま返す
-		if (!$videos)
+		// 作品がなければそのまま返す
+		if (!$products)
 		{
-			return $videos;
+			return $products;
 		}
 
-		// 動画マスター情報をもとに詳細情報を取得する
-		foreach ($videos as $id => $video)
+		// 作品マスター情報をもとに詳細情報を取得する
+		foreach ($products as $id => $product)
 		{
-			// カテゴリーを取得する
-			$results = $this->CI->video_category_model->get_by_id($video['master_id']);
-			if (!empty($results))
+			// 女優IDを取得する
+			$product_actresses = $this->CI->product_actress_model->get_by_master_id($product['master_id']);
+			if (!empty($product_actresses))
 			{
-				foreach ($results as $r_key => $r_value)
+				foreach ($product_actresses as $key => $product_actress)
 				{
-					// カテゴリーcsvからカテゴリー名を取得してセット
-					foreach ($category_csv as $c_key => $c_value)
+					// 女優名を取得する
+					$product_actress['actress_name'] = $this->CI->actress_list_model->get_by_actress_id($product_actress['actress_id']);
+					// 女優IDと女優名をセットする
+					if ($product_actress['actress_name'])
 					{
-						if ($c_value['id'] == $r_value['category'])
-						{
-							$videos[$id]['category'][$r_key]['id'] = $r_value['category'];
-							$videos[$id]['category'][$r_key]['name'] = $c_value['name'];
-						}
+						$products[$id]['actress'][$key]['id'] = $product_actress['actress_id'];
+						$products[$id]['actress'][$key]['name'] = $product_actress['actress_name'];
 					}
 				}
 			}
 
+			// レーベル名を取得する
+			$products[$id]['label_name'] = $this->CI->label_list_model->get_by_label_id($product['label_id']);
+
 			// 日付の形式を変更する
-			$videos[$id]['create_time'] = date('Y年n月j日', strtotime($video['create_time']));
+			$products[$id]['create_time'] = date('Y年n月j日', strtotime($product['create_time']));
 		}
 
-		return array_reverse($videos);
+		return array_reverse($products);
 	}
 
 	/**
-	 * 動画ページ詳細を取得する
+	 * 作品詳細を取得する
 	 */
 	public function get_details($master_id)
 	{
@@ -133,9 +132,9 @@ class LogicVideoManage
 	}
 
 	/**
-	 * 指定カテゴリーの動画リストを取得する
+	 * 指定カテゴリーの全作品を取得する(新着順)
 	 */
-	public function get_category_list($category_id)
+	public function get_by_category($category_id)
 	{
 		// 動画配列
 		$videos = array();
@@ -200,172 +199,5 @@ class LogicVideoManage
 		}
 
 		return array_reverse($videos);
-	}
-
-	/**
-	 * 動画をアップする
-	 */
-	public function upload($item)
-	{
-		// トランザクション begin
-		$this->CI->db->trans_begin();
-
-		// video_masterに登録する
-		$data = array(
-			'title'			=> html_escape($item['title']),
-			'thumbnail_url'	=> $item['thumbnail'],
-			'duration'		=> $item['duration'],
-			);
-		$master_id = $this->CI->video_master_model->insert($data);
-
-		// master_idが正常でなければinsertに失敗している
-		if (!$master_id)
-		{
-			// トランザクション rollback
-			$this->CI->db->trans_rollback();
-			return null;
-		}
-		else
-		{
-			// video_idに登録する
-			$results = array();
-			foreach ($item['type'] as $key => $type)
-			{
-				$data = array(
-					'master_id'		=> $master_id,
-					'type'			=> $type,
-					'video_url_id'	=> $item['video_url_id'][$key],
-					);
-				$results[] = $this->CI->video_id_model->insert($data);
-			}
-			// 返り値チェック
-			foreach ($results as $result)
-			{
-				if (!$result)
-				{
-					// トランザクション rollback
-					$this->CI->db->trans_rollback();
-					return null;
-				}
-			}
-
-			// video_categoryにメインカテゴリーを登録する
-			$results = array();
-			foreach ($item['main_category'] as $category)
-			{
-				$data = array(
-					'master_id'		=> $master_id,
-					'category'		=> $category,
-					'display_flag'	=> video_category_model::DISPLAY_ON,
-					);
-				$results[] = $this->CI->video_category_model->insert($data);
-			}
-			// 返り値チェック
-			foreach ($results as $result)
-			{
-				if (!$result)
-				{
-					// トランザクション rollback
-					$this->CI->db->trans_rollback();
-					return null;
-				}
-			}
-
-			// video_categoryにサブカテゴリーを登録する
-			$results = array();
-			foreach ($item['sub_category'] as $category)
-			{
-				$data = array(
-					'master_id'		=> $master_id,
-					'category'		=> $category,
-					'display_flag'	=> video_category_model::DISPLAY_OFF,
-					);
-				$results[] = $this->CI->video_category_model->insert($data);
-			}
-			// 返り値チェック
-			foreach ($results as $result)
-			{
-				if (!$result)
-				{
-					// トランザクション rollback
-					$this->CI->db->trans_rollback();
-					return null;
-				}
-			}
-
-			// クロールド動画を削除する
-			$result = $this->delete_crawled_videos($item['crawler_master_id'], false);
-			// 返り値チェック
-			if (!$result)
-			{
-				// トランザクション rollback
-				$this->CI->db->trans_rollback();
-				return null;
-			}
-		}
-
-		// トランザクション commit
-		$this->CI->db->trans_commit();
-
-		return $master_id;
-	}
-
-	/**
-	 * 動画を削除する(クロールド動画)
-	 */
-	public function delete_crawled_videos($crawler_master_id, $transaction_flag = false)
-	{
-		// トランザクション start
-		if ($transaction_flag)
-		{
-			$this->CI->db->trans_start();
-		}
-
-		// crawler_video_masterを削除する
-		$result = $this->CI->crawler_video_master_model->delete($crawler_master_id);
-		// 返り値チェック
-		if (!$result)
-		{
-			// トランザクション rollback
-			if ($transaction_flag)
-			{
-				$this->CI->db->trans_rollback();
-			}
-			return null;
-		}
-
-		// crawler_video_idを削除する
-		$result = $this->CI->crawler_video_id_model->delete($crawler_master_id);
-		// 返り値チェック
-		if (!$result)
-		{
-			// トランザクション rollback
-			if ($transaction_flag)
-			{
-				$this->CI->db->trans_rollback();
-			}
-			return null;
-		}
-
-		// crawler_video_titleを削除する
-		$result = $this->CI->crawler_video_title_model->delete($crawler_master_id);
-		// 返り値チェック
-		if (!$result)
-		{
-			// トランザクション rollback
-			if ($transaction_flag)
-			{
-				$this->CI->db->trans_rollback();
-			}
-			return null;
-		}
-
-		// トランザクション complete
-		if ($transaction_flag)
-		{
-			$this->CI->db->trans_complete();
-		}
-
-		return $crawler_master_id;
 	}
 }
