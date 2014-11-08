@@ -4,14 +4,14 @@ CREATE DATABASE IF NOT EXISTS `lezsoku`;
 USE lezsoku;
 
 CREATE TABLE `product_master` (
-  `master_id`   INT(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'マスターID',
-  `product_id`  VARCHAR(128)     NOT NULL                COMMENT '作品ID',
-  `title`       VARCHAR(128)     NOT NULL                COMMENT '作品タイトル',
-  `product_url` VARCHAR(128)     NOT NULL                COMMENT '作品URL',
-  `label_id`    TINYINT(3)       NOT NULL                COMMENT 'レーベルID',
-  `create_time` DATETIME         NOT NULL                COMMENT '作成日時',
-  `update_time` DATETIME         NOT NULL                COMMENT '更新日時',
-  `delete_time` DATETIME         DEFAULT NULL            COMMENT '削除日時',
+  `master_id`   INT(10)     UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'マスターID',
+  `product_id`  VARCHAR(128)         NOT NULL                COMMENT '作品ID',
+  `title`       VARCHAR(128)         NOT NULL                COMMENT '作品タイトル',
+  `product_url` VARCHAR(128)         NOT NULL                COMMENT '作品URL',
+  `label_id`    SMALLINT(3) UNSIGNED NOT NULL                COMMENT 'レーベルID',
+  `create_time` DATETIME             NOT NULL                COMMENT '作成日時',
+  `update_time` DATETIME             NOT NULL                COMMENT '更新日時',
+  `delete_time` DATETIME             DEFAULT NULL            COMMENT '削除日時',
   PRIMARY KEY (`master_id`),
   KEY `product_master_idx_01` (`product_id`),
   KEY `product_master_idx_02` (`label_id`)
@@ -27,11 +27,11 @@ CREATE TABLE `product_text` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '作品本文情報';
 
 CREATE TABLE `product_actress` (
-  `master_id`   INT(10)    UNSIGNED NOT NULL             COMMENT 'マスターID',
-  `actress_id`  TINYINT(3) UNSIGNED NOT NULL             COMMENT '女優ID',
-  `create_time` DATETIME            NOT NULL             COMMENT '作成日時',
-  `update_time` DATETIME            NOT NULL             COMMENT '更新日時',
-  `delete_time` DATETIME            DEFAULT NULL         COMMENT '削除日時',
+  `master_id`   INT(10)      UNSIGNED NOT NULL             COMMENT 'マスターID',
+  `actress_id`  MEDIUMINT(8) UNSIGNED NOT NULL             COMMENT '女優ID',
+  `create_time` DATETIME              NOT NULL             COMMENT '作成日時',
+  `update_time` DATETIME              NOT NULL             COMMENT '更新日時',
+  `delete_time` DATETIME              DEFAULT NULL         COMMENT '削除日時',
   KEY `product_actress_idx_01` (`master_id`),
   KEY `product_actress_idx_02` (`actress_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '作品女優ID情報';
