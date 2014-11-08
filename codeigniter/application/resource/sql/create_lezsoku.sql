@@ -37,17 +37,17 @@ CREATE TABLE `product_actress` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '作品女優ID情報';
 
 CREATE TABLE `actress_list` (
-  `actress_id`   TINYINT(3)  UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '女優ID',
-  `actress_name` VARCHAR(32) NOT NULL                         COMMENT '女優名',
-  `create_time`  DATETIME    NOT NULL                         COMMENT '作成日時',
-  `update_time`  DATETIME    NOT NULL                         COMMENT '更新日時',
-  `delete_time`  DATETIME    DEFAULT NULL                     COMMENT '削除日時',
+  `actress_id`   MEDIUMINT(8) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '女優ID',
+  `actress_name` VARCHAR(32)  NOT NULL                         COMMENT '女優名',
+  `create_time`  DATETIME     NOT NULL                         COMMENT '作成日時',
+  `update_time`  DATETIME     NOT NULL                         COMMENT '更新日時',
+  `delete_time`  DATETIME     DEFAULT NULL                     COMMENT '削除日時',
   PRIMARY KEY (`actress_id`),
   KEY `actress_list_idx_01` (`actress_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '女優リスト';
 
 CREATE TABLE `label_list` (
-  `label_id`    TINYINT(3)  UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'レーベルID',
+  `label_id`    SMALLINT(3) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'レーベルID',
   `label_name`  VARCHAR(64) NOT NULL                         COMMENT 'レーベル名',
   `create_time` DATETIME    NOT NULL                         COMMENT '作成日時',
   `update_time` DATETIME    NOT NULL                         COMMENT '更新日時',
