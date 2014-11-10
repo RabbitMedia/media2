@@ -12,6 +12,7 @@ class LogicCrawler
 		$this->CI->load->model('product_master_model');
 		$this->CI->load->model('product_text_model');
 		$this->CI->load->model('product_actress_model');
+		$this->CI->load->model('product_thumbnail_model');
 		$this->CI->load->model('actress_list_model');
 		$this->CI->load->model('label_list_model');
 		$this->CI->load->model('ranking_model');
@@ -61,8 +62,11 @@ class LogicCrawler
 				$products[$cnt]['product_url']	= $value['商品URL'];
 				$products[$cnt]['label_name']	= $value['レーベル名'];
 				$products[$cnt]['text']			= $value['紹介文'];
-				$products[$cnt]['category']		= explode(",", $value['出演者']);
+				$products[$cnt]['actresses']	= explode(",", $value['出演者']);
 				$products[$cnt]['release_date']	= $value['公開開始日'];
+
+				// サブサムネイルを取得する
+				$products[$cnt]['sub_thumbnails'] = $this->_get_sub_thumbnails($value['商品ID']);
 
 				// 公開日でソートするための準備
 				$release_date[$cnt] = $value['公開開始日'];
@@ -152,7 +156,7 @@ class LogicCrawler
 			}
 
 			// actress_listから女優IDを取得
-			foreach ($product['category'] as $key => $actress_name)
+			foreach ($product['actresses'] as $key => $actress_name)
 			{
 				// 女優名が無ければ「その他」に統一
 				$actress_name = (!$actress_name) ? 'その他' : $actress_name;
@@ -206,6 +210,42 @@ class LogicCrawler
 			}
 			// insertに失敗している場合はrollback
 			if (!$product_actress_insert_result)
+			{
+				// トランザクション rollback
+				$this->CI->db->trans_rollback();
+
+				continue;
+			}
+
+			// product_thumbnailに登録する
+			$results = array();
+			foreach ($product['sub_thumbnails'] as $key => $thumbnail_url)
+			{
+				$data = array(
+					'master_id'		=> $master_id,
+					'thumbnail_url'	=> $thumbnail_url,
+					);
+				$results[] = $this->CI->product_thumbnail_model->insert($data);
+			}
+
+			// product_thumbnail登録結果フラグ
+			$product_thumbnail_insert_result = true;
+
+			// resultsが正常でなければinsertに失敗している
+			foreach ($results as $key => $result)
+			{
+				if (!$result)
+				{
+					// product_thumbnail登録結果フラグ
+					$product_thumbnail_insert_result = false;
+
+					// ログ
+					log_message('error', '[logiccrawler->set_products product_thumbnail_model->insert ERROR]');
+					log_message('error', print_r($data, true));
+				}
+			}
+			// insertに失敗している場合はrollback
+			if (!$product_thumbnail_insert_result)
 			{
 				// トランザクション rollback
 				$this->CI->db->trans_rollback();
@@ -339,6 +379,45 @@ class LogicCrawler
 			// トランザクション commit
 			$this->CI->db->trans_commit();
 		}
+	}
+
+	/**
+	 * サブサムネイルを取得する
+	 */
+	private function _get_sub_thumbnails($product_id)
+	{
+		// サブサムネイル配列
+		$sub_thumbnails = array();
+
+		// サムネイル連番は3桁もしくは4桁なのでまず3桁と仮定してURLを生成する
+		$product_id_url = str_replace('-', '/', $product_id);
+		$url_p = str_replace('%PRODUCT_ID%', $product_id_url, $this->app_ini['url']['sub_thumbnail']);
+		$url_n = str_replace('%NUM%', '001', $url_p);
+
+		// レスポンスを確認して連番の桁数を決定する
+		$response = @file_get_contents($url_n);
+		$prefix = ($response) ? '00' : '000';
+
+		// 最大枚画像数を20枚とする
+		for ($i=1; $i<=20; $i++)
+		{
+			// prefixが2桁になると'0'を1つ減らす必要がある
+			$re_prefix = ($i > 9) ? substr($prefix, 0, strlen($prefix) - 1) : $prefix;
+			$url = str_replace('%NUM%', $re_prefix.$i, $url_p);
+			$response = @file_get_contents($url);
+			// レスポンスが正常であればサブサムネイルを配列に入れる
+			if ($response)
+			{
+				$sub_thumbnails[] = $url;
+			}
+			// レスポンスが異常であれば処理を終了する
+			else
+			{
+				break;
+			}
+		}
+
+		return $sub_thumbnails;
 	}
 
 	/**

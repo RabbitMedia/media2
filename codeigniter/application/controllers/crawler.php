@@ -12,7 +12,7 @@ class Crawler extends CI_Controller
 		// 直アクセス禁止
 		if (!$this->input->is_cli_request())
 		{
-			exit;
+			// exit;
 		}
 
 		$this->load->library('LogicCrawler');
@@ -24,7 +24,7 @@ class Crawler extends CI_Controller
 	public function get_products()
 	{
 		// デバッグ(ブラウザ表示文字化け回避)用
-		// header("Content-Type: text/html; charset=UTF-8");
+		header("Content-Type: text/html; charset=UTF-8");
 
 		// 実行開始時刻をログに出力する
 		echo '開始: '.date("Y-m-d H:i:s")."\n";

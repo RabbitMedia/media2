@@ -1,14 +1,14 @@
 <?php
 
 /**
- * 作品本文情報モデル
+ * 作品サムネイル情報モデル
  */
-class Product_text_model extends CI_Model
+class Product_thumbnail_model extends CI_Model
 {
 	function __construct()
 	{
 		parent::__construct();
-		$this->table_name = 'product_text';
+		$this->table_name = 'product_thumbnail';
 	}
 
 	/**
@@ -17,7 +17,7 @@ class Product_text_model extends CI_Model
 	public function get_by_master_id($master_id)
 	{
 		// select
-		$this->db->select('text');
+		$this->db->select('thumbnail_url');
 		// where
 		$this->db->where('master_id', $master_id);
 
@@ -26,8 +26,7 @@ class Product_text_model extends CI_Model
 		// 該当するレコードがある場合は結果を配列で返す
 		if ($query->num_rows() > 0)
 		{
-			$row = $query->row_array();
-			return $row['text'];
+			return $query->result_array();
 		}
 		else
 		{

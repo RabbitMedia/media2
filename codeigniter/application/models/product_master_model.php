@@ -40,7 +40,7 @@ class Product_master_model extends CI_Model
 	public function get_by_master_id($master_id)
 	{
 		// select
-		$this->db->select('master_id, product_id, title, product_url, labal_id, create_time');
+		$this->db->select('master_id, product_id, title, product_url, label_id, create_time');
 		// where
 		$this->db->where('master_id', $master_id);
 

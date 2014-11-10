@@ -36,6 +36,17 @@ CREATE TABLE `product_actress` (
   KEY `product_actress_idx_02` (`actress_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '作品女優ID情報';
 
+CREATE TABLE `product_thumbnail` (
+  `id`            INT(10)      UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `master_id`     INT(10)      UNSIGNED NOT NULL                COMMENT 'マスターID',
+  `thumbnail_url` VARCHAR(128)          NOT NULL                COMMENT 'サムネイルURL',
+  `create_time`   DATETIME              NOT NULL                COMMENT '作成日時',
+  `update_time`   DATETIME              NOT NULL                COMMENT '更新日時',
+  `delete_time`   DATETIME              DEFAULT NULL            COMMENT '削除日時',
+  PRIMARY KEY (`id`),
+  KEY `product_thumbnail_idx_01` (`master_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '作品サムネイル情報';
+
 CREATE TABLE `actress_list` (
   `actress_id`   MEDIUMINT(8) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '女優ID',
   `actress_name` VARCHAR(32)  NOT NULL                         COMMENT '女優名',
