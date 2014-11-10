@@ -77,9 +77,9 @@
 							</a>
 						</li>
 						<li class="sub-menu">
-							<a href="/">
+							<a href="/lists">
 								<i class="fa fa-video-camera"></i>
-								<span>新着動画</span>
+								<span>すべてのレズ動画</span>
 							</a>
 						</li>
 						<li class="sub-menu">

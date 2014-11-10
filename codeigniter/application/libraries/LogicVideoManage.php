@@ -64,6 +64,33 @@ class LogicVideoManage
 	}
 
 	/**
+	 * マスターID範囲指定で作品を取得する(新着順)
+	 */
+	public function get_by_range($from_master_id, $to_master_id)
+	{
+		// 作品配列
+		$products = array();
+
+		// 作品マスター情報を取得する
+		$products = $this->CI->product_master_model->get_by_master_id_range($from_master_id, $to_master_id);
+
+		// 作品がなければそのまま返す
+		if (!$products)
+		{
+			return $products;
+		}
+
+		// 作品マスター情報をもとに詳細情報を取得する
+		foreach ($products as $id => $product)
+		{
+			// 日付の形式を変更する
+			$products[$id]['create_time'] = date('Y年n月j日', strtotime($product['create_time']));
+		}
+
+		return array_reverse($products);
+	}
+
+	/**
 	 * 作品詳細を取得する
 	 */
 	public function get_details($master_id)
@@ -199,5 +226,16 @@ class LogicVideoManage
 		}
 
 		return array_reverse($videos);
+	}
+
+	/**
+	 * 全作品数を取得する
+	 */
+	public function get_total_count()
+	{
+		// 全作品数を取得する
+		$total_count = $this->CI->product_master_model->get_total_count();
+
+		return $total_count;
 	}
 }

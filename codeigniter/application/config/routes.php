@@ -42,11 +42,14 @@ $route['default_controller'] = "top";
 // 404ページカスタマイズ
 $route['404_override'] = 'error/error_404';
 
-// 動画ページ
-$route['video/(:num)'] = "video/index/$1";
+// 作品ページ
+$route['product/(:num)'] = "product/index/$1";
 
 // トップページ
 $route['(:num)'] = "top/index/$1";
+
+// すべての動画ページ
+$route['lists/(:num)'] = "lists/index/$1";
 
 // 各種カテゴリーページ
 $route['category/(:num)'] = "category/index/$1/";

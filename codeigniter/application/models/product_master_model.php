@@ -58,6 +58,30 @@ class Product_master_model extends CI_Model
 	}
 
 	/**
+	 * マスターIDによるレコード取得(範囲)
+	 */
+	public function get_by_master_id_range($from_master_id, $to_master_id)
+	{
+		// select
+		$this->db->select('master_id, product_id, title, product_url, label_id, create_time');
+		// where
+		$this->db->where('master_id >=', $from_master_id);
+		$this->db->where('master_id <=', $to_master_id);
+
+		// クエリの実行
+		$query = $this->db->get($this->table_name);
+		// 該当するレコードがある場合は結果を配列で返す
+		if ($query->num_rows() > 0)
+		{
+			return $query->result_array();
+		}
+		else
+		{
+			return null;
+		}
+	}
+
+	/**
 	 * 作品IDによるレコード取得
 	 */
 	public function get_by_product_id($product_id)
@@ -97,6 +121,28 @@ class Product_master_model extends CI_Model
 		if ($query->num_rows() > 0)
 		{
 			return $query->result_array();
+		}
+		else
+		{
+			return null;
+		}
+	}
+
+	/**
+	 * 全レコード件数取得
+	 */
+	public function get_total_count()
+	{
+		// select
+		$this->db->select('count(master_id)');
+
+		// クエリの実行
+		$query = $this->db->get($this->table_name);
+		// 該当するレコードがある場合は結果を配列で返す
+		if ($query->num_rows() > 0)
+		{
+			$row = $query->row_array();
+			return $row['count(master_id)'];
 		}
 		else
 		{
