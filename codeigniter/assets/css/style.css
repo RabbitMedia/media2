@@ -187,13 +187,21 @@ hr {
 	margin-top: 25px;
 }
 
+.mt-h {
+    margin-top: 12px;
+}
+
 .mb {
 	margin-bottom: 25px;
 }
 
 .ml {
 	margin-left: 5px;
-	}
+}
+
+.fw {
+    font-weight: 900;
+}
 
 .no-padding {
 	padding: 0 !important;
@@ -1641,7 +1649,7 @@ PANELS CONFIGURATIONS
 /* showcase background */
 .showback {
 	background: #ffffff;
-	padding: 15px;
+	padding: 0px 15px 15px 15px;
 	margin-bottom: 15px;
 	box-shadow: 0px 3px 2px #aab2bd;
 }

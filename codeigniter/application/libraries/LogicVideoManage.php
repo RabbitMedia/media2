@@ -12,8 +12,10 @@ class LogicVideoManage
 		$this->CI->load->model('product_master_model');
 		$this->CI->load->model('product_text_model');
 		$this->CI->load->model('product_actress_model');
+		$this->CI->load->model('product_thumbnail_model');
 		$this->CI->load->model('actress_list_model');
 		$this->CI->load->model('label_list_model');
+		$this->app_ini = parse_ini_file(APPPATH.'resource/ini/app.ini', true);
 	}
 
 	/**
@@ -83,6 +85,10 @@ class LogicVideoManage
 		// 作品マスター情報をもとに詳細情報を取得する
 		foreach ($products as $id => $product)
 		{
+			// メインサムネイルURLをセットする
+			$product_id_url = str_replace('-', '/', $product['product_id']);
+			$products[$id]['main_thumbnail_url'] = str_replace('%PRODUCT_ID%', $product_id_url, $this->app_ini['url']['main_thumbnail']);
+
 			// 日付の形式を変更する
 			$products[$id]['create_time'] = date('Y年n月j日', strtotime($product['create_time']));
 		}
@@ -95,67 +101,67 @@ class LogicVideoManage
 	 */
 	public function get_details($master_id)
 	{
-		// 動画配列
-		$videos = array();
-
-		// カテゴリーcsvロード
-		$category_csv = AppCsvLoader::load('category.csv');
+		// 作品配列
+		$products = array();
 
 		// 動画マスター情報を取得する
-		$videos = $this->CI->video_master_model->get_by_id($master_id);
+		$products = $this->CI->product_master_model->get_by_master_id($master_id);
 
 		// 動画がなければそのまま返す
-		if (!$videos)
+		if (!$products)
 		{
-			return $videos;
+			return $products;
 		}
 
-		// 動画マスター情報をもとに詳細情報を取得する
-		foreach ($videos as $v_key => $v_value)
+		// 作品マスター情報をもとに詳細情報を取得する
+		foreach ($products as $p_key => $value)
 		{
 			// 各種情報を入れ直す
-			$video['master_id'] = $v_value['master_id'];
-			$video['title'] = $v_value['title'];
-			$video['thumbnail_url'] = $v_value['thumbnail_url'];
-			$video['duration'] = $v_value['duration'];
+			$product['master_id'] = $value['master_id'];
+			$product['product_id'] = $value['product_id'];
+			$product['title'] = $value['title'];
+			$product['label_id'] = $value['label_id'];
 
-			// カテゴリーを取得する
-			$results = $this->CI->video_category_model->get_by_id($master_id);
-			if (!empty($results))
+			// アフィリエイトリンクをセットする
+			if (preg_match('/(?<=duga\.jp\/).*/', $value['product_url'], $matches))
 			{
-				foreach ($results as $r_key => $r_value)
+				$path = $matches[0];
+				$search = array('%PATH%', '%AGENT_ID%', '%BANNER_ID%');
+				$replace = array($path, $this->app_ini['common']['agent_id'], $this->app_ini['common']['banner_id']);
+				$product['affiliate_link'] = str_replace($search, $replace, $this->app_ini['url']['affiliate_link']);
+			}
+
+			// 作品本文を取得する
+			$product['text'] = $this->CI->product_text_model->get_by_master_id($master_id);
+
+			// 女優IDを取得する
+			$product_actresses = $this->CI->product_actress_model->get_by_master_id($master_id);
+			if (!empty($product_actresses))
+			{
+				foreach ($product_actresses as $pa_key => $product_actress)
 				{
-					// カテゴリーcsvからカテゴリー名を取得してセット
-					foreach ($category_csv as $c_key => $c_value)
+					// 女優名を取得する
+					$product_actress['actress_name'] = $this->CI->actress_list_model->get_by_actress_id($product_actress['actress_id']);
+					// 女優IDと女優名をセットする
+					if ($product_actress['actress_name'])
 					{
-						if ($c_value['id'] == $r_value['category'])
-						{
-							$video['category'][$r_key]['id'] = $r_value['category'];
-							$video['category'][$r_key]['name'] = $c_value['name'];
-						}
+						$product['actress'][$pa_key]['id'] = $product_actress['actress_id'];
+						$product['actress'][$pa_key]['name'] = $product_actress['actress_name'];
 					}
 				}
 			}
 
-			// 動画IDを取得する
-			$results = $this->CI->video_id_model->get_by_id($master_id);
-			if (!empty($results))
-			{
-				foreach ($results as $r_key => $r_value)
-				{
-					$video['type'][$r_key] = $r_value['type'];
-					$video['video_url_id'][$r_key] = $r_value['video_url_id'];
+			// レーベル名を取得する
+			$product['label_name'] = $this->CI->label_list_model->get_by_label_id($value['label_id']);
 
-					// 埋め込みタグを取得する
-					$video['embed_tag'][$r_key] = $this->CI->logicembed->get($r_value['type'], $r_value['video_url_id']);
-				}
-			}
+			// サブサムネイルを取得する
+			$product['sub_thumbnail_url'] = $this->CI->product_thumbnail_model->get_by_master_id($master_id);
 
 			// 日付の形式を変更する
-			$video['create_time'] = date('Y年n月j日', strtotime($v_value['create_time']));
+			$product['create_time'] = date('Y年n月j日', strtotime($value['create_time']));
 		}
 
-		return $video;
+		return $product;
 	}
 
 	/**
