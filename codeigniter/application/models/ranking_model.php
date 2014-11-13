@@ -17,7 +17,7 @@ class Ranking_model extends CI_Model
 	public function get_by_ranking_id($ranking_id)
 	{
 		// select
-		$this->db->select('product_id, prev_rank');
+		$this->db->select('master_id, prev_rank');
 		// where
 		$this->db->where('ranking_id', $ranking_id);
 

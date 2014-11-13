@@ -70,7 +70,7 @@ CREATE TABLE `label_list` (
 CREATE TABLE `ranking` (
   `id`          INT(10)      UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `ranking_id`  MEDIUMINT(8) UNSIGNED NOT NULL                COMMENT 'ランキングID',
-  `product_id`  VARCHAR(128)          NOT NULL                COMMENT '作品ID',
+  `master_id`   INT(10)      UNSIGNED NOT NULL                COMMENT 'マスターID',
   `prev_rank`   VARCHAR(16)           NOT NULL                COMMENT '前回のランク',
   `create_time` DATETIME              NOT NULL                COMMENT '作成日時',
   `update_time` DATETIME              NOT NULL                COMMENT '更新日時',

@@ -96,7 +96,8 @@ class Product_master_model extends CI_Model
 		// 該当するレコードがある場合は結果を配列で返す
 		if ($query->num_rows() > 0)
 		{
-			return $query->result_array();
+			$row = $query->row_array();
+			return $row['master_id'];
 		}
 		else
 		{

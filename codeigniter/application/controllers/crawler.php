@@ -12,7 +12,7 @@ class Crawler extends CI_Controller
 		// 直アクセス禁止
 		if (!$this->input->is_cli_request())
 		{
-			// exit;
+			exit;
 		}
 
 		$this->load->library('LogicCrawler');

@@ -52,9 +52,9 @@ class LogicCrawler
 		foreach ($product_csv as $key => $value)
 		{
 			// 作品IDによるレコード取得
-			$result = $this->CI->product_master_model->get_by_product_id($value['商品ID']);
+			$master_id = $this->CI->product_master_model->get_by_product_id($value['商品ID']);
 			// 作品IDが登録されていない作品（新作）を対象とする
-			if (!$result)
+			if (!$master_id)
 			{
 				// 新作情報配列に入れていく
 				$products[$cnt]['product_id']	= $value['商品ID'];
@@ -290,14 +290,14 @@ class LogicCrawler
 				if (preg_match('/(?<=pid=").*?(?=")/', $element, $matches))
 				{
 					// 作品IDによるレコード取得
-					$result = $this->CI->product_master_model->get_by_product_id($matches[0]);
+					$master_id = $this->CI->product_master_model->get_by_product_id($matches[0]);
 					// 作品IDが登録されていない場合はランキング対象から外す
-					if (!$result)
+					if (!$master_id)
 					{
 						continue;
 					}
 
-					$products[$cnt]['product_id'] = $matches[0];
+					$products[$cnt]['master_id'] = $master_id;
 				}
 
 				// 前週のランキングを抽出する
@@ -345,7 +345,7 @@ class LogicCrawler
 		{
 			$data = array(
 				'ranking_id'	=> $ranking_id,
-				'product_id'	=> $product['product_id'],
+				'master_id'		=> $product['master_id'],
 				'prev_rank'		=> $product['prev_rank'],
 				);
 			$results[] = $this->CI->ranking_model->insert($data);
