@@ -27,11 +27,11 @@ CREATE TABLE `product_text` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '作品本文情報';
 
 CREATE TABLE `product_actress` (
-  `master_id`   INT(10)      UNSIGNED NOT NULL             COMMENT 'マスターID',
-  `actress_id`  MEDIUMINT(8) UNSIGNED NOT NULL             COMMENT '女優ID',
-  `create_time` DATETIME              NOT NULL             COMMENT '作成日時',
-  `update_time` DATETIME              NOT NULL             COMMENT '更新日時',
-  `delete_time` DATETIME              DEFAULT NULL         COMMENT '削除日時',
+  `master_id`   INT(10)      UNSIGNED NOT NULL     COMMENT 'マスターID',
+  `actress_id`  MEDIUMINT(8) UNSIGNED NOT NULL     COMMENT '女優ID',
+  `create_time` DATETIME              NOT NULL     COMMENT '作成日時',
+  `update_time` DATETIME              NOT NULL     COMMENT '更新日時',
+  `delete_time` DATETIME              DEFAULT NULL COMMENT '削除日時',
   KEY `product_actress_idx_01` (`master_id`),
   KEY `product_actress_idx_02` (`actress_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '作品女優ID情報';
@@ -46,6 +46,16 @@ CREATE TABLE `product_thumbnail` (
   PRIMARY KEY (`id`),
   KEY `product_thumbnail_idx_01` (`master_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '作品サムネイル情報';
+
+CREATE TABLE `product_category` (
+  `master_id`    INT(10)    UNSIGNED NOT NULL     COMMENT 'マスターID',
+  `category_id`  TINYINT(3) UNSIGNED NOT NULL     COMMENT 'カテゴリーID',
+  `create_time`  DATETIME            NOT NULL     COMMENT '作成日時',
+  `update_time`  DATETIME            NOT NULL     COMMENT '更新日時',
+  `delete_time`  DATETIME            DEFAULT NULL COMMENT '削除日時',
+  KEY `product_category_idx_01` (`master_id`),
+  KEY `product_category_idx_02` (`category_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '作品カテゴリー情報';
 
 CREATE TABLE `actress_list` (
   `actress_id`   MEDIUMINT(8) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '女優ID',

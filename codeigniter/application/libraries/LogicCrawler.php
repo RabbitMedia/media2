@@ -17,6 +17,7 @@ class LogicCrawler
 		$this->CI->load->model('label_list_model');
 		$this->CI->load->model('ranking_model');
 		$this->CI->load->model('ranking_control_model');
+		$this->CI->load->model('product_category_model');
 		$this->app_ini = parse_ini_file(APPPATH.'resource/ini/app.ini', true);
 	}
 
@@ -382,93 +383,116 @@ class LogicCrawler
 	}
 
 	/**
-	 * サブサムネイルを取得する
+	 * カテゴリー情報を取得する
 	 */
-	private function _get_sub_thumbnails($product_id)
+	public function get_category()
 	{
-		// サブサムネイル配列
-		$sub_thumbnails = array();
+		// カテゴリー配列
+		$products = array();
 
-		// サムネイル連番は3桁もしくは4桁なのでまず3桁と仮定してURLを生成する
-		$product_id_url = str_replace('-', '/', $product_id);
-		$url_p = str_replace('%PRODUCT_ID%', $product_id_url, $this->app_ini['url']['sub_thumbnail']);
-		$url_n = str_replace('%NUM%', '001', $url_p);
-
-		// レスポンスを確認して連番の桁数を決定する
-		$response = @file_get_contents($url_n);
-		$prefix = ($response) ? '00' : '000';
-
-		// 最大枚画像数を20枚とする
-		for ($i=1; $i<=20; $i++)
+		// カテゴリーを指定する
+		foreach ($this->app_ini['category']['name'] as $key => $category_name)
 		{
-			// prefixが2桁になると'0'を1つ減らす必要がある
-			$re_prefix = ($i > 9) ? substr($prefix, 0, strlen($prefix) - 1) : $prefix;
-			$url = str_replace('%NUM%', $re_prefix.$i, $url_p);
-			$response = @file_get_contents($url);
-			// レスポンスが正常であればサブサムネイルを配列に入れる
-			if ($response)
-			{
-				$sub_thumbnails[] = $url;
-			}
-			// レスポンスが異常であれば処理を終了する
-			else
-			{
-				break;
+			// カテゴリーID
+			$category_id = $key + 1;
+
+			// ページ数を上限100ページとする
+			for ($page=0; $page<100; $page++)
+			{ 
+				// 指定カテゴリーページURLからhtmlを取得する
+				$search = array('%CATEGORY_NAME%', '%PAGE%');
+				$replace = array(urlencode(mb_convert_encoding($category_name, 'SJIS', 'ASCII,JIS,UTF-8,EUC-JP,SJIS')), $page);
+				$html = file_get_contents(str_replace($search, $replace, $this->app_ini['url']['category']));
+
+				// ページの取得に失敗したらfalseを返す
+				if (!$html)
+				{
+					return false;
+				}
+
+				// 改行コードを削除する
+				$html = preg_replace('/(\n|\r)/', '', $html);
+
+				// ランキング情報を正規表現で抽出する
+				if (preg_match_all('/(?<=contentslist).*?(?=scoped)/', $html, $elements))
+				{
+					foreach ($elements[0] as $element)
+					{
+						// 作品IDを抽出する
+						$product_id = null;
+						if (preg_match('/(?<=pid=").*?(?=")/', $element, $matches))
+						{
+							// 作品IDによるレコード取得
+							$master_id = $this->CI->product_master_model->get_by_product_id($matches[0]);
+							// 作品IDが登録されていない場合は対象から外す
+							if (!$master_id)
+							{
+								continue;
+							}
+
+							// マスターIDとカテゴリーIDによってカテゴリーを取得し
+							$category_exist = $this->CI->product_category_model->check_category_exist($master_id, $category_id);
+							// カテゴリーが登録されている場合は対象から外す
+							if ($category_exist)
+							{
+								continue;
+							}
+
+							$products[] = array(
+								'master_id'		=> $master_id,
+								'category_id'	=> $category_id,
+								);
+						}
+					}
+				}
+				else
+				{
+					break;
+				}
 			}
 		}
 
-		return $sub_thumbnails;
+		return $products;
 	}
 
 	/**
-	 * クローラーが集めてきた動画を取得する
+	 * カテゴリー情報を登録する
 	 */
-	public function get_crawled_videos()
+	public function set_category($products)
 	{
-		// ロード
-		$this->CI->load->model('crawler_video_master_model');
-		$this->CI->load->model('crawler_video_id_model');
-		$this->CI->load->model('crawler_video_title_model');
-		$media = parse_ini_file(APPPATH.'resource/ini/media.ini', true);
+		// トランザクション begin
+		$this->CI->db->trans_begin();
 
-		// 動画配列
-		$videos = array();
-
-		// 動画マスター情報を取得する
-		$videos = $this->CI->crawler_video_master_model->get();
-		
-		// 動画がなければ何もしない
-		if (!$videos)
+		// insert_batch用の配列を生成する
+		$data = array();
+		$now = date('Y-m-d H:i:s');
+		foreach ($products as $key => $product)
 		{
-			return $videos;
+			$data[] = array(
+				'master_id'		=> $product['master_id'],
+				'category_id'	=> $product['category_id'],
+				'create_time'	=> $now,
+				'update_time'	=> $now,
+				);
 		}
 
-		// 動画マスター情報をもとに詳細情報を取得する
-		foreach ($videos as $id => $video)
+		// product_categoryに登録する
+		$result = $this->CI->product_category_model->insert_batch($data);
+
+		// resultが正常でなければinsertに失敗している
+		if (!$result)
 		{
-			// 動画タイプと動画IDを取得する
-			$results = $this->CI->crawler_video_id_model->get($video['crawler_master_id']);
-			if (!empty($results))
-			{
-				foreach ($results as $key => $value)
-				{
-					$videos[$id]['type'][$key] = $value['type'];
-					$videos[$id]['video_url_id'][$key] = $value['video_url_id'];
-				}
-			}
+			// トランザクション rollback
+			$this->CI->db->trans_rollback();
 
-			// 動画掲載メディアと動画タイトルを取得する
-			$results = $this->CI->crawler_video_title_model->get($video['crawler_master_id']);
-			if (!empty($results))
-			{
-				foreach ($results as $key => $value)
-				{
-					$videos[$id]['media'][$key] = $media[$value['media']]['name'];
-					$videos[$id]['title'][$key] = $value['title'];
-				}
-			}
+			// ログ
+			log_message('error', '[logiccrawler->set_category product_category_model->insert_batch ERROR]');
+			log_message('error', print_r($data, true));
 		}
-
-		return $videos;
+		else
+		{
+			// トランザクション commit
+			$this->CI->db->trans_commit();
+		}
 	}
 }
