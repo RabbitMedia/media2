@@ -20,19 +20,19 @@
 		<meta name="twitter:card" content="summary">
 		<meta name="twitter:site" content="@sekusoku">
 		<?php if ($page <= 1): ?>
-			<link rel="canonical" href="http://sekusoku.com/lists" />
+			<link rel="canonical" href="http://sekusoku.com/ranking" />
 		<?php else: ?>
-			<link rel="canonical" href="http://sekusoku.com/lists/<?=$page?>" />
+			<link rel="canonical" href="http://sekusoku.com/ranking/<?=$page?>" />
 		<?php endif; ?>
 		<?php if ($page > 1): ?>
 			<?php if ($page == 2): ?>
-				<link rel="prev" href="http://sekusoku.com/lists" />
+				<link rel="prev" href="http://sekusoku.com/ranking" />
 			<?php else: ?>
-				<link rel="prev" href="http://sekusoku.com/lists/<?=$page-1?>" />
+				<link rel="prev" href="http://sekusoku.com/ranking/<?=$page-1?>" />
 			<?php endif; ?>
 		<?php endif; ?>
 		<?php if ($page_next_flag): ?>
-			<link rel="next" href="http://sekusoku.com/lists/<?=$page+1?>" />
+			<link rel="next" href="http://sekusoku.com/ranking/<?=$page+1?>" />
 		<?php endif; ?>
 		<?php if ($page <= 1): ?>
 			<title>タイトル</title>
@@ -99,13 +99,13 @@
 							</a>
 						</li>
 						<li class="sub-menu">
-							<a class="active">
+							<a href="/lists">
 								<i class="fa fa-video-camera"></i>
 								<span>すべてのレズ動画</span>
 							</a>
 						</li>
 						<li class="sub-menu">
-							<a href="/ranking">
+							<a class="active">
 								<i class="fa fa-sort-amount-asc"></i>
 								<span>ランキング</span>
 							</a>
@@ -152,20 +152,23 @@
 											<a href="/" itemprop="url"><span itemprop="title">ホーム</span></a>
 										</li>
 										<li itemscope itemtype="http://data-vocabulary.org/Breadcrumb" class="active">
-											<span itemprop="title">すべてのレズ動画 (<?=$total_count?>件)</span>
+											<span itemprop="title">ランキング</span>
 										</li>
 									</ol>
 								</div>
 
 							</div>
 
-							<h1><i class="fa fa-chevron-circle-right"></i> すべてのレズ動画 (<?=$total_count?>件)</h1>
+							<h1><i class="fa fa-chevron-circle-right"></i> ランキング (過去7日間集計)</h1>
 							
 							<div class="row mt">
 
 								<?php foreach ($products as $id => $product): ?>
 									<div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 mb">
 										<div class="white-panel pn">
+											<div class="white-header">
+												<p><?=$ranks[$id]?>位 (前週<?=$product['prev_rank']?>位)</p>
+											</div>
 											<div class="text-center">
 												<a href="/product/<?=$product['master_id']?>"><img src="<?=$product['main_thumbnail_url']?>" alt="<?=$product['title']?>" class="img-responsive" width="240" height="180"></a>
 											</div>

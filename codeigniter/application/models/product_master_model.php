@@ -82,6 +82,29 @@ class Product_master_model extends CI_Model
 	}
 
 	/**
+	 * マスターIDによるレコード取得(IN指定)
+	 */
+	public function get_by_master_id_array($master_id_array)
+	{
+		// select
+		$this->db->select('master_id, product_id, title, product_url, label_id, create_time');
+		// where
+		$this->db->where_in('master_id', $master_id_array);
+
+		// クエリの実行
+		$query = $this->db->get($this->table_name);
+		// 該当するレコードがある場合は結果を配列で返す
+		if ($query->num_rows() > 0)
+		{
+			return $query->result_array();
+		}
+		else
+		{
+			return null;
+		}
+	}
+
+	/**
 	 * 作品IDによるレコード取得
 	 */
 	public function get_by_product_id($product_id)

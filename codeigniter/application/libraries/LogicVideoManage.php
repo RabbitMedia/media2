@@ -97,6 +97,37 @@ class LogicVideoManage
 	}
 
 	/**
+	 * 複数マスターIDを指定して作品を取得する
+	 */
+	public function get_by_array($master_id_array)
+	{
+		// 作品配列
+		$products = array();
+
+		// 作品マスター情報を取得する
+		$products = $this->CI->product_master_model->get_by_master_id_array($master_id_array);
+
+		// 作品がなければそのまま返す
+		if (!$products)
+		{
+			return $products;
+		}
+
+		// 作品マスター情報をもとに詳細情報を取得する
+		foreach ($products as $id => $product)
+		{
+			// メインサムネイルURLをセットする
+			$product_id_url = str_replace('-', '/', $product['product_id']);
+			$products[$id]['main_thumbnail_url'] = str_replace('%PRODUCT_ID%', $product_id_url, $this->app_ini['url']['main_thumbnail']);
+
+			// 日付の形式を変更する
+			$products[$id]['create_time'] = date('Y年n月j日', strtotime($product['create_time']));
+		}
+
+		return $products;
+	}
+
+	/**
 	 * 作品詳細を取得する
 	 */
 	public function get_details($master_id)

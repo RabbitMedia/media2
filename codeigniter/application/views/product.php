@@ -132,14 +132,12 @@
 											<a href="/" itemprop="url"><span itemprop="title">ホーム</span></a>
 										</li>
 										<li itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
-											<?php if ($referer_lists_flag): ?>
+											<?php if ($referer_flag): ?>
 												<?php if ($referer_lists_id == 1): ?>
 													<a href="/lists" itemprop="url"><span itemprop="title">すべてのレズ動画</span></a>
-													<?php else: ?>
+												<?php else: ?>
 													<a href="/lists/<?=$referer_lists_id?>" itemprop="url"><span itemprop="title">すべてのレズ動画</span></a>
-													<?php endif; ?>
-											<?php else: ?>
-
+												<?php endif; ?>
 											<?php endif; ?>
 										</li>
 										<li itemscope itemtype="http://data-vocabulary.org/Breadcrumb" class="active">

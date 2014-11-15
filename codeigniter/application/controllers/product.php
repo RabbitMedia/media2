@@ -33,11 +33,11 @@ class Product extends CI_Controller
 
 		// リファラーをパンくずに使用する
 		$referer = $this->input->server('HTTP_REFERER');
+		$data['referer_flag'] = true;
 
 		// すべての動画ページからの遷移の場合
 		if (strpos($referer, site_url('lists')) !== false)
 		{
-			$data['referer_lists_flag'] = true;
 			$data['referer_lists_id'] = '1';
 			if (preg_match('/(?<=lists\/)\d+/', $referer, $matches))
 			{
@@ -46,7 +46,6 @@ class Product extends CI_Controller
 		}
 		elseif (strpos($referer, site_url('category')) !== false)
 		{
-			$data['referer_flag'] = true;
 			if (preg_match('/(?<=category\/)\d+/', $referer, $matches))
 			{
 				$data['referer_category_id'] = $matches[0];

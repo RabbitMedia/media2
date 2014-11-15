@@ -1,33 +1,34 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 /**
- * すべての動画ページコントローラ
+ * ランキングページコントローラ
  */
-class Lists extends CI_Controller
+class Ranking extends CI_Controller
 {
 	function __construct()
 	{
 		parent::__construct();
 
 		// ロード
-		$this->load->Library('LogicVideoManage');
+		$this->load->Library('LogicRanking');
 		$this->load->Library('pagination');
 	}
 
 	/**
-	 * すべての動画ページ
+	 * トップページ
 	 */
 	public function index($page = 1)
 	{
 		$data = array();
 
-		// 全作品数を取得する
-		$total_count = $this->logicvideomanage->get_total_count();
-		$data['total_count'] = $total_count;
+		// ランキングを取得する(最新)
+		$products = $this->logicranking->get();
+
+		$data['products'] = $products;
 
 		// ページネーション
-		$config['base_url'] = '/lists';
-		$config['total_rows'] = $total_count;
+		$config['base_url'] = '/ranking';
+		$config['total_rows'] = count($products);
 		$config['per_page'] = 20;
 		$config['use_page_numbers'] = true;
 		$config['uri_segment'] = 2;
@@ -49,22 +50,23 @@ class Lists extends CI_Controller
 		$this->pagination->initialize($config);
 		$data['pagination'] = $this->pagination->create_links();
 
-		// 取得すべきマスターIDの範囲
-		$from_master_id = $total_count - ($page * $config['per_page']) + 1;
-		$to_master_id = $from_master_id + $config['per_page'] - 1;
-
-		// 該当ページに表示する作品を取得する
-		$data['products'] = $this->logicvideomanage->get_by_range($from_master_id, $to_master_id);
-
-		// 作品が存在しない場合は404
+		// 該当ページに表示する作品を取得する(mysqlのlimitとphpのarray_sliceではどっちが速いかは未検証)
+		$data['products'] = array_slice($products, (($page - 1) * $config['per_page']), $config['per_page']);
+		// 動画が存在しない場合は404
 		if (!$data['products'])
 		{
 			show_404();
 		}
 
+		// 表示するランク
+		foreach ($data['products'] as $key => $value)
+		{
+			$data['ranks'][] = ($page - 1) * $config['per_page'] + ($key + 1);
+		}
+
 		// SEO link rel="prev", "next" セット用
 		$data['page'] = $page;
-		if ($from_master_id > 1)
+		if (isset($products[($page * $config['per_page'])]))
 		{
 			$data['page_next_flag'] = true;
 		}
@@ -73,6 +75,6 @@ class Lists extends CI_Controller
 			$data['page_next_flag'] = false;
 		}
 
-		$this->load->view('lists', $data);
+		$this->load->view('ranking', $data);
 	}
 }

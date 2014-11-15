@@ -83,7 +83,7 @@
 							</a>
 						</li>
 						<li class="sub-menu">
-							<a href="/">
+							<a href="/ranking">
 								<i class="fa fa-sort-amount-asc"></i>
 								<span>ランキング</span>
 							</a>

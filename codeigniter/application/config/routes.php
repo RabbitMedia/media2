@@ -51,6 +51,9 @@ $route['(:num)'] = "top/index/$1";
 // すべての動画ページ
 $route['lists/(:num)'] = "lists/index/$1";
 
+// ランキングページ
+$route['ranking/(:num)'] = "ranking/index/$1";
+
 // 各種カテゴリーページ
 $route['category/(:num)'] = "category/index/$1/";
 $route['category/(:num)/(:num)'] = "category/index/$1/$2";
