@@ -5,11 +5,7 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="copyright" content="&copy;セックル速報" />
-		<?php if ($page <= 1): ?>
-			<meta name="description" content="セックル速報は、無料でセックス動画を楽しめるセックス動画まとめサイトです。" />
-		<?php else: ?>
-			<meta name="description" content="セックル速報は、無料でセックス動画を楽しめるセックス動画まとめサイトです。 (<?=$page?>ページ目)" />
-		<?php endif; ?>
+		<meta name="description" content="セックル速報は、無料でセックス動画を楽しめるセックス動画まとめサイトです。" />
 		<meta name="keywords" content="セックス動画,セックル速報" />
 		<meta property="og:title" content="セックル速報 - 無料セックス動画まとめ" />
 		<meta property="og:type" content="website" />
@@ -19,26 +15,8 @@
 		<meta property="og:site_name" content="セックル速報 - 無料セックス動画まとめ" />
 		<meta name="twitter:card" content="summary">
 		<meta name="twitter:site" content="@sekusoku">
-		<?php if ($page <= 1): ?>
-			<link rel="canonical" href="http://sekusoku.com/category/<?=$current_category['id']?>" />
-		<?php else: ?>
-			<link rel="canonical" href="http://sekusoku.com/category/<?=$current_category['id']?>/<?=$page?>" />
-		<?php endif; ?>
-		<?php if ($page > 1): ?>
-			<?php if ($page == 2): ?>
-				<link rel="prev" href="http://sekusoku.com/category/<?=$current_category['id']?>" />
-			<?php else: ?>
-				<link rel="prev" href="http://sekusoku.com/category/<?=$current_category['id']?>/<?=$page-1?>" />
-			<?php endif; ?>
-		<?php endif; ?>
-		<?php if ($page_next_flag): ?>
-			<link rel="next" href="http://sekusoku.com/category/<?=$current_category['id']?>/<?=$page+1?>" />
-		<?php endif; ?>
-		<?php if ($page <= 1): ?>
-			<title>タイトル</title>
-		<?php else: ?>
-			<title>タイトル (<?=$page?>ページ目)</title>
-		<?php endif; ?>
+		<link rel="canonical" href="http://sekusoku.com/category" />
+		<title>タイトル</title>
 		<link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico" />
 		<link rel="icon" type="image/png" href="/images/favicon.png" />
 		<link rel="apple-touch-icon" href="/images/apple-touch-icon.png" />
@@ -139,7 +117,7 @@
 			</aside>
 
 			<section id="main-content">
-				<section class="wrapper">
+				<section class="wrapper site-min-height">
 
 					<div class="row">
 						<div class="col-lg-12 main-chart">
@@ -151,49 +129,23 @@
 										<li itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
 											<a href="/" itemprop="url"><span itemprop="title">ホーム</span></a>
 										</li>
-										<li itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
-											<a href="/category" itemprop="url"><span itemprop="title">カテゴリーで探す</span></a>
-										</li>
 										<li itemscope itemtype="http://data-vocabulary.org/Breadcrumb" class="active">
-											<span itemprop="title"><?=$current_category['name']?>のレズ動画 (<?=$total_count?>件)</span>
+											<span itemprop="title">カテゴリーで探す</span>
 										</li>
 									</ol>
 								</div>
 
 							</div>
 
-							<h1><i class="fa fa-chevron-circle-right"></i> <?=$current_category['name']?>のレズ動画 (<?=$total_count?>件)</h1>
+							<h1><i class="fa fa-chevron-circle-right"></i> カテゴリーで探す</h1>
 							
 							<div class="row mt">
 
-								<?php foreach ($products as $id => $product): ?>
-									<div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 mb">
-										<div class="white-panel pn">
-											<div class="text-center">
-												<a href="/product/<?=$product['master_id']?>"><img src="<?=$product['main_thumbnail_url']?>" alt="<?=$product['title']?>" class="img-responsive" width="240" height="180"></a>
-											</div>
-											<div class="text-left">
-												<h2><a href="/product/<?=$product['master_id']?>"><?=$product['title']?></a></h2>
-												<p><?=$product['create_time']?></p>
-											</div>
-										</div>
+								<?php foreach ($categories as $category): ?>
+									<div class="col-lg-2 col-md-3 col-sm-4 col-xs-6 mb text-center">
+										<a href="/category/<?=$category['id']?>"><span class="fw"><?=$category['name']?></span></a>
 									</div>
 								<?php endforeach; ?>
-
-							</div>
-
-							<div class="row">
-
-								<div class="col-xs-12 hidden-xs text-center">
-									<ul class="pagination pagination-lg">
-										<?=$pagination?>
-									</ul>
-								</div>
-								<div class="col-xs-12 visible-xs text-center">
-									<ul class="pagination">
-										<?=$pagination?>
-									</ul>
-								</div>
 
 							</div>
 
@@ -223,34 +175,5 @@
 		<script src="/js/jquery.nicescroll.js"></script>
 		<!-- Vertical Accordion Menu -->
 		<script class="include" src="/js/jquery.dcjqaccordion.2.7.js"></script>
-		<!-- EqualHeight.js -->
-		<script src="/js/jquery.equalheight.min.js"></script>
-		<!-- EqualHeight.js -->
-		<script>
-			$(function() {
-				var equalHeight = $('.white-panel h2').equalHeight({wait: true});
-				// Browser supports matchMedia
-				if (window.matchMedia) {
-					// MediaQueryList
-					var mql = window.matchMedia("(min-width: 500px)");
-					// MediaQueryListListener
-					var equalHeightCheck = function (mql) {
-						if (mql.matches) {
-							equalHeight.start();
-						} else {
-							equalHeight.stop();
-						}
-					};
-					// Add listener
-					mql.addListener(equalHeightCheck);
-					// Manually call listener
-					equalHeightCheck(mql);
-				}
-				// Browser doesn't support matchMedia
-				else {
-					equalHeight.start();
-				}
-			});
-		</script>
 	</body>
 </html>

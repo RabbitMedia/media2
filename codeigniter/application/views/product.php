@@ -85,20 +85,20 @@
 							</a>
 						</li>
 						<li class="sub-menu">
-							<a href="/">
+							<a href="/ranking">
 								<i class="fa fa-sort-amount-asc"></i>
-								<span>ランキング</span>
+								<span>人気ランキング</span>
 							</a>
 						</li>
 						<li class="sub-menu">
 							<a href="javascript:;">
 								<i class="fa fa-folder-open"></i>
-								<span>カテゴリー</span>
+								<span>動画を探す</span>
 							</a>
 							<ul class="sub">
-								<li><a href="/">ジャンル</a></li>
-								<li><a href="/">女優</a></li>
-								<li><a href="/">レーベル</a></li>
+								<li><a href="/category">カテゴリーで探す</a></li>
+								<li><a href="/">女優で探す</a></li>
+								<li><a href="/">レーベルで探す</a></li>
 							</ul>
 						</li>
 						<li class="sub-menu">
@@ -132,12 +132,10 @@
 											<a href="/" itemprop="url"><span itemprop="title">ホーム</span></a>
 										</li>
 										<li itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
-											<?php if ($referer_flag): ?>
-												<?php if ($referer_lists_id == 1): ?>
-													<a href="/lists" itemprop="url"><span itemprop="title">すべてのレズ動画</span></a>
-												<?php else: ?>
-													<a href="/lists/<?=$referer_lists_id?>" itemprop="url"><span itemprop="title">すべてのレズ動画</span></a>
-												<?php endif; ?>
+											<?php if ($breadcrumb['category_flag']): ?>
+												<a href="/category/<?=$breadcrumb['id']?>" itemprop="url"><span itemprop="title"><?=$breadcrumb['name']?></span></a>
+											<?php else: ?>
+												<a href="/label/<?=$breadcrumb['id']?>" itemprop="url"><span itemprop="title"><?=$breadcrumb['name']?></span></a>
 											<?php endif; ?>
 										</li>
 										<li itemscope itemtype="http://data-vocabulary.org/Breadcrumb" class="active">
@@ -205,8 +203,16 @@
 														 <table class="table">
 														 	<tbody>
 														 		<tr>
-														 			<td>レーベル</td>
-														 			<td><a href="<?=$product['label_id']?>"><?=$product['label_name']?></a></td>
+														 			<td>カテゴリー</td>
+														 			<td>
+														 				<?php foreach ($product['categories'] as $key => $category): ?>
+														 					<?php if ($category['id'] != 0): ?>
+																				<a href="/category/<?=$category['id']?>"><?=$category['name']?></a>
+																			<?php else: ?>
+																				<?=$category['name']?>
+																			<?php endif; ?>
+																		<?php endforeach; ?>
+														 			</td>
 														 		</tr>
 														 		<tr>
 														 			<td>出演者</td>
@@ -217,8 +223,8 @@
 														 			</td>
 														 		</tr>
 														 		<tr>
-														 			<td></td>
-														 			<td></td>
+														 			<td>レーベル</td>
+														 			<td><a href="/label/<?=$product['label_id']?>"><?=$product['label_name']?></a></td>
 														 		</tr>
 														 	</tbody>
 														</table>

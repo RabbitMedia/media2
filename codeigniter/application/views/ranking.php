@@ -107,18 +107,18 @@
 						<li class="sub-menu">
 							<a class="active">
 								<i class="fa fa-sort-amount-asc"></i>
-								<span>ランキング</span>
+								<span>人気ランキング</span>
 							</a>
 						</li>
 						<li class="sub-menu">
 							<a href="javascript:;">
 								<i class="fa fa-folder-open"></i>
-								<span>カテゴリー</span>
+								<span>動画を探す</span>
 							</a>
 							<ul class="sub">
-								<li><a href="/">ジャンル</a></li>
-								<li><a href="/">女優</a></li>
-								<li><a href="/">レーベル</a></li>
+								<li><a href="/category">カテゴリーで探す</a></li>
+								<li><a href="/">女優で探す</a></li>
+								<li><a href="/">レーベルで探す</a></li>
 							</ul>
 						</li>
 						<li class="sub-menu">
@@ -144,7 +144,7 @@
 					<div class="row">
 						<div class="col-lg-12 main-chart">
 
-							<div class="row hidden-xs">
+							<div class="row">
 
 								<div class="col-xs-12">
 									<ol class="breadcrumb">
@@ -152,14 +152,14 @@
 											<a href="/" itemprop="url"><span itemprop="title">ホーム</span></a>
 										</li>
 										<li itemscope itemtype="http://data-vocabulary.org/Breadcrumb" class="active">
-											<span itemprop="title">ランキング</span>
+											<span itemprop="title">人気ランキング</span>
 										</li>
 									</ol>
 								</div>
 
 							</div>
 
-							<h1><i class="fa fa-chevron-circle-right"></i> ランキング (過去7日間集計)</h1>
+							<h1><i class="fa fa-chevron-circle-right"></i> 人気ランキング (過去7日間集計)</h1>
 							
 							<div class="row mt">
 

@@ -85,18 +85,18 @@
 						<li class="sub-menu">
 							<a href="/ranking">
 								<i class="fa fa-sort-amount-asc"></i>
-								<span>ランキング</span>
+								<span>人気ランキング</span>
 							</a>
 						</li>
 						<li class="sub-menu">
 							<a href="javascript:;">
 								<i class="fa fa-folder-open"></i>
-								<span>カテゴリー</span>
+								<span>動画を探す</span>
 							</a>
 							<ul class="sub">
-								<li><a href="/">ジャンル</a></li>
-								<li><a href="/">女優</a></li>
-								<li><a href="/">レーベル</a></li>
+								<li><a href="/category">カテゴリーで探す</a></li>
+								<li><a href="/">女優で探す</a></li>
+								<li><a href="/">レーベルで探す</a></li>
 							</ul>
 						</li>
 						<li class="sub-menu">

@@ -13,6 +13,7 @@ class LogicVideoManage
 		$this->CI->load->model('product_text_model');
 		$this->CI->load->model('product_actress_model');
 		$this->CI->load->model('product_thumbnail_model');
+		$this->CI->load->model('product_category_model');
 		$this->CI->load->model('actress_list_model');
 		$this->CI->load->model('label_list_model');
 		$this->app_ini = parse_ini_file(APPPATH.'resource/ini/app.ini', true);
@@ -182,6 +183,29 @@ class LogicVideoManage
 				}
 			}
 
+			// カテゴリーを取得する
+			$categories = $this->CI->product_category_model->get_by_master_id($master_id);
+
+			if (!empty($categories))
+			{
+				foreach ($categories as $c_key => $category)
+				{
+					// カテゴリーIDとカテゴリー名をセットする
+					$product['categories'][] = array(
+						'id'	=> $category['category_id'],
+						'name'	=> $this->app_ini['category']['name'][(int)$category['category_id'] - 1],
+						);
+				}
+			}
+			else
+			{
+				// カテゴリーIDとカテゴリー名をセットする
+				$product['categories'][] = array(
+					'id'	=> '0',
+					'name'	=> 'なし',
+					);
+			}
+
 			// レーベル名を取得する
 			$product['label_name'] = $this->CI->label_list_model->get_by_label_id($value['label_id']);
 
@@ -200,69 +224,26 @@ class LogicVideoManage
 	 */
 	public function get_by_category($category_id)
 	{
-		// 動画配列
-		$videos = array();
+		// 作品配列
+		$products = array();
 
-		// カテゴリーcsvロード
-		$category_csv = AppCsvLoader::load('category.csv');
+		// 作品マスター情報を取得する
+		$master_ids = $this->CI->product_category_model->get_by_category_id($category_id);
 
-		// 動画カテゴリーによるレコード取得
-		$videos = $this->CI->video_category_model->get_by_category($category_id);
-
-		// 動画がなければそのまま返す
-		if (!$videos)
+		foreach ($master_ids as $key => $value)
 		{
-			return $videos;
+			$master_id_array[] = $value['master_id'];
 		}
 
-		// 動画カテゴリー情報をもとに詳細情報を取得する
-		foreach ($videos as $id => $video)
+		$products = $this->get_by_array($master_id_array);
+
+		// 作品がなければそのまま返す
+		if (!$products)
 		{
-			// 動画マスター情報を取得する
-			$video_master = $this->CI->video_master_model->get_by_id($video['master_id']);
-
-			foreach ($video_master as $m_key => $m_value)
-			{
-				// カテゴリーを取得する
-				$results = $this->CI->video_category_model->get_by_id($video['master_id']);
-				foreach ($results as $r_key => $r_value)
-				{
-					// カテゴリーcsvからカテゴリー名を取得してセット
-					foreach ($category_csv as $c_key => $c_value)
-					{
-						if ($c_value['id'] == $r_value['category'])
-						{
-							$videos[$id]['category'][$r_key]['id'] = $r_value['category'];
-							$videos[$id]['category'][$r_key]['name'] = $c_value['name'];
-						}
-					}
-				}
-
-				// 各種情報を入れ直す
-				$videos[$id]['title'] = $m_value['title'];
-				$videos[$id]['thumbnail_url'] = $m_value['thumbnail_url'];
-				$videos[$id]['duration'] = $m_value['duration'];
-
-				// 日付の形式を変更する
-				$videos[$id]['create_time'] = date('Y年n月j日', strtotime($m_value['create_time']));
-			}
-
-			// 指定カテゴリーが含まれていなければ加える(指定カテゴリーが非表示フラグの動画)
-			if (!$video['display_flag'])
-			{
-				// カテゴリーcsvからカテゴリー名を取得してセット
-				foreach ($category_csv as $c_key => $c_value)
-				{
-					if ($c_value['id'] == $category_id)
-					{
-						$videos[$id]['category'][$r_key+1]['id'] = $category_id;
-						$videos[$id]['category'][$r_key+1]['name'] = $c_value['name'];
-					}
-				}
-			}
+			return $products;
 		}
 
-		return array_reverse($videos);
+		return array_reverse($products);
 	}
 
 	/**

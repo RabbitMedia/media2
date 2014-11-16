@@ -31,36 +31,25 @@ class Product extends CI_Controller
 		// 作品ページ詳細を取得する
 		$data['product'] = $this->logicvideomanage->get_details($master_id);
 
-		// リファラーをパンくずに使用する
-		$referer = $this->input->server('HTTP_REFERER');
-		$data['referer_flag'] = true;
+		// パンくずにリストに使用するカテゴリーを選択
+		foreach ($data['product']['categories'] as $key => $category)
+		{
+			// カテゴリーがあれば最初のカテゴリーを使用する
+			if ($category['id'] != '0')
+			{
+				$data['breadcrumb']['category_flag'] = true;
+				$data['breadcrumb']['id'] = $category['id'];
+				$data['breadcrumb']['name'] = $category['name'];
+			}
+			// カテゴリーがなければレーベルをパンくずに使用する
+			else
+			{
+				$data['breadcrumb']['category_flag'] = false;
+				$data['breadcrumb']['id'] = $data['product']['label_id'];
+				$data['breadcrumb']['name'] = $data['product']['label_name'];
+			}
 
-		// すべての動画ページからの遷移の場合
-		if (strpos($referer, site_url('lists')) !== false)
-		{
-			$data['referer_lists_id'] = '1';
-			if (preg_match('/(?<=lists\/)\d+/', $referer, $matches))
-			{
-				$data['referer_lists_id'] = $matches[0];
-			}
-		}
-		elseif (strpos($referer, site_url('category')) !== false)
-		{
-			if (preg_match('/(?<=category\/)\d+/', $referer, $matches))
-			{
-				$data['referer_category_id'] = $matches[0];
-				foreach ($category_csv as $key => $value)
-				{
-					if ($value['id'] == $data['referer_category_id'])
-					{
-						$data['referer_category_name'] = $value['name'];
-					}
-				}
-			}
-		}
-		else
-		{
-			$data['referer_flag'] = false;
+			break;
 		}
 
 		// 代理店IDとバナーIDを取得する

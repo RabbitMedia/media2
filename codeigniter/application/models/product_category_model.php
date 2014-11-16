@@ -17,7 +17,7 @@ class Product_category_model extends CI_Model
 	public function get_by_master_id($master_id)
 	{
 		// select
-		$this->db->select('category');
+		$this->db->select('category_id');
 		// where
 		$this->db->where('master_id', $master_id);
 

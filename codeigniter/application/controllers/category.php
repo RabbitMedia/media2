@@ -1,50 +1,51 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 /**
- * 各種カテゴリーページコントローラ
+ * カテゴリーで探すページコントローラ
  */
 class Category extends CI_Controller
 {
-	public function index($category_id = 0, $page = 1)
+	function __construct()
 	{
-		// 各種ライブラリのロード
+		parent::__construct();
+
+		// ロード
 		$this->load->Library('LogicVideoManage');
 		$this->load->Library('pagination');
+		$this->app_ini = parse_ini_file(APPPATH.'resource/ini/app.ini', true);
+	}
 
+	public function index($category_id = 0, $page = 1)
+	{
 		$data = array();
 
-		// category_idがなければ404
+		// カテゴリーID指定がなければカテゴリーリストページを表示する
 		if (!$category_id)
 		{
-			show_404();
-		}
-
-		// カテゴリーリスト
-		$category_csv = AppCsvLoader::load('category.csv');
-		$categories = array();
-		foreach ($category_csv as $key => $value)
-		{
-			if ($value['display_flag'])
+			// カテゴリーリストをiniから取得する
+			foreach ($this->app_ini['category']['name'] as $key => $category_name)
 			{
-				$category['name'] = $value['name'];
-				$category['id'] = $value['id'];
-				$categories[] = $category;
+				$data['categories'][] = array(
+					'id'	=> $key + 1,
+					'name'	=> $category_name,
+					);
 			}
 
-			// 指定カテゴリー名を取得
-			if ($value['id'] == $category_id)
-			{
-				$data['current_category_id'] = $category_id;
-				$data['current_category_name'] = $value['name'];
-			}
+			$this->load->view('category_list', $data);
+			return;
 		}
-		$data['categories'] = $categories;
+
+		// 指定カテゴリーIDとカテゴリー名
+		$data['current_category'] = array(
+			'id'	=> $category_id,
+			'name'	=> $this->app_ini['category']['name'][$category_id - 1],
+			);
 
 		// 指定カテゴリーの動画リストを取得する
-		$videos = $this->logicvideomanage->get_category_list($category_id);
+		$products = $this->logicvideomanage->get_by_category($category_id);
 
 		// 動画総数
-		$data['total_count'] = count($videos);
+		$data['total_count'] = count($products);
 
 		// ページネーション
 		$config['base_url'] = '/category/'.$category_id.'/';
@@ -74,15 +75,15 @@ class Category extends CI_Controller
 		$page = (!$page) ? 1 : $page;
 
 		// 該当ページに表示する動画を取得する(mysqlのlimitとphpのarray_sliceではどっちが速いかは未検証)
-		$data['videos'] = array();
-		if ($videos)
+		$data['products'] = array();
+		if ($products)
 		{
-			$data['videos'] = array_slice($videos, (($page - 1) * $config['per_page']), $config['per_page']);
+			$data['products'] = array_slice($products, (($page - 1) * $config['per_page']), $config['per_page']);
 		}
 
 		// SEO link rel="prev", "next" セット用
 		$data['page'] = $page;
-		if (isset($videos[($page * $config['per_page'])]))
+		if (isset($products[($page * $config['per_page'])]))
 		{
 			$data['page_next_flag'] = true;
 		}
