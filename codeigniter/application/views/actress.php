@@ -20,19 +20,19 @@
 		<meta name="twitter:card" content="summary">
 		<meta name="twitter:site" content="@sekusoku">
 		<?php if ($page <= 1): ?>
-			<link rel="canonical" href="http://sekusoku.com/ranking" />
+			<link rel="canonical" href="http://sekusoku.com/actress/<?=$current_actress['id']?>" />
 		<?php else: ?>
-			<link rel="canonical" href="http://sekusoku.com/ranking/<?=$page?>" />
+			<link rel="canonical" href="http://sekusoku.com/actress/<?=$current_actress['id']?>/<?=$page?>" />
 		<?php endif; ?>
 		<?php if ($page > 1): ?>
 			<?php if ($page == 2): ?>
-				<link rel="prev" href="http://sekusoku.com/ranking" />
+				<link rel="prev" href="http://sekusoku.com/actress/<?=$current_actress['id']?>" />
 			<?php else: ?>
-				<link rel="prev" href="http://sekusoku.com/ranking/<?=$page-1?>" />
+				<link rel="prev" href="http://sekusoku.com/actress/<?=$current_actress['id']?>/<?=$page-1?>" />
 			<?php endif; ?>
 		<?php endif; ?>
 		<?php if ($page_next_flag): ?>
-			<link rel="next" href="http://sekusoku.com/ranking/<?=$page+1?>" />
+			<link rel="next" href="http://sekusoku.com/actress/<?=$current_actress['id']?>/<?=$page+1?>" />
 		<?php endif; ?>
 		<?php if ($page <= 1): ?>
 			<title>タイトル</title>
@@ -105,13 +105,13 @@
 							</a>
 						</li>
 						<li class="sub-menu">
-							<a class="active">
+							<a href="/ranking">
 								<i class="fa fa-sort-amount-asc"></i>
 								<span>人気ランキング</span>
 							</a>
 						</li>
 						<li class="sub-menu">
-							<a href="javascript:;">
+							<a class="active" href="javascript:;">
 								<i class="fa fa-folder-open"></i>
 								<span>動画を探す</span>
 							</a>
@@ -139,7 +139,7 @@
 			</aside>
 
 			<section id="main-content">
-				<section class="wrapper">
+				<section class="wrapper site-min-height">
 
 					<div class="row">
 						<div class="col-lg-12 main-chart">
@@ -151,24 +151,24 @@
 										<li itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
 											<a href="/" itemprop="url"><span itemprop="title">ホーム</span></a>
 										</li>
+										<li itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+											<a href="/actress" itemprop="url"><span itemprop="title">女優で探す</span></a>
+										</li>
 										<li itemscope itemtype="http://data-vocabulary.org/Breadcrumb" class="active">
-											<span itemprop="title">人気ランキング</span>
+											<span itemprop="title"><?=$current_actress['name']?>のレズ動画 (<?=$total_count?>件)</span>
 										</li>
 									</ol>
 								</div>
 
 							</div>
 
-							<h1><i class="fa fa-chevron-circle-right"></i> 人気ランキング (過去7日間集計)</h1>
+							<h1><i class="fa fa-chevron-circle-right"></i> <?=$current_actress['name']?>のレズ動画 (<?=$total_count?>件)</h1>
 							
 							<div class="row mt">
 
 								<?php foreach ($products as $id => $product): ?>
 									<div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 mb">
 										<div class="white-panel pn">
-											<div class="white-header">
-												<p><?=$ranks[$id]?>位 (前週<?=$product['prev_rank']?>位)</p>
-											</div>
 											<div class="text-center">
 												<a href="/product/<?=$product['master_id']?>"><img src="<?=$product['main_thumbnail_url']?>" alt="<?=$product['title']?>" class="img-responsive" width="240" height="180"></a>
 											</div>

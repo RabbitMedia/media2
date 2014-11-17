@@ -5,11 +5,7 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="copyright" content="&copy;セックル速報" />
-		<?php if ($page <= 1): ?>
-			<meta name="description" content="セックル速報は、無料でセックス動画を楽しめるセックス動画まとめサイトです。" />
-		<?php else: ?>
-			<meta name="description" content="セックル速報は、無料でセックス動画を楽しめるセックス動画まとめサイトです。 (<?=$page?>ページ目)" />
-		<?php endif; ?>
+		<meta name="description" content="セックル速報は、無料でセックス動画を楽しめるセックス動画まとめサイトです。" />
 		<meta name="keywords" content="セックス動画,セックル速報" />
 		<meta property="og:title" content="セックル速報 - 無料セックス動画まとめ" />
 		<meta property="og:type" content="website" />
@@ -19,26 +15,8 @@
 		<meta property="og:site_name" content="セックル速報 - 無料セックス動画まとめ" />
 		<meta name="twitter:card" content="summary">
 		<meta name="twitter:site" content="@sekusoku">
-		<?php if ($page <= 1): ?>
-			<link rel="canonical" href="http://sekusoku.com/ranking" />
-		<?php else: ?>
-			<link rel="canonical" href="http://sekusoku.com/ranking/<?=$page?>" />
-		<?php endif; ?>
-		<?php if ($page > 1): ?>
-			<?php if ($page == 2): ?>
-				<link rel="prev" href="http://sekusoku.com/ranking" />
-			<?php else: ?>
-				<link rel="prev" href="http://sekusoku.com/ranking/<?=$page-1?>" />
-			<?php endif; ?>
-		<?php endif; ?>
-		<?php if ($page_next_flag): ?>
-			<link rel="next" href="http://sekusoku.com/ranking/<?=$page+1?>" />
-		<?php endif; ?>
-		<?php if ($page <= 1): ?>
-			<title>タイトル</title>
-		<?php else: ?>
-			<title>タイトル (<?=$page?>ページ目)</title>
-		<?php endif; ?>
+		<link rel="canonical" href="http://sekusoku.com/category" />
+		<title>タイトル</title>
 		<link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico" />
 		<link rel="icon" type="image/png" href="/images/favicon.png" />
 		<link rel="apple-touch-icon" href="/images/apple-touch-icon.png" />
@@ -105,13 +83,13 @@
 							</a>
 						</li>
 						<li class="sub-menu">
-							<a class="active">
+							<a href="/ranking">
 								<i class="fa fa-sort-amount-asc"></i>
 								<span>人気ランキング</span>
 							</a>
 						</li>
 						<li class="sub-menu">
-							<a href="javascript:;">
+							<a class="active" href="javascript:;">
 								<i class="fa fa-folder-open"></i>
 								<span>動画を探す</span>
 							</a>
@@ -139,7 +117,7 @@
 			</aside>
 
 			<section id="main-content">
-				<section class="wrapper">
+				<section class="wrapper site-min-height">
 
 					<div class="row">
 						<div class="col-lg-12 main-chart">
@@ -152,48 +130,41 @@
 											<a href="/" itemprop="url"><span itemprop="title">ホーム</span></a>
 										</li>
 										<li itemscope itemtype="http://data-vocabulary.org/Breadcrumb" class="active">
-											<span itemprop="title">人気ランキング</span>
+											<span itemprop="title">女優で探す</span>
 										</li>
 									</ol>
 								</div>
 
 							</div>
 
-							<h1><i class="fa fa-chevron-circle-right"></i> 人気ランキング (過去7日間集計)</h1>
-							
+							<h1><i class="fa fa-chevron-circle-right"></i> 女優で探す</h1>
+
 							<div class="row mt">
 
-								<?php foreach ($products as $id => $product): ?>
-									<div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 mb">
-										<div class="white-panel pn">
-											<div class="white-header">
-												<p><?=$ranks[$id]?>位 (前週<?=$product['prev_rank']?>位)</p>
+								<?php foreach ($order_group_btn as $order_group => $btn_text): ?>
+									<div class="col-lg-1 col-md-1 col-sm-2 col-xs-3 text-center">
+										<?php echo form_open('actress'); ?>
+											<div class="form-group">
+												<input type="hidden" name="order_group" value="<?=$order_group?>">
+												<?php if ($order_group == $current_order_group): ?>
+													<button type="button" class="btn btn-danger fw active"><?=$btn_text?></button>
+												<?php else: ?>
+													<button type="submit" class="btn btn-danger"><?=$btn_text?></button>
+												<?php endif; ?>
 											</div>
-											<div class="text-center">
-												<a href="/product/<?=$product['master_id']?>"><img src="<?=$product['main_thumbnail_url']?>" alt="<?=$product['title']?>" class="img-responsive" width="240" height="180"></a>
-											</div>
-											<div class="text-left">
-												<h2><a href="/product/<?=$product['master_id']?>"><?=$product['title']?></a></h2>
-												<p><?=$product['create_time']?></p>
-											</div>
-										</div>
+										<?php echo form_close(); ?>
 									</div>
 								<?php endforeach; ?>
 
 							</div>
+							
+							<div class="row mt">
 
-							<div class="row">
-
-								<div class="col-xs-12 hidden-xs text-center">
-									<ul class="pagination pagination-lg">
-										<?=$pagination?>
-									</ul>
-								</div>
-								<div class="col-xs-12 visible-xs text-center">
-									<ul class="pagination">
-										<?=$pagination?>
-									</ul>
-								</div>
+								<?php foreach ($actresses as $actress): ?>
+									<div class="col-lg-2 col-md-3 col-sm-4 col-xs-6 mb text-center">
+										<a href="/actress/<?=$actress['id']?>"><span class="fw"><?=$actress['name']?></span></a>
+									</div>
+								<?php endforeach; ?>
 
 							</div>
 
@@ -223,34 +194,5 @@
 		<script src="/js/jquery.nicescroll.js"></script>
 		<!-- Vertical Accordion Menu -->
 		<script class="include" src="/js/jquery.dcjqaccordion.2.7.js"></script>
-		<!-- EqualHeight.js -->
-		<script src="/js/jquery.equalheight.min.js"></script>
-		<!-- EqualHeight.js -->
-		<script>
-			$(function() {
-				var equalHeight = $('.white-panel h2').equalHeight({wait: true});
-				// Browser supports matchMedia
-				if (window.matchMedia) {
-					// MediaQueryList
-					var mql = window.matchMedia("(min-width: 500px)");
-					// MediaQueryListListener
-					var equalHeightCheck = function (mql) {
-						if (mql.matches) {
-							equalHeight.start();
-						} else {
-							equalHeight.stop();
-						}
-					};
-					// Add listener
-					mql.addListener(equalHeightCheck);
-					// Manually call listener
-					equalHeightCheck(mql);
-				}
-				// Browser doesn't support matchMedia
-				else {
-					equalHeight.start();
-				}
-			});
-		</script>
 	</body>
 </html>

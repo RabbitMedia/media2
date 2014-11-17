@@ -95,7 +95,7 @@
 							</a>
 							<ul class="sub">
 								<li><a href="/category">カテゴリーで探す</a></li>
-								<li><a href="/">女優で探す</a></li>
+								<li><a href="/actress">女優で探す</a></li>
 								<li><a href="/">レーベルで探す</a></li>
 							</ul>
 						</li>

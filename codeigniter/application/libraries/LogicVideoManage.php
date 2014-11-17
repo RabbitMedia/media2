@@ -220,7 +220,7 @@ class LogicVideoManage
 	}
 
 	/**
-	 * 指定カテゴリーの全作品を取得する(新着順)
+	 * 指定カテゴリーIDの全作品を取得する(新着順)
 	 */
 	public function get_by_category($category_id)
 	{
@@ -229,6 +229,33 @@ class LogicVideoManage
 
 		// 作品マスター情報を取得する
 		$master_ids = $this->CI->product_category_model->get_by_category_id($category_id);
+
+		foreach ($master_ids as $key => $value)
+		{
+			$master_id_array[] = $value['master_id'];
+		}
+
+		$products = $this->get_by_array($master_id_array);
+
+		// 作品がなければそのまま返す
+		if (!$products)
+		{
+			return $products;
+		}
+
+		return array_reverse($products);
+	}
+
+	/**
+	 * 指定女優IDの全作品を取得する(新着順)
+	 */
+	public function get_by_actress($actress_id)
+	{
+		// 作品配列
+		$products = array();
+
+		// 作品マスター情報を取得する
+		$master_ids = $this->CI->product_actress_model->get_by_actress_id($actress_id);
 
 		foreach ($master_ids as $key => $value)
 		{

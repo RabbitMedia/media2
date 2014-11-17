@@ -117,7 +117,7 @@
 							</a>
 							<ul class="sub">
 								<li><a href="/category">カテゴリーで探す</a></li>
-								<li><a href="/">女優で探す</a></li>
+								<li><a href="/actress">女優で探す</a></li>
 								<li><a href="/">レーベルで探す</a></li>
 							</ul>
 						</li>
@@ -139,7 +139,7 @@
 			</aside>
 
 			<section id="main-content">
-				<section class="wrapper">
+				<section class="wrapper site-min-height">
 
 					<div class="row">
 						<div class="col-lg-12 main-chart">

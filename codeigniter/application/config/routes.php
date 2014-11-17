@@ -58,6 +58,10 @@ $route['ranking/(:num)'] = "ranking/index/$1";
 $route['category/(:num)'] = "category/index/$1/";
 $route['category/(:num)/(:num)'] = "category/index/$1/$2";
 
+// 各種女優ページ
+$route['actress/(:num)'] = "actress/index/$1/";
+$route['actress/(:num)/(:num)'] = "actress/index/$1/$2";
+
 // アバウトページ
 $route['about'] = "about/aboutus";
 $route['ad'] = "about/ad";

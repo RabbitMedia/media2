@@ -97,7 +97,7 @@
 							</a>
 							<ul class="sub">
 								<li><a href="/category">カテゴリーで探す</a></li>
-								<li><a href="/">女優で探す</a></li>
+								<li><a href="/actress">女優で探す</a></li>
 								<li><a href="/">レーベルで探す</a></li>
 							</ul>
 						</li>
@@ -200,34 +200,36 @@
 											<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 mt">
 												<div class="row">
 													<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-														 <table class="table">
-														 	<tbody>
-														 		<tr>
-														 			<td>カテゴリー</td>
-														 			<td>
-														 				<?php foreach ($product['categories'] as $key => $category): ?>
-														 					<?php if ($category['id'] != 0): ?>
-																				<a href="/category/<?=$category['id']?>"><?=$category['name']?></a>
-																			<?php else: ?>
-																				<?=$category['name']?>
-																			<?php endif; ?>
-																		<?php endforeach; ?>
-														 			</td>
-														 		</tr>
-														 		<tr>
-														 			<td>出演者</td>
-														 			<td>
-														 				<?php foreach ($product['actress'] as $key => $actress): ?>
-																			<a href="<?=$actress['id']?>"><?=$actress['name']?></a>
-																		<?php endforeach; ?>
-														 			</td>
-														 		</tr>
-														 		<tr>
-														 			<td>レーベル</td>
-														 			<td><a href="/label/<?=$product['label_id']?>"><?=$product['label_name']?></a></td>
-														 		</tr>
-														 	</tbody>
-														</table>
+														<div class="table-responsive">
+															 <table class="table">
+															 	<tbody>
+															 		<tr>
+															 			<td>カテゴリー</td>
+															 			<td>
+															 				<?php foreach ($product['categories'] as $key => $category): ?>
+															 					<?php if ($category['id'] != 0): ?>
+																					<a href="/category/<?=$category['id']?>"><?=$category['name']?></a>
+																				<?php else: ?>
+																					<?=$category['name']?>
+																				<?php endif; ?>
+																			<?php endforeach; ?>
+															 			</td>
+															 		</tr>
+															 		<tr>
+															 			<td>出演者</td>
+															 			<td>
+															 				<?php foreach ($product['actress'] as $key => $actress): ?>
+																				<a href="/actress/<?=$actress['id']?>"><?=$actress['name']?></a>
+																			<?php endforeach; ?>
+															 			</td>
+															 		</tr>
+															 		<tr>
+															 			<td>レーベル</td>
+															 			<td><a href="/label/<?=$product['label_id']?>"><?=$product['label_name']?></a></td>
+															 		</tr>
+															 	</tbody>
+															</table>
+														</div>
 													</div>
 													<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 visible-xs">
 														<p><a href="<?=$product['affiliate_link']?>"><button type="button" class="btn btn-danger btn-lg btn-block fw">高画質ダウンロード<br>( DUGA詳細ページ )</button></a></p>
