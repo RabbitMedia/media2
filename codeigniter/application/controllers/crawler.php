@@ -116,4 +116,22 @@ class Crawler extends CI_Controller
 		// 実行終了時刻をログに出力する
 		echo '終了: '.date("Y-m-d H:i:s")."\n";
 	}
+
+	/**
+	 * 女優情報を取得する
+	 */
+	public function get_actress()
+	{
+		// デバッグ(ブラウザ表示文字化け回避)用
+		// header("Content-Type: text/html; charset=UTF-8");
+
+		// 実行開始時刻をログに出力する
+		echo '開始: '.date("Y-m-d H:i:s")."\n";
+
+		// 女優情報を取得してcsv出力する
+		$this->logiccrawler->get_actress();
+
+		// 実行終了時刻をログに出力する
+		echo '終了: '.date("Y-m-d H:i:s")."\n";
+	}
 }

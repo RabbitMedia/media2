@@ -495,4 +495,62 @@ class LogicCrawler
 			$this->CI->db->trans_commit();
 		}
 	}
+
+	/**
+	 * 女優情報を取得する
+	 */
+	public function get_actress()
+	{
+		// 50音を指定する
+		foreach ($this->app_ini['actress_list']['order'] as $key => $order)
+		{
+			// 女優配列
+			$actresses = array();
+
+			// 指定女優一覧ページURLからhtmlを取得する
+			$html = @file_get_contents(str_replace('%ORDER%', $order, $this->app_ini['url']['actress_list']));
+
+			// ページの取得に失敗したら次のorderに進む
+			if (!$html)
+			{
+				continue;
+			}
+
+			// 改行コードを削除する
+			$html = preg_replace('/(\n|\r)/', '', $html);
+
+			// ランキング情報を正規表現で抽出する
+			if (preg_match_all('/(?<=actresslist).*?(?=<\/div)/', $html, $elements))
+			{
+				foreach ($elements[0] as $element)
+				{
+					// 女優名を抽出する
+					if (preg_match('/(?<=alt=").*?(?=")/', $element, $matches))
+					{
+						$actresses[] = $matches[0];
+					}
+				}
+			}
+			else
+			{
+				continue;
+			}
+
+			// 女優名を抽出できなければ次のorderに進む
+			if (!$actresses)
+			{
+				continue;
+			}
+
+			// csvを生成する
+			$csv = 'name'."\n";
+			foreach ($actresses as $key => $actress)
+			{
+				$csv .= "\"".$actress."\""."\n";
+			}
+
+			// csvを出力する
+			file_put_contents(APPPATH.'resource/csv/actress/'.$order.'.csv', $csv);
+		}
+	}
 }
