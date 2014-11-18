@@ -81,6 +81,12 @@ class Category extends CI_Controller
 			$data['products'] = array_slice($products, (($page - 1) * $config['per_page']), $config['per_page']);
 		}
 
+		// 該当ページに表示する作品が存在しない場合は404
+		if (!$data['products'])
+		{
+			show_404();
+		}
+
 		// SEO link rel="prev", "next" セット用
 		$data['page'] = $page;
 		if (isset($products[($page * $config['per_page'])]))

@@ -17,29 +17,12 @@ class Actress extends CI_Controller
 		$this->app_ini = parse_ini_file(APPPATH.'resource/ini/app.ini', true);
 	}
 
+	/**
+	 * 女優別作品ページ
+	 */
 	public function index($actress_id = 0, $page = 1)
 	{
 		$data = array();
-
-		// 女優ID指定がなければ女優リストページを表示する
-		if (!$actress_id)
-		{
-			// POSTでorder_groupを受け取る
-			$order_group = $this->input->post('order_group');
-			// order_groupがない場合は0とする
-			$order_group = (!$order_group) ? 0 : $order_group;
-
-			// ボタンに表示する文言をiniから取得する
-			$data['order_group_btn'] = $this->app_ini['actress_list']['order_group_btn'];
-			// 現在のorder_group
-			$data['current_order_group'] = $order_group;
-
-			// 指定order_groupの女優リストを取得する
-			$data['actresses'] = $this->logicactress->get_by_order($order_group);
-
-			$this->load->view('actress_list', $data);
-			return;
-		}
 
 		// 女優名を取得する
 		$actress_name = $this->logicactress->get_actress_name($actress_id);
@@ -94,6 +77,12 @@ class Actress extends CI_Controller
 		{
 			$data['products'] = array_slice($products, (($page - 1) * $config['per_page']), $config['per_page']);
 		}
+		
+		// 該当ページに表示する作品が存在しない場合は404
+		if (!$data['products'])
+		{
+			show_404();
+		}
 
 		// SEO link rel="prev", "next" セット用
 		$data['page'] = $page;
@@ -107,5 +96,32 @@ class Actress extends CI_Controller
 		}
 
 		$this->load->view('actress', $data);
+	}
+
+	/**
+	 * 女優50音順一覧ページ
+	 */
+	public function order($order_group = 1)
+	{
+		$data = array();
+
+		// ボタンに表示する文言をiniから取得する
+		$data['order_group_btn'] = $this->app_ini['actress_list']['order_group_btn'];
+		// 現在のorder_group
+		$data['current_order_group'] = $order_group;
+
+		// 指定order_groupの女優リストを取得する
+		$actresses = $this->logicactress->get_by_order($order_group - 1);
+		// 女優リストが異常であれば404
+		if (!$actresses)
+		{
+			show_404();
+		}
+		else
+		{
+			$data['actresses'] = $actresses;
+		}
+
+		$this->load->view('actress_list', $data);
 	}
 }

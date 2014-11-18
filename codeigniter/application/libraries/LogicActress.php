@@ -18,11 +18,14 @@ class LogicActress
 	 */
 	public function get_by_order($order_group)
 	{
+		// order_groupが存在しない値であればfalseを返す
+		if ($order_group >= count($this->app_ini['actress_list']['order_group']))
+		{
+			return false;
+		}
+
 		// 女優配列
 		$actresses = array();
-
-		// order_groupが存在しない値であれば修正する
-		$order_group = ($order_group >= count($this->app_ini['actress_list']['order_group'])) ? 0 : $order_group;
 
 		// order_groupからorderを配列で取得する
 		$orders = $this->app_ini['actress_list']['order_group'][$order_group];

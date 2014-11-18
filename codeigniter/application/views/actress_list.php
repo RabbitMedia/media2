@@ -95,7 +95,7 @@
 							</a>
 							<ul class="sub">
 								<li><a href="/category">カテゴリーで探す</a></li>
-								<li><a href="/actress">女優で探す</a></li>
+								<li><a href="/actress/order">女優で探す</a></li>
 								<li><a href="/">レーベルで探す</a></li>
 							</ul>
 						</li>
@@ -143,16 +143,11 @@
 
 								<?php foreach ($order_group_btn as $order_group => $btn_text): ?>
 									<div class="col-lg-1 col-md-1 col-sm-2 col-xs-3 text-center">
-										<?php echo form_open('actress'); ?>
-											<div class="form-group">
-												<input type="hidden" name="order_group" value="<?=$order_group?>">
-												<?php if ($order_group == $current_order_group): ?>
-													<button type="button" class="btn btn-danger fw active"><?=$btn_text?></button>
-												<?php else: ?>
-													<button type="submit" class="btn btn-danger"><?=$btn_text?></button>
-												<?php endif; ?>
-											</div>
-										<?php echo form_close(); ?>
+										<?php if ($order_group + 1 == $current_order_group): ?>
+											<a class="btn btn-danger active fw" role="button"><?=$btn_text?></a>
+										<?php else: ?>
+											<a href="/actress/order/<?=$order_group + 1?>" class="btn btn-danger" role="button"><?=$btn_text?></a>
+										<?php endif; ?>
 									</div>
 								<?php endforeach; ?>
 
