@@ -36,12 +36,6 @@ class Category extends CI_Controller
 			return;
 		}
 
-		// 指定カテゴリーIDとカテゴリー名
-		$data['current_category'] = array(
-			'id'	=> $category_id,
-			'name'	=> $this->app_ini['category']['name'][$category_id - 1],
-			);
-
 		// 指定カテゴリーの動画リストを取得する
 		$products = $this->logicvideomanage->get_by_category($category_id);
 
@@ -90,6 +84,12 @@ class Category extends CI_Controller
 		{
 			show_404();
 		}
+
+		// 指定カテゴリーIDとカテゴリー名
+		$data['current_category'] = array(
+			'id'	=> $category_id,
+			'name'	=> $this->app_ini['category']['name'][$category_id - 1],
+			);
 
 		// SEO link rel="prev", "next" セット用
 		$data['page'] = $page;

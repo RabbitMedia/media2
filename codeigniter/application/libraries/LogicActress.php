@@ -19,7 +19,7 @@ class LogicActress
 	public function get_by_order($order_group)
 	{
 		// order_groupが存在しない値であればfalseを返す
-		if ($order_group >= count($this->app_ini['actress_list']['order_group']))
+		if ($order_group < 0 || $order_group >= count($this->app_ini['actress_list']['order_group']))
 		{
 			return false;
 		}

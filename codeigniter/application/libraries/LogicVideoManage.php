@@ -229,6 +229,11 @@ class LogicVideoManage
 
 		// 作品マスター情報を取得する
 		$master_ids = $this->CI->product_category_model->get_by_category_id($category_id);
+		// マスターIDが異常であればそのまま返す
+		if (!$master_ids)
+		{
+			return $products;
+		}
 
 		foreach ($master_ids as $key => $value)
 		{

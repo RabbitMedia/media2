@@ -19,7 +19,7 @@ class LogicLabel
 	public function get_by_order($order)
 	{
 		// orderが存在しない値であればfalseを返す
-		if ($order >= count($this->app_ini['label_list']['order']))
+		if ($order < 0 || $order >= count($this->app_ini['label_list']['order']))
 		{
 			return false;
 		}
