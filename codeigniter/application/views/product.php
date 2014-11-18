@@ -166,7 +166,7 @@
 												</div>
 											</div>
 											<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 mt">
-												<p><a href="<?=$product['affiliate_link']?>"><button type="button" class="btn btn-danger btn-lg btn-block fw">高画質ダウンロード<br>( DUGA詳細ページ )</button></a></p>
+												<p><a href="<?=$product['affiliate_link']?>" rel="nofollow"><button type="button" class="btn btn-danger btn-lg btn-block fw">高画質ダウンロード<br>( DUGA詳細ページ )</button></a></p>
 												<p><i class="fa fa-check"></i> DUGAは、会員数70万人を超える安心してご利用いただけるダウンロード販売サイトです。
 												アダルト動画を中心に12万作品以上ものコンテンツを取り扱っています。</p>
 											</div>
@@ -232,7 +232,7 @@
 														</div>
 													</div>
 													<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 visible-xs">
-														<p><a href="<?=$product['affiliate_link']?>"><button type="button" class="btn btn-danger btn-lg btn-block fw">高画質ダウンロード<br>( DUGA詳細ページ )</button></a></p>
+														<p><a href="<?=$product['affiliate_link']?>" rel="nofollow"><button type="button" class="btn btn-danger btn-lg btn-block fw">高画質ダウンロード<br>( DUGA詳細ページ )</button></a></p>
 														<p><i class="fa fa-check"></i> DUGAは、会員数70万人を超える安心してご利用いただけるダウンロード販売サイトです。
 														アダルト動画を中心に12万作品以上ものコンテンツを取り扱っています。</p>
 													</div>
