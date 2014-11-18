@@ -274,6 +274,37 @@ class LogicVideoManage
 	}
 
 	/**
+	 * 指定レーベルIDの全作品を取得する(新着順)
+	 */
+	public function get_by_label($label_id)
+	{
+		// 作品配列
+		$products = array();
+
+		// 作品マスター情報を取得する
+		$products = $this->CI->product_master_model->get_by_label_id($label_id);
+
+		// 作品がなければそのまま返す
+		if (!$products)
+		{
+			return $products;
+		}
+
+		// 作品マスター情報をもとに詳細情報を取得する
+		foreach ($products as $id => $product)
+		{
+			// メインサムネイルURLをセットする
+			$product_id_url = str_replace('-', '/', $product['product_id']);
+			$products[$id]['main_thumbnail_url'] = str_replace('%PRODUCT_ID%', $product_id_url, $this->app_ini['url']['main_thumbnail']);
+
+			// 日付の形式を変更する
+			$products[$id]['create_time'] = date('Y年n月j日', strtotime($product['create_time']));
+		}
+
+		return array_reverse($products);
+	}
+
+	/**
 	 * 全作品数を取得する
 	 */
 	public function get_total_count()

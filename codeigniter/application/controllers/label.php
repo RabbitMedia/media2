@@ -1,16 +1,16 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 /**
- * 女優で探すページコントローラ
+ * レーベルで探すページコントローラ
  */
-class Actress extends CI_Controller
+class Label extends CI_Controller
 {
 	function __construct()
 	{
 		parent::__construct();
 
 		// ロード
-		$this->load->Library('LogicActress');
+		$this->load->Library('Logiclabel');
 		$this->load->Library('LogicVideoManage');
 		$this->load->Library('LogicUserAgent');
 		$this->load->Library('pagination');
@@ -18,34 +18,34 @@ class Actress extends CI_Controller
 	}
 
 	/**
-	 * 女優別作品ページ
+	 * レーベル別作品ページ
 	 */
-	public function index($actress_id = 0, $page = 1)
+	public function index($label_id = 0, $page = 1)
 	{
 		$data = array();
 
-		// 女優名を取得する
-		$actress_name = $this->logicactress->get_actress_name($actress_id);
+		// レーベル名を取得する
+		$label_name = $this->logiclabel->get_label_name($label_id);
 		// 存在しない場合は404
-		if (!$actress_name)
+		if (!$label_name)
 		{
 			show_404();
 		}
 
-		// 指定女優IDと女優名
-		$data['current_actress'] = array(
-			'id'	=> $actress_id,
-			'name'	=> $actress_name,
+		// 指定レーベルIDとレーベル名
+		$data['current_label'] = array(
+			'id'	=> $label_id,
+			'name'	=> $label_name,
 			);
 
-		// 指定女優IDの動画リストを取得する
-		$products = $this->logicvideomanage->get_by_actress($actress_id);
+		// 指定レーベルIDの動画リストを取得する
+		$products = $this->logicvideomanage->get_by_label($label_id);
 
 		// 動画総数
 		$data['total_count'] = count($products);
 
 		// ページネーション
-		$config['base_url'] = '/actress/'.$actress_id.'/';
+		$config['base_url'] = '/label/'.$label_id.'/';
 		$config['total_rows'] = $data['total_count'];
 		$config['per_page'] = 20;
 		$config['use_page_numbers'] = true;
@@ -98,33 +98,33 @@ class Actress extends CI_Controller
 			$data['page_next_flag'] = false;
 		}
 
-		$this->load->view('actress', $data);
+		$this->load->view('label', $data);
 	}
 
 	/**
-	 * 女優50音順一覧ページ
+	 * レーベル50音順一覧ページ
 	 */
-	public function order($order_group = 1)
+	public function order($order = 1)
 	{
 		$data = array();
 
 		// ボタンに表示する文言をiniから取得する
-		$data['order_group_btn'] = $this->app_ini['actress_list']['order_group_btn'];
-		// 現在のorder_group
-		$data['current_order_group'] = $order_group;
+		$data['order_btn'] = $this->app_ini['label_list']['order_btn'];
+		// 現在のorder
+		$data['current_order'] = $order;
 
-		// 指定order_groupの女優リストを取得する
-		$actresses = $this->logicactress->get_by_order($order_group - 1);
-		// 女優リストが異常であれば404
-		if (!$actresses)
+		// 指定orderのレーベルリストを取得する
+		$labels = $this->logiclabel->get_by_order($order - 1);
+		// レーベルリストが異常であれば404
+		if (!$labels)
 		{
 			show_404();
 		}
 		else
 		{
-			$data['actresses'] = $actresses;
+			$data['labels'] = $labels;
 		}
 
-		$this->load->view('actress_list', $data);
+		$this->load->view('label_list', $data);
 	}
 }

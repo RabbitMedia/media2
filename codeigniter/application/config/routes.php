@@ -62,6 +62,10 @@ $route['category/(:num)/(:num)'] = "category/index/$1/$2";
 $route['actress/(:num)'] = "actress/index/$1/";
 $route['actress/(:num)/(:num)'] = "actress/index/$1/$2";
 
+// 各種レーベルページ
+$route['label/(:num)'] = "label/index/$1/";
+$route['label/(:num)/(:num)'] = "label/index/$1/$2";
+
 // アバウトページ
 $route['about'] = "about/aboutus";
 $route['ad'] = "about/ad";

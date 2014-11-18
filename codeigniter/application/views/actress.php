@@ -118,7 +118,7 @@
 							<ul class="sub">
 								<li><a href="/category">カテゴリーで探す</a></li>
 								<li><a href="/actress/order">女優で探す</a></li>
-								<li><a href="/">レーベルで探す</a></li>
+								<li><a href="/label/order">レーベルで探す</a></li>
 							</ul>
 						</li>
 						<li class="sub-menu">
@@ -152,7 +152,7 @@
 											<a href="/" itemprop="url"><span itemprop="title">ホーム</span></a>
 										</li>
 										<li itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
-											<a href="/actress" itemprop="url"><span itemprop="title">女優で探す</span></a>
+											<a href="/actress/order" itemprop="url"><span itemprop="title">女優で探す</span></a>
 										</li>
 										<li itemscope itemtype="http://data-vocabulary.org/Breadcrumb" class="active">
 											<span itemprop="title"><?=$current_actress['name']?>のレズ動画 (<?=$total_count?>件)</span>

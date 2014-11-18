@@ -130,23 +130,23 @@
 											<a href="/" itemprop="url"><span itemprop="title">ホーム</span></a>
 										</li>
 										<li itemscope itemtype="http://data-vocabulary.org/Breadcrumb" class="active">
-											<span itemprop="title">女優で探す</span>
+											<span itemprop="title">レーベルで探す</span>
 										</li>
 									</ol>
 								</div>
 
 							</div>
 
-							<h1><i class="fa fa-chevron-circle-right"></i> 女優で探す</h1>
+							<h1><i class="fa fa-chevron-circle-right"></i> レーベルで探す</h1>
 
 							<div class="row mt">
 
-								<?php foreach ($order_group_btn as $order_group => $btn_text): ?>
+								<?php foreach ($order_btn as $order => $btn_text): ?>
 									<div class="col-lg-1 col-md-1 col-sm-2 col-xs-3 text-center">
-										<?php if ($order_group + 1 == $current_order_group): ?>
+										<?php if ($order + 1 == $current_order): ?>
 											<a class="btn btn-danger active fw" role="button"><?=$btn_text?></a>
 										<?php else: ?>
-											<a href="/actress/order/<?=$order_group + 1?>" class="btn btn-danger" role="button"><?=$btn_text?></a>
+											<a href="/label/order/<?=$order + 1?>" class="btn btn-danger" role="button"><?=$btn_text?></a>
 										<?php endif; ?>
 									</div>
 								<?php endforeach; ?>
@@ -155,9 +155,12 @@
 							
 							<div class="row mt">
 
-								<?php foreach ($actresses as $actress): ?>
+								<?php foreach ($labels as $label): ?>
 									<div class="col-lg-2 col-md-3 col-sm-4 col-xs-6 mb text-center">
-										<a href="/actress/<?=$actress['id']?>"><span class="fw"><?=$actress['name']?></span></a>
+										<a href="/label/<?=$label['id']?>">
+											<p><img src="<?=$label['banner']?>" alt="<?=$label['name']?>" class="img-responsive" width="200" height="60"></p>
+											<span class="fw"><?=$label['name']?></span>
+										</a>
 									</div>
 								<?php endforeach; ?>
 

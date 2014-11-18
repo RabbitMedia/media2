@@ -564,6 +564,8 @@ class LogicCrawler
 		{
 			// レーベル配列
 			$labels = array();
+			// レーベルパス配列
+			$label_paths = array();
 
 			// 'あ'だけ特殊なURLのため調整する
 			if ($key == 0)
