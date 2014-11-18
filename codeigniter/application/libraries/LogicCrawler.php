@@ -546,11 +546,91 @@ class LogicCrawler
 			$csv = 'name'."\n";
 			foreach ($actresses as $key => $actress)
 			{
-				$csv .= "\"".$actress."\""."\n";
+				$csv .= "\"".$actress."\"\n";
 			}
 
 			// csvを出力する
 			file_put_contents(APPPATH.'resource/csv/actress/'.$order.'.csv', $csv);
+		}
+	}
+
+	/**
+	 * レーベル情報を取得する
+	 */
+	public function get_label()
+	{
+		// 50音を指定する
+		foreach ($this->app_ini['label_list']['order'] as $key => $order)
+		{
+			// レーベル配列
+			$labels = array();
+
+			// 'あ'だけ特殊なURLのため調整する
+			if ($key == 0)
+			{
+				$url = str_replace('%ORDER%.html', '', $this->app_ini['url']['label_list']);
+			}
+			else
+			{
+				$url = str_replace('%ORDER%', $order, $this->app_ini['url']['label_list']);
+			}
+
+			// 指定レーベル一覧ページURLからhtmlを取得する
+			$html = @file_get_contents($url);
+
+			// ページの取得に失敗したら次のorderに進む
+			if (!$html)
+			{
+				continue;
+			}
+
+			// 改行コードを削除する
+			$html = preg_replace('/(\n|\r)/', '', $html);
+
+			// ランキング情報を正規表現で抽出する
+			if (preg_match_all('/(?<=float:left;"><a href=").*?(?=<\/div><\/div>)/', $html, $elements))
+			{
+				foreach ($elements[0] as $element)
+				{
+					// レーベル名を抽出する
+					if (preg_match('/(?<=<b>).*?(?=<\/b>)/', $element, $matches))
+					{
+						$labels[] = $matches[0];
+					}
+
+					// レーベルパスを抽出する
+					if (preg_match('/(?<=ppv\/).*?(?=\/)/', $element, $matches))
+					{
+						$label_paths[] = $matches[0];
+					}
+
+					// // レーベル説明を抽出する
+					// if (preg_match('/(?<=<br>).*/', $element, $matches))
+					// {
+					// 	$label_descs[] = $matches[0];
+					// }
+				}
+			}
+			else
+			{
+				continue;
+			}
+
+			// レーベル名もしくはレーベルパスを抽出できなければ次のorderに進む
+			if (!$labels || !$label_paths)
+			{
+				continue;
+			}
+
+			// csvを生成する
+			$csv = 'name,path'."\n";
+			foreach ($labels as $key => $actress)
+			{
+				$csv .= "\"".$actress."\",\"".$label_paths[$key]."\"\n";
+			}
+
+			// csvを出力する
+			file_put_contents(APPPATH.'resource/csv/label/'.$order.'.csv', $csv);
 		}
 	}
 }
