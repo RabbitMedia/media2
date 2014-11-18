@@ -11,6 +11,7 @@ class Ranking extends CI_Controller
 
 		// ロード
 		$this->load->Library('LogicRanking');
+		$this->load->Library('LogicUserAgent');
 		$this->load->Library('pagination');
 	}
 
@@ -49,6 +50,9 @@ class Ranking extends CI_Controller
 		$config['num_tag_close'] = '</li>';
 		$this->pagination->initialize($config);
 		$data['pagination'] = $this->pagination->create_links();
+
+		// ユーザーエージェントを判定する
+		$data['is_mobile'] = $this->logicuseragent->get_is_mobile();
 
 		// 該当ページに表示する作品を取得する(mysqlのlimitとphpのarray_sliceではどっちが速いかは未検証)
 		$data['products'] = array_slice($products, (($page - 1) * $config['per_page']), $config['per_page']);

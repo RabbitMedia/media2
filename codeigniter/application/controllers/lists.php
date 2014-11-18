@@ -11,6 +11,7 @@ class Lists extends CI_Controller
 
 		// ロード
 		$this->load->Library('LogicVideoManage');
+		$this->load->Library('LogicUserAgent');
 		$this->load->Library('pagination');
 	}
 
@@ -49,6 +50,9 @@ class Lists extends CI_Controller
 		$this->pagination->initialize($config);
 		$data['pagination'] = $this->pagination->create_links();
 
+		// ユーザーエージェントを判定する
+		$data['is_mobile'] = $this->logicuseragent->get_is_mobile();
+		
 		// 取得すべきマスターIDの範囲
 		$from_master_id = $total_count - ($page * $config['per_page']) + 1;
 		$to_master_id = $from_master_id + $config['per_page'] - 1;

@@ -182,20 +182,21 @@
 
 							</div>
 
-							<div class="row">
+							<?php if ($pagination): ?>
+								<div class="row">
 
-								<div class="col-xs-12 hidden-xs text-center">
-									<ul class="pagination pagination-lg">
-										<?=$pagination?>
-									</ul>
-								</div>
-								<div class="col-xs-12 visible-xs text-center">
-									<ul class="pagination">
-										<?=$pagination?>
-									</ul>
-								</div>
+									<div class="col-xs-12 text-center">
+										<?php if ($is_mobile): ?>
+											<ul class="pagination">
+										<?php else: ?>
+											<ul class="pagination pagination-lg">
+										<?php endif; ?>
+											<?=$pagination?>
+										</ul>
+									</div>
 
-							</div>
+								</div>
+							<?php endif; ?>
 
 						</div>
 					</div>

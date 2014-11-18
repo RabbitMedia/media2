@@ -11,6 +11,7 @@ class Category extends CI_Controller
 
 		// ロード
 		$this->load->Library('LogicVideoManage');
+		$this->load->Library('LogicUserAgent');
 		$this->load->Library('pagination');
 		$this->app_ini = parse_ini_file(APPPATH.'resource/ini/app.ini', true);
 	}
@@ -70,6 +71,9 @@ class Category extends CI_Controller
 		$config['num_tag_close'] = '</li>';
 		$this->pagination->initialize($config);
 		$data['pagination'] = $this->pagination->create_links();
+
+		// ユーザーエージェントを判定する
+		$data['is_mobile'] = $this->logicuseragent->get_is_mobile();
 
 		// ページ0を指定されたときの対策
 		$page = (!$page) ? 1 : $page;
