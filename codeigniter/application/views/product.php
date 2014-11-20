@@ -52,18 +52,7 @@
 					<div class="fa fa-bars"></div>
 				</div>
 
-				<a href="/" class="logo">動画速報</a>
-
-				<div class="nav notify-row" id="top_menu">
-					<ul class="nav top-menu">
-						<li id="header_inbox_bar" class="dropdown">
-							<a data-toggle="dropdown" class="dropdown-toggle" href="#">
-								<i class="fa fa-envelope-o"></i>
-								<span class="badge bg-theme">99</span>
-							</a>
-						</li>
-					</ul>
-				</div>
+				<h1><a href="/" class="logo"><img src="/images/logo.png" alt="セックル速報" width="160" height="25"></a><h1>
 
 			</header>
 
@@ -92,7 +81,7 @@
 						</li>
 						<li class="sub-menu">
 							<a href="javascript:;">
-								<i class="fa fa-folder-open"></i>
+								<i class="fa fa-search"></i>
 								<span>動画を探す</span>
 							</a>
 							<ul class="sub">
@@ -166,7 +155,7 @@
 												</div>
 											</div>
 											<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 mt">
-												<p><a href="<?=$product['affiliate_link']?>" rel="nofollow"><button type="button" class="btn btn-danger btn-lg btn-block fw">高画質ダウンロード<br>( DUGA詳細ページ )</button></a></p>
+												<p><a href="<?=$product['affiliate_link']?>" rel="nofollow"><button type="button" class="btn btn-primary btn-lg btn-block fw">高画質ダウンロード<br>( DUGA詳細ページ )</button></a></p>
 												<p><i class="fa fa-check"></i> DUGAは、会員数70万人を超える安心してご利用いただけるダウンロード販売サイトです。
 												アダルト動画を中心に12万作品以上ものコンテンツを取り扱っています。</p>
 											</div>
@@ -232,7 +221,7 @@
 														</div>
 													</div>
 													<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 visible-xs">
-														<p><a href="<?=$product['affiliate_link']?>" rel="nofollow"><button type="button" class="btn btn-danger btn-lg btn-block fw">高画質ダウンロード<br>( DUGA詳細ページ )</button></a></p>
+														<p><a href="<?=$product['affiliate_link']?>" rel="nofollow"><button type="button" class="btn btn-primary btn-lg btn-block fw">高画質ダウンロード<br>( DUGA詳細ページ )</button></a></p>
 														<p><i class="fa fa-check"></i> DUGAは、会員数70万人を超える安心してご利用いただけるダウンロード販売サイトです。
 														アダルト動画を中心に12万作品以上ものコンテンツを取り扱っています。</p>
 													</div>
@@ -417,8 +406,8 @@
 					slideMargin: 10,
 					nextSelector: '#slider-next',
 					prevSelector: '#slider-prev',
-					nextText: '<button type="button" class="btn btn-danger btn-sm"><i class="fa fa-chevron-right"></i></button>',
-					prevText: '<button type="button" class="btn btn-danger btn-sm"><i class="fa fa-chevron-left"></i></button>'
+					nextText: '<button type="button" class="btn btn-primary btn-sm"><i class="fa fa-chevron-right"></i></button>',
+					prevText: '<button type="button" class="btn btn-primary btn-sm"><i class="fa fa-chevron-left"></i></button>'
 				});
 			});
 		</script>

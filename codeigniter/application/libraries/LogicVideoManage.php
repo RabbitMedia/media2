@@ -20,53 +20,6 @@ class LogicVideoManage
 	}
 
 	/**
-	 * 全作品を取得する(新着順)
-	 */
-	public function get()
-	{
-		// 作品配列
-		$products = array();
-
-		// 作品マスター情報を取得する
-		$products = $this->CI->product_master_model->get();
-
-		// 作品がなければそのまま返す
-		if (!$products)
-		{
-			return $products;
-		}
-
-		// 作品マスター情報をもとに詳細情報を取得する
-		foreach ($products as $id => $product)
-		{
-			// 女優IDを取得する
-			$product_actresses = $this->CI->product_actress_model->get_by_master_id($product['master_id']);
-			if (!empty($product_actresses))
-			{
-				foreach ($product_actresses as $key => $product_actress)
-				{
-					// 女優名を取得する
-					$product_actress['actress_name'] = $this->CI->actress_list_model->get_by_actress_id($product_actress['actress_id']);
-					// 女優IDと女優名をセットする
-					if ($product_actress['actress_name'])
-					{
-						$products[$id]['actress'][$key]['id'] = $product_actress['actress_id'];
-						$products[$id]['actress'][$key]['name'] = $product_actress['actress_name'];
-					}
-				}
-			}
-
-			// レーベル名を取得する
-			$products[$id]['label_name'] = $this->CI->label_list_model->get_by_label_id($product['label_id']);
-
-			// 日付の形式を変更する
-			$products[$id]['create_time'] = date('Y年n月j日', strtotime($product['create_time']));
-		}
-
-		return array_reverse($products);
-	}
-
-	/**
 	 * マスターID範囲指定で作品を取得する(新着順)
 	 */
 	public function get_by_range($from_master_id, $to_master_id)
@@ -307,6 +260,40 @@ class LogicVideoManage
 		}
 
 		return array_reverse($products);
+	}
+
+	/**
+	 * ピックアップを取得する(トップページ)
+	 */
+	public function get_pickup()
+	{
+		// 作品配列
+		$products = array();
+		$pickup_products = array();
+
+		// ピックアップで使用するカテゴリーIDをiniから取得する
+		$category_id = $this->app_ini['top']['pickup_category'];
+		// 複数指定の場合は配列に直す
+		$category_id = (strpos($category_id, ',') !== false) ? explode(',', $category_id) : $category_id;
+
+		// 複数指定の場合はランダムに1つだけ抽選する
+		if (is_array($category_id))
+		{
+			shuffle($category_id);
+			$category_id = $category_id[0];
+		}
+
+		// 指定カテゴリーIDの全作品を取得する(新着順)
+		$products = $this->get_by_category($category_id);
+
+		// 表示する件数をiniから取得してランダムに抽選する
+		$product_keys = array_rand($products, $this->app_ini['top']['pickup_disp_num']);
+		foreach ($product_keys as $key => $product_key)
+		{
+			$pickup_products[] = $products[$product_key];
+		}
+
+		return $pickup_products;
 	}
 
 	/**

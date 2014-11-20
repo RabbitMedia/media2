@@ -50,18 +50,7 @@
 					<div class="fa fa-bars"></div>
 				</div>
 
-				<a href="/" class="logo">動画速報</a>
-
-				<div class="nav notify-row" id="top_menu">
-					<ul class="nav top-menu">
-						<li id="header_inbox_bar" class="dropdown">
-							<a data-toggle="dropdown" class="dropdown-toggle" href="#">
-								<i class="fa fa-envelope-o"></i>
-								<span class="badge bg-theme">99</span>
-							</a>
-						</li>
-					</ul>
-				</div>
+				<h1><a href="/" class="logo"><img src="/images/logo.png" alt="セックル速報" width="160" height="25"></a><h1>
 
 			</header>
 
@@ -90,7 +79,7 @@
 						</li>
 						<li class="sub-menu">
 							<a href="javascript:;">
-								<i class="fa fa-folder-open"></i>
+								<i class="fa fa-search"></i>
 								<span>動画を探す</span>
 							</a>
 							<ul class="sub">
@@ -120,111 +109,78 @@
 				<section class="wrapper">
 
 					<div class="row">
-						<div class="col-lg-9 main-chart">
+						<div class="col-lg-12 main-chart">
 
-							<h3><i class="fa fa-chevron-circle-right"></i> 新着ピックアップ</h3>
+							<div class="row mt showback">
+
+								<h2><i class="fa fa-chevron-circle-right"></i> 新着動画</h2>
+
+								<?php foreach ($latest_products as $id => $product): ?>
+									<div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 mb">
+										<div class="white-panel pn">
+											<div class="text-center">
+												<a href="/product/<?=$product['master_id']?>"><img src="<?=$product['main_thumbnail_url']?>" alt="<?=$product['title']?>" class="img-responsive" width="240" height="180"></a>
+											</div>
+											<div class="text-left">
+												<h3><a href="/product/<?=$product['master_id']?>"><?=$product['title']?></a></h3>
+												<p><?=$product['create_time']?></p>
+											</div>
+										</div>
+									</div>
+								<?php endforeach; ?>
+
+								<div class="text-right">
+									<a href="/lists" class="btn btn-primary" role="button"><i class="fa fa-caret-right"></i> もっと見る</a>
+								</div>
+
+							</div>
 							
-							<div class="row mt">
+							<div class="row mt showback">
 
-								<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 mb">
-									<div class="white-panel pn">
-										<div class="text-center">
-											<a href=""><img src="http://placehold.jp/240x180.png" alt="" class="img-responsive" width="240" height="180"></a>
-										</div>
-										<div class="text-left">
-											<p><a href="">タイトルタイトルタイトル</a></p>
-											<p>2014年12月31日</p>
-										</div>
-									</div>
-								</div>
-								<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 mb">
-									<div class="white-panel pn">
-										<div class="text-center">
-											<a href=""><img src="http://placehold.jp/240x180.png" alt="" class="img-responsive" width="240" height="180"></a>
-										</div>
-										<div class="text-left">
-											<p><a href="">タイトルタイトルタイトル</a></p>
-											<p>2014年12月31日</p>
+								<h2><i class="fa fa-chevron-circle-right"></i> 人気ランキング</h2>
+
+								<?php foreach ($ranking_products as $id => $product): ?>
+									<div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 mb">
+										<div class="white-panel pn">
+											<div class="white-header">
+												<p><?=$id+1?>位 (前週<?=$product['prev_rank']?>位)</p>
+											</div>
+											<div class="text-center">
+												<a href="/product/<?=$product['master_id']?>"><img src="<?=$product['main_thumbnail_url']?>" alt="<?=$product['title']?>" class="img-responsive" width="240" height="180"></a>
+											</div>
+											<div class="text-left">
+												<h3><a href="/product/<?=$product['master_id']?>"><?=$product['title']?></a></h3>
+												<p><?=$product['create_time']?></p>
+											</div>
 										</div>
 									</div>
-								</div>
-								<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 mb">
-									<div class="white-panel pn">
-										<div class="text-center">
-											<a href=""><img src="http://placehold.jp/240x180.png" alt="" class="img-responsive" width="240" height="180"></a>
-										</div>
-										<div class="text-left">
-											<p><a href="">タイトルタイトルタイトル</a></p>
-											<p>2014年12月31日</p>
-										</div>
-									</div>
-								</div>
-								<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 mb">
-									<div class="white-panel pn">
-										<div class="text-center">
-											<a href=""><img src="http://placehold.jp/240x180.png" alt="" class="img-responsive" width="240" height="180"></a>
-										</div>
-										<div class="text-left">
-											<p><a href="">タイトルタイトルタイトル</a></p>
-											<p>2014年12月31日</p>
-										</div>
-									</div>
-								</div>
-								<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 mb">
-									<div class="white-panel pn">
-										<div class="text-center">
-											<a href=""><img src="http://placehold.jp/240x180.png" alt="" class="img-responsive" width="240" height="180"></a>
-										</div>
-										<div class="text-left">
-											<p><a href="">タイトルタイトルタイトル</a></p>
-											<p>2014年12月31日</p>
-										</div>
-									</div>
-								</div>
-								<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 mb">
-									<div class="white-panel pn">
-										<div class="text-center">
-											<a href=""><img src="http://placehold.jp/240x180.png" alt="" class="img-responsive" width="240" height="180"></a>
-										</div>
-										<div class="text-left">
-											<p><a href="">タイトルタイトルタイトル</a></p>
-											<p>2014年12月31日</p>
-										</div>
-									</div>
+								<?php endforeach; ?>
+
+								<div class="text-right">
+									<a href="/ranking" class="btn btn-primary" role="button"><i class="fa fa-caret-right"></i> もっと見る</a>
 								</div>
 
 							</div>
+							
+							<div class="row mt showback">
 
-						</div>
+								<h2><i class="fa fa-chevron-circle-right"></i> ピックアップ</h2>
 
-						<div class="col-lg-3 ds">
+								<?php foreach ($pickup_products as $id => $product): ?>
+									<div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 mb">
+										<div class="white-panel pn">
+											<div class="text-center">
+												<a href="/product/<?=$product['master_id']?>"><img src="<?=$product['main_thumbnail_url']?>" alt="<?=$product['title']?>" class="img-responsive" width="240" height="180"></a>
+											</div>
+											<div class="text-left">
+												<h3><a href="/product/<?=$product['master_id']?>"><?=$product['title']?></a></h3>
+												<p><?=$product['create_time']?></p>
+											</div>
+										</div>
+									</div>
+								<?php endforeach; ?>
 
-							<h3>レーベル紹介</h3>
-
-							<!-- <div class="desc">
-								<div class="text-center">
-									<p class="hidden-md hidden-sm"><a href="http://click.duga.jp/ppv/ladylady/22125-01" target="_blank"><img src="http://ad.duga.jp/banner/ladylady/190-90.gif" alt="LADY×LADY"></a></p>
-									<p class="hidden-lg hidden-xs"><a href="http://click.duga.jp/ppv/ladylady/22125-01" target="_blank"><img src="http://ad.duga.jp/banner/ladylady/468-60.gif" alt="LADY×LADY"></a></p>
-									<p><a href="http://click.duga.jp/ppv/ladylady/22125-01" target="_blank">LADY×LADY</a></p>
-								</div>
-								<p>ターゲットはオンナを知らない純白LADY。かわいい女の子が“初めて”を経験し、“戸惑い”ながらも身を委ね、“未知の興奮”に恍惚の表情を浮かべる…。全身に淫らな電流が走り抜ける女のカラダは本当にエロい。業界初！女性スタッフのみでお届けする“オンナだけのセカイ”！！</p>
 							</div>
-							<div class="desc">
-								<div class="text-center">
-									<p class="hidden-md hidden-sm"><a href="http://click.duga.jp/ppv/ladiesroom/22125-01" target="_blank"><img src="http://ad.duga.jp/banner/ladiesroom/190-90.gif" alt="LADIES♀ROOM"></a></p>
-									<p class="hidden-lg hidden-xs"><a href="http://click.duga.jp/ppv/ladiesroom/22125-01" target="_blank"><img src="http://ad.duga.jp/banner/ladiesroom/468-60.gif" alt="LADIES♀ROOM"></a></p>
-									<p><a href="http://click.duga.jp/ppv/ladiesroom/22125-01" target="_blank">LADIES♀ROOM</a></p>
-								</div>
-								<p>♀×♀＝エロエロ。雌が揃えばエロさも2乗。男女では成し得ない快感ループ、禁じられた秘密の悦びに耽るレズビアンたち…ディープでコアな美レズエロの世界が繰り広げられる、レズビアン官能劇場！</p>
-							</div>
-							<div class="desc">
-								<div class="text-center">
-									<p class="hidden-md hidden-sm"><a href="http://click.duga.jp/ppv/lezule/22125-01" target="_blank"><img src="http://ad.duga.jp/banner/lezule/190-90.gif" alt="レズれ！"></a></p>
-									<p class="hidden-lg hidden-xs"><a href="http://click.duga.jp/ppv/lezule/22125-01" target="_blank"><img src="http://ad.duga.jp/banner/lezule/468-60.gif" alt="レズれ！"></a></p>
-									<p><a href="http://click.duga.jp/ppv/lezule/22125-01" target="_blank">レズれ！</a></p>
-								</div>
-								<p>百合は百合のまま、薔薇は薔薇のまま、女が女に欲情する。余計なものは必要ない。男の立ち入れない空間を作るレズ総合メーカー『レズれ！』。魅力的な女性の容姿、仕草、裸体や熱のあるキス、クンニ、こすり合わせなどレズプレイから、震えるような女性の心模様を赤裸々にとらえたレズドキュメントまで、女同士でしかイケないナイショの領域をお楽しみください。</p>
-							</div> -->
 
 						</div>
 					</div>
@@ -257,30 +213,7 @@
 		<!-- EqualHeight.js -->
 		<script>
 			$(function() {
-				var equalHeight = $('.caption h2').equalHeight({wait: true});
-				// Browser supports matchMedia
-				if (window.matchMedia) {
-					// MediaQueryList
-					var mql = window.matchMedia("(min-width: 500px)");
-					// MediaQueryListListener
-					var equalHeightCheck = function (mql) {
-						if (mql.matches) {
-							equalHeight.start();
-						} else {
-							equalHeight.stop();
-						}
-					};
-					// Add listener
-					mql.addListener(equalHeightCheck);
-					// Manually call listener
-					equalHeightCheck(mql);
-				}
-				// Browser doesn't support matchMedia
-				else {
-					equalHeight.start();
-				}
-
-				var equalHeight = $('.caption p').equalHeight({wait: true});
+				var equalHeight = $('.white-panel h3').equalHeight({wait: true});
 				// Browser supports matchMedia
 				if (window.matchMedia) {
 					// MediaQueryList

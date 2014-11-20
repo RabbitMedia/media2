@@ -10,8 +10,9 @@ class Top extends CI_Controller
 		parent::__construct();
 
 		// ロード
+		$this->load->Library('LogicRanking');
 		$this->load->Library('LogicVideoManage');
-		$this->load->Library('pagination');
+		$this->app_ini = parse_ini_file(APPPATH.'resource/ini/app.ini', true);
 	}
 
 	/**
@@ -21,21 +22,21 @@ class Top extends CI_Controller
 	{
 		$data = array();
 
-		// 全作品を取得する(新着順)
-		$products = $this->logicvideomanage->get();
+		// 全作品数を取得する
+		$data['total_count'] = $total_count = $this->logicvideomanage->get_total_count();
+		// 取得すべきマスターIDの範囲
+		$from_master_id = $total_count - $this->app_ini['top']['latest_disp_num'] + 1;
+		$to_master_id = $from_master_id + $this->app_ini['top']['latest_disp_num'] - 1;
+		//新着作品を取得する
+		$data['latest_products'] = $this->logicvideomanage->get_by_range($from_master_id, $to_master_id);
 
-		$data['products'] = $products;
+		// ランキングを取得する(最新)
+		$ranking_products = $this->logicranking->get();
+		// 何位まで表示するかiniから取得して作品を取得する
+		$data['ranking_products'] = array_slice($ranking_products, 0, $this->app_ini['top']['rank_disp_num']);
 
-		// 動画総数
-		$data['total_count'] = count($products);
-
-		// 該当ページに表示する動画を取得する(mysqlのlimitとphpのarray_sliceではどっちが速いかは未検証)
-		// $data['products'] = array_slice($products, (($page - 1) * $config['per_page']), $config['per_page']);
-		// 動画が存在しない場合は404
-		if (!$data['products'])
-		{
-			show_404();
-		}
+		// ピックアップを取得する
+		$data['pickup_products'] = $this->logicvideomanage->get_pickup();
 
 		$this->load->view('top', $data);
 	}

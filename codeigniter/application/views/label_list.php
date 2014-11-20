@@ -50,18 +50,7 @@
 					<div class="fa fa-bars"></div>
 				</div>
 
-				<a href="/" class="logo">動画速報</a>
-
-				<div class="nav notify-row" id="top_menu">
-					<ul class="nav top-menu">
-						<li id="header_inbox_bar" class="dropdown">
-							<a data-toggle="dropdown" class="dropdown-toggle" href="#">
-								<i class="fa fa-envelope-o"></i>
-								<span class="badge bg-theme">99</span>
-							</a>
-						</li>
-					</ul>
-				</div>
+				<h1><a href="/" class="logo"><img src="/images/logo.png" alt="セックル速報" width="160" height="25"></a><h1>
 
 			</header>
 
@@ -90,7 +79,7 @@
 						</li>
 						<li class="sub-menu">
 							<a class="active" href="javascript:;">
-								<i class="fa fa-folder-open"></i>
+								<i class="fa fa-search"></i>
 								<span>動画を探す</span>
 							</a>
 							<ul class="sub">
@@ -144,9 +133,9 @@
 								<?php foreach ($order_btn as $order => $btn_text): ?>
 									<div class="col-lg-1 col-md-1 col-sm-2 col-xs-3 text-center">
 										<?php if ($order + 1 == $current_order): ?>
-											<a class="btn btn-danger active fw" role="button"><?=$btn_text?></a>
+											<a class="btn btn-primary active fw" role="button"><?=$btn_text?></a>
 										<?php else: ?>
-											<a href="/label/order/<?=$order + 1?>" class="btn btn-danger" role="button"><?=$btn_text?></a>
+											<a href="/label/order/<?=$order + 1?>" class="btn btn-primary" role="button"><?=$btn_text?></a>
 										<?php endif; ?>
 									</div>
 								<?php endforeach; ?>

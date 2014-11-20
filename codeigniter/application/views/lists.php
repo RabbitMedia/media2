@@ -72,18 +72,7 @@
 					<div class="fa fa-bars"></div>
 				</div>
 
-				<a href="/" class="logo">動画速報</a>
-
-				<div class="nav notify-row" id="top_menu">
-					<ul class="nav top-menu">
-						<li id="header_inbox_bar" class="dropdown">
-							<a data-toggle="dropdown" class="dropdown-toggle" href="#">
-								<i class="fa fa-envelope-o"></i>
-								<span class="badge bg-theme">99</span>
-							</a>
-						</li>
-					</ul>
-				</div>
+				<h1><a href="/" class="logo"><img src="/images/logo.png" alt="セックル速報" width="160" height="25"></a><h1>
 
 			</header>
 
@@ -112,7 +101,7 @@
 						</li>
 						<li class="sub-menu">
 							<a href="javascript:;">
-								<i class="fa fa-folder-open"></i>
+								<i class="fa fa-search"></i>
 								<span>動画を探す</span>
 							</a>
 							<ul class="sub">
