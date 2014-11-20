@@ -297,6 +297,95 @@ class LogicVideoManage
 	}
 
 	/**
+	 * リコメンドを取得する
+	 */
+	public function get_recommend($master_id, $categories, $label_id)
+	{
+		// 作品配列
+		$products = array();
+
+		// まずは同一カテゴリーからの抽選を試みる
+		$category_ids = array();
+		foreach ($categories as $key => $category)
+		{
+			// 有効なカテゴリーがあるか確認
+			if ($category['id'] != '0')
+			{
+				$category_ids[] = $category['id'];
+			}
+		}
+
+		// 有効なカテゴリーがある場合
+		if ($category_ids)
+		{
+			// 有効なカテゴリーが複数ある場合のためシャッフルする
+			shuffle($category_ids);
+			for ($i=0; $i < count($category_ids); $i++)
+			{ 
+				// 指定カテゴリーIDの全作品を取得する(新着順)
+				$products += $this->get_by_category($category_ids[$i]);
+
+				// 自らのマスターIDが含まれている場合は除外する
+				foreach ($products as $key => $product)
+				{
+					if ($product['master_id'] == $master_id)
+					{
+						unset($products[$key]);
+					}
+				}
+
+				// ini記載の表示件数よりも多ければランダム抽選して返す
+				if (count($products) >= $this->app_ini['product']['recommend_disp_num'])
+				{
+					shuffle($products);
+					return array_slice($products, 0, $this->app_ini['product']['recommend_disp_num']);
+				}
+			}
+		}
+
+		// 有効なカテゴリーが無かったもしくは同一カテゴリーでは表示件数を満たせなかった場合
+		// 必要な残り件数
+		$remaining_num = $this->app_ini['product']['recommend_disp_num'] - count($products);
+		$remaining_products = array();
+
+		// 次に同一レーベルからの抽選を試みる
+		$remaining_products = $this->get_by_label($label_id);
+
+		// 自らのマスターIDが含まれている場合は除外する
+		foreach ($remaining_products as $key => $product)
+		{
+			if ($product['master_id'] == $master_id)
+			{
+				unset($remaining_products[$key]);
+			}
+		}
+
+		// 必要な残り件数よりも多ければランダム抽選して返す
+		if (count($remaining_products) >= $remaining_num)
+		{
+			shuffle($remaining_products);
+			return array_merge($products, array_slice($remaining_products, 0, $remaining_num));
+		}
+		else
+		{
+			$products = array_merge($products, $remaining_products);
+		}
+
+		// 同一レーベルでは表示件数を満たせなかった場合
+		// 必要な残り件数
+		$remaining_num = $this->app_ini['product']['recommend_disp_num'] - count($products);
+
+		// 最後に全作品から新着順で穴を埋め合わせる
+		$total_count = $this->get_total_count();
+		// 取得すべきマスターIDの範囲
+		$from_master_id = $total_count - $remaining_num + 1;
+		$to_master_id = $from_master_id + $remaining_num - 1;
+		$remaining_products = $this->get_by_range($from_master_id, $to_master_id);
+
+		return array_merge($products, $remaining_products);
+	}
+
+	/**
 	 * 全作品数を取得する
 	 */
 	public function get_total_count()

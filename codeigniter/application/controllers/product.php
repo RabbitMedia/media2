@@ -31,6 +31,9 @@ class Product extends CI_Controller
 		// 作品ページ詳細を取得する
 		$data['product'] = $this->logicvideomanage->get_details($master_id);
 
+		// リコメンド作品を取得する
+		$data['recommend_products'] = $this->logicvideomanage->get_recommend($data['product']['master_id'], $data['product']['categories'], $data['product']['label_id']);
+
 		// パンくずにリストに使用するカテゴリーを選択
 		foreach ($data['product']['categories'] as $key => $category)
 		{

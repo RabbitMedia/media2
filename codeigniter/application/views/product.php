@@ -251,94 +251,19 @@
 
 					<div class="row mt">
 
-						<div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 mb">
-							<div class="white-panel pn">
-								<div class="text-center">
-									<a href="/product/99999"><img src="http://placehold.jp/240x180.png" alt="タイトルタイトル" class="img-responsive" width="240" height="180"></a>
-								</div>
-								<div class="text-left">
-									<h3><a href="/product/99999">タイトルタイトル</a></h3>
-									<p>2014年12月31日</p>
-								</div>
-							</div>
-						</div>
-						<div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 mb">
-							<div class="white-panel pn">
-								<div class="text-center">
-									<a href="/product/99999"><img src="http://placehold.jp/240x180.png" alt="タイトルタイトル" class="img-responsive" width="240" height="180"></a>
-								</div>
-								<div class="text-left">
-									<h3><a href="/product/99999">タイトルタイトル</a></h3>
-									<p>2014年12月31日</p>
+						<?php foreach ($recommend_products as $id => $product): ?>
+							<div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 mb">
+								<div class="white-panel pn">
+									<div class="text-center">
+										<a href="/product/<?=$product['master_id']?>"><img src="<?=$product['main_thumbnail_url']?>" alt="<?=$product['title']?>" class="img-responsive" width="240" height="180"></a>
+									</div>
+									<div class="text-left">
+										<h2><a href="/product/<?=$product['master_id']?>"><?=$product['title']?></a></h2>
+										<p><?=$product['create_time']?></p>
+									</div>
 								</div>
 							</div>
-						</div>
-						<div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 mb">
-							<div class="white-panel pn">
-								<div class="text-center">
-									<a href="/product/99999"><img src="http://placehold.jp/240x180.png" alt="タイトルタイトル" class="img-responsive" width="240" height="180"></a>
-								</div>
-								<div class="text-left">
-									<h3><a href="/product/99999">タイトルタイトル</a></h3>
-									<p>2014年12月31日</p>
-								</div>
-							</div>
-						</div>
-						<div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 mb">
-							<div class="white-panel pn">
-								<div class="text-center">
-									<a href="/product/99999"><img src="http://placehold.jp/240x180.png" alt="タイトルタイトル" class="img-responsive" width="240" height="180"></a>
-								</div>
-								<div class="text-left">
-									<h3><a href="/product/99999">タイトルタイトル</a></h3>
-									<p>2014年12月31日</p>
-								</div>
-							</div>
-						</div>
-						<div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 mb">
-							<div class="white-panel pn">
-								<div class="text-center">
-									<a href="/product/99999"><img src="http://placehold.jp/240x180.png" alt="タイトルタイトル" class="img-responsive" width="240" height="180"></a>
-								</div>
-								<div class="text-left">
-									<h3><a href="/product/99999">タイトルタイトル</a></h3>
-									<p>2014年12月31日</p>
-								</div>
-							</div>
-						</div>
-						<div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 mb">
-							<div class="white-panel pn">
-								<div class="text-center">
-									<a href="/product/99999"><img src="http://placehold.jp/240x180.png" alt="タイトルタイトル" class="img-responsive" width="240" height="180"></a>
-								</div>
-								<div class="text-left">
-									<h3><a href="/product/99999">タイトルタイトル</a></h3>
-									<p>2014年12月31日</p>
-								</div>
-							</div>
-						</div>
-						<div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 mb">
-							<div class="white-panel pn">
-								<div class="text-center">
-									<a href="/product/99999"><img src="http://placehold.jp/240x180.png" alt="タイトルタイトル" class="img-responsive" width="240" height="180"></a>
-								</div>
-								<div class="text-left">
-									<h3><a href="/product/99999">タイトルタイトル</a></h3>
-									<p>2014年12月31日</p>
-								</div>
-							</div>
-						</div>
-						<div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 mb">
-							<div class="white-panel pn">
-								<div class="text-center">
-									<a href="/product/99999"><img src="http://placehold.jp/240x180.png" alt="タイトルタイトル" class="img-responsive" width="240" height="180"></a>
-								</div>
-								<div class="text-left">
-									<h3><a href="/product/99999">タイトルタイトル</a></h3>
-									<p>2014年12月31日</p>
-								</div>
-							</div>
-						</div>
+						<?php endforeach; ?>
 
 					</div>
 
