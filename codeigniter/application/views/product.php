@@ -155,7 +155,7 @@
 												</div>
 											</div>
 											<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 mt">
-												<p><a href="<?=$product['affiliate_link']?>" rel="nofollow"><button type="button" class="btn btn-primary btn-lg btn-block fw">高画質ダウンロード<br>( DUGA詳細ページ )</button></a></p>
+												<p><a href="<?=$product['affiliate_link']?>" rel="nofollow"><button type="button" class="btn btn-primary btn-lg btn-block fw">DUGAでダウンロード<br>( 動画詳細ページへ )</button></a></p>
 												<p><i class="fa fa-check text-success"></i> DUGAは<span class="fw text-primary">会員数70万人</span>を超えるダウンロード販売サイトです。無料会員登録で<span class="fw text-primary">拡大画像とサンプル動画が見放題</span>になりますので、登録だけでもおすすめします。</p>
 											</div>
 										</div>
@@ -220,8 +220,8 @@
 														</div>
 													</div>
 													<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 visible-xs">
-<p><a href="<?=$product['affiliate_link']?>" rel="nofollow"><button type="button" class="btn btn-primary btn-lg btn-block fw">高画質ダウンロード<br>( DUGA詳細ページ )</button></a></p>
-												<p><i class="fa fa-check text-success"></i> DUGAは<span class="fw text-primary">会員数70万人</span>を超えるダウンロード販売サイトです。無料会員登録で<span class="fw text-primary">拡大画像とサンプル動画が見放題</span>になりますので、登録だけでもおすすめします。</p>
+														<p><a href="<?=$product['affiliate_link']?>" rel="nofollow"><button type="button" class="btn btn-primary btn-lg btn-block fw">DUGAでダウンロード<br>( 動画詳細ページへ )</button></a></p>
+														<p><i class="fa fa-check text-success"></i> DUGAは<span class="fw text-primary">会員数70万人</span>を超えるダウンロード販売サイトです。無料会員登録で<span class="fw text-primary">拡大画像とサンプル動画が見放題</span>になりますので、登録だけでもおすすめします。</p>
 													</div>
 												</div>
 											</div>
