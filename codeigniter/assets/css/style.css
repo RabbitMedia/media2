@@ -1021,7 +1021,7 @@ PANELS CONFIGURATIONS
 }
 
 .white-panel i {
-	color: #cf2620;
+	/*color: #cf2620;*/
 	padding-right: 4px;
 	font-size: 14px;
 }

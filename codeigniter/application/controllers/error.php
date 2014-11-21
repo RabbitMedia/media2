@@ -13,19 +13,7 @@ class Error extends CI_Controller
 		// HTTPステータスコードをセットする
 		$this->output->set_status_header('404');
 
-		// カテゴリーリスト
-		$category_csv = AppCsvLoader::load('category.csv');
-		$categories = array();
-		foreach ($category_csv as $key => $value)
-		{
-			if ($value['display_flag'])
-			{
-				$category['name'] = $value['name'];
-				$category['id'] = $value['id'];
-				$categories[] = $category;
-			}
-		}
-		$data['categories'] = $categories;
+		// エラーページに何か渡すこともできる
 
 		$this->load->view('error/error_404', $data);
 	}

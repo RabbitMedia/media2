@@ -89,7 +89,7 @@
 						</li>
 						<li class="sub-menu">
 							<a href="/lists">
-								<i class="fa fa-video-camera"></i>
+								<i class="fa fa-youtube-play"></i>
 								<span>すべてのレズ動画</span>
 							</a>
 						</li>
@@ -112,13 +112,12 @@
 						</li>
 						<li class="sub-menu">
 							<a href="javascript:;" >
-								<i class="fa fa-gear"></i>
-								<span>このサイトについて</span>
+								<i class="fa fa-info-circle"></i>
+								<span>サイトについて</span>
 							</a>
 							<ul class="sub">
-								<li><a href="/">サイトポリシー</a></li>
-								<li><a href="/">広告掲載について</a></li>
-								<li><a href="/">お問い合わせ</a></li>
+								<li><a href="/faq">よくある質問</a></li>
+								<li><a href="/contact">お問い合わせ</a></li>
 							</ul>
 						</li>
 

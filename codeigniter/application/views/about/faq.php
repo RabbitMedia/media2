@@ -5,40 +5,18 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="copyright" content="&copy;セックル速報" />
-		<?php if ($page <= 1): ?>
-			<meta name="description" content="セックル速報は、無料でセックス動画を楽しめるセックス動画まとめサイトです。" />
-		<?php else: ?>
-			<meta name="description" content="セックル速報は、無料でセックス動画を楽しめるセックス動画まとめサイトです。 (<?=$page?>ページ目)" />
-		<?php endif; ?>
+		<meta name="description" content="セックル速報は、無料でセックス動画を楽しめるセックス動画まとめサイトです。" />
 		<meta name="keywords" content="セックス動画,セックル速報" />
 		<meta property="og:title" content="セックル速報 - 無料セックス動画まとめ" />
 		<meta property="og:type" content="website" />
 		<meta property="og:image" content="http://sekusoku.com/images/apple-touch-icon.png" />
-		<meta property="og:url" content="http://sekusoku.com/" />
+		<meta property="og:url" content="http://sekusoku.com/faq" />
 		<meta property="og:description" content="セックル速報は、無料でセックス動画を楽しめるセックス動画まとめサイトです。" />
 		<meta property="og:site_name" content="セックル速報 - 無料セックス動画まとめ" />
 		<meta name="twitter:card" content="summary">
 		<meta name="twitter:site" content="@sekusoku">
-		<?php if ($page <= 1): ?>
-			<link rel="canonical" href="http://sekusoku.com/category/<?=$current_category['id']?>" />
-		<?php else: ?>
-			<link rel="canonical" href="http://sekusoku.com/category/<?=$current_category['id']?>/<?=$page?>" />
-		<?php endif; ?>
-		<?php if ($page > 1): ?>
-			<?php if ($page == 2): ?>
-				<link rel="prev" href="http://sekusoku.com/category/<?=$current_category['id']?>" />
-			<?php else: ?>
-				<link rel="prev" href="http://sekusoku.com/category/<?=$current_category['id']?>/<?=$page-1?>" />
-			<?php endif; ?>
-		<?php endif; ?>
-		<?php if ($page_next_flag): ?>
-			<link rel="next" href="http://sekusoku.com/category/<?=$current_category['id']?>/<?=$page+1?>" />
-		<?php endif; ?>
-		<?php if ($page <= 1): ?>
-			<title>タイトル</title>
-		<?php else: ?>
-			<title>タイトル (<?=$page?>ページ目)</title>
-		<?php endif; ?>
+		<link rel="canonical" href="http://sekusoku.com/faq" />
+		<title>よくある質問 | セックル速報 - 無料セックス動画まとめ</title>
 		<link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico" />
 		<link rel="icon" type="image/png" href="/images/favicon.png" />
 		<link rel="apple-touch-icon" href="/images/apple-touch-icon.png" />
@@ -100,7 +78,7 @@
 							</a>
 						</li>
 						<li class="sub-menu">
-							<a class="active" href="javascript:;">
+							<a href="javascript:;">
 								<i class="fa fa-search"></i>
 								<span>動画を探す</span>
 							</a>
@@ -111,9 +89,9 @@
 							</ul>
 						</li>
 						<li class="sub-menu">
-							<a href="javascript:;" >
+							<a class="active" href="javascript:;" >
 								<i class="fa fa-info-circle"></i>
-								<span>このサイトについて</span>
+								<span>サイトについて</span>
 							</a>
 							<ul class="sub">
 								<li><a href="/faq">よくある質問</a></li>
@@ -139,52 +117,46 @@
 										<li itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
 											<a href="/" itemprop="url"><span itemprop="title">ホーム</span></a>
 										</li>
-										<li itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
-											<a href="/category" itemprop="url"><span itemprop="title">カテゴリーで探す</span></a>
-										</li>
 										<li itemscope itemtype="http://data-vocabulary.org/Breadcrumb" class="active">
-											<span itemprop="title"><?=$current_category['name']?>のレズ動画 (<?=$total_count?>件)</span>
+											<span itemprop="title">よくある質問</span>
 										</li>
 									</ol>
 								</div>
 
 							</div>
 
-							<h1><i class="fa fa-chevron-circle-right"></i> <?=$current_category['name']?>のレズ動画 (<?=$total_count?>件)</h1>
-							
+							<h1><i class="fa fa-chevron-circle-right"></i> よくある質問</h1>
+
 							<div class="row mt">
 
-								<?php foreach ($products as $id => $product): ?>
-									<div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 mb">
-										<div class="white-panel pn">
-											<div class="text-center">
-												<a href="/product/<?=$product['master_id']?>"><img src="<?=$product['main_thumbnail_url']?>" alt="<?=$product['title']?>" class="img-responsive" width="240" height="180"></a>
-											</div>
-											<div class="text-left">
-												<h2><a href="/product/<?=$product['master_id']?>"><?=$product['title']?></a></h2>
-												<p><?=$product['create_time']?></p>
-											</div>
+								<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb">
+									<div class="white-panel pn">
+										<div class="text-left">
+											<h2><i class="fa fa-question-circle"></i>はどんなサイトですか？</h2>
+											<p>は、<a href="http://click.duga.jp/main/<?=$agent_id?>-<?=$banner_id?>" rel="nofollow">DUGA</a>に公開されている作品のうち、マルチデバイス（パソコン・スマホ・タブレット）の再生に対応したレズ動画を紹介するサイトです。</p>
+											<h2><i class="fa fa-question-circle"></i>紹介されている動画は無料ですか？</h2>
+											<p>当サイトに貼り付けられているサンプル動画は全て無料でご覧いただけます。<br><a href="http://click.duga.jp/main/<?=$agent_id?>-<?=$banner_id?>" rel="nofollow">DUGA</a>での本編ダウンロードは有料です。</p>
+											<h2><i class="fa fa-question-circle"></i>DUGAは安全ですか？</h2>
+											<p><a href="http://click.duga.jp/main/<?=$agent_id?>-<?=$banner_id?>" rel="nofollow">DUGA</a>は開設7周年を迎え、会員数70万人を突破した安心してご利用いただける正規品ダウンロード販売サイトです。<br>成人向けのアダルト動画を中心に、12万作品以上にも及ぶ多彩なコンテンツを取り扱っております。</p>
+											<h2><i class="fa fa-question-circle"></i>DUGAの会員登録は無料ですか？</h2>
+											<p>完全無料で会員登録していただけます。メールアドレスだけで登録できますので、とても簡単です。<br>無料会員になるだけで、すべてのサンプル動画の無制限ダウンロードや、拡大サンプル画像が見放題になります。<br>まずは登録するだけでも、大変おすすめいたします。</p>
+											<p><a href="http://click.duga.jp/join/<?=$agent_id?>-<?=$banner_id?>" rel="nofollow">無料会員登録はこちら</a>（18歳未満の方はご利用いただけません）</p>
+											<h2><i class="fa fa-question-circle"></i>DUGAにサポートセンターはありますか？</h2>
+											<p><a href="http://click.duga.jp/main/<?=$agent_id?>-<?=$banner_id?>" rel="nofollow">DUGA</a>のサポートセンターは、平日の10時から18時までメールで対応してくれますので安心です。</p>
+											<p><a href="http://click.duga.jp/contact/<?=$agent_id?>-<?=$banner_id?>" rel="nofollow">サポートセンターはこちら</a></p>
 										</div>
 									</div>
-								<?php endforeach; ?>
+								</div>
 
 							</div>
 
-							<?php if ($pagination): ?>
-								<div class="row">
+							<div class="row">
 
-									<div class="col-xs-12 text-center">
-										<?php if ($is_mobile): ?>
-											<ul class="pagination">
-										<?php else: ?>
-											<ul class="pagination pagination-lg">
-										<?php endif; ?>
-											<?=$pagination?>
-										</ul>
-									</div>
-
+								<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center">
+									<a href="/" class="btn btn-primary btn-lg" role="button">ホームへ</a>
 								</div>
-							<?php endif; ?>
+
+							</div>
 
 						</div>
 					</div>
@@ -212,34 +184,5 @@
 		<script src="/js/jquery.nicescroll.js"></script>
 		<!-- Vertical Accordion Menu -->
 		<script class="include" src="/js/jquery.dcjqaccordion.2.7.js"></script>
-		<!-- EqualHeight.js -->
-		<script src="/js/jquery.equalheight.min.js"></script>
-		<!-- EqualHeight.js -->
-		<script>
-			$(function() {
-				var equalHeight = $('.white-panel h2').equalHeight({wait: true});
-				// Browser supports matchMedia
-				if (window.matchMedia) {
-					// MediaQueryList
-					var mql = window.matchMedia("(min-width: 500px)");
-					// MediaQueryListListener
-					var equalHeightCheck = function (mql) {
-						if (mql.matches) {
-							equalHeight.start();
-						} else {
-							equalHeight.stop();
-						}
-					};
-					// Add listener
-					mql.addListener(equalHeightCheck);
-					// Manually call listener
-					equalHeightCheck(mql);
-				}
-				// Browser doesn't support matchMedia
-				else {
-					equalHeight.start();
-				}
-			});
-		</script>
 	</body>
 </html>

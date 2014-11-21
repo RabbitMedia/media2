@@ -5,69 +5,35 @@
  */
 class About extends CI_Controller
 {
-	// サイトについてページ
-	public function aboutus()
+	function __construct()
 	{
-		$data = array();
+		parent::__construct();
 
-		// カテゴリーリスト
-		$category_csv = AppCsvLoader::load('category.csv');
-		$categories = array();
-		foreach ($category_csv as $key => $value)
-		{
-			if ($value['display_flag'])
-			{
-				$category['name'] = $value['name'];
-				$category['id'] = $value['id'];
-				$categories[] = $category;
-			}
-		}
-		$data['categories'] = $categories;
-
-		$this->load->view('about/about', $data);
+		// ロード
+		$this->app_ini = parse_ini_file(APPPATH.'resource/ini/app.ini', true);
 	}
 
-	// 広告掲載についてページ
-	public function ad()
+	// サイトについてページ
+	// public function aboutus()
+	// {
+	// 	$this->load->view('about/about');
+	// }
+
+	// よくある質問ページ
+	public function faq()
 	{
 		$data = array();
 		
-		// カテゴリーリスト
-		$category_csv = AppCsvLoader::load('category.csv');
-		$categories = array();
-		foreach ($category_csv as $key => $value)
-		{
-			if ($value['display_flag'])
-			{
-				$category['name'] = $value['name'];
-				$category['id'] = $value['id'];
-				$categories[] = $category;
-			}
-		}
-		$data['categories'] = $categories;
+		// 代理店IDとバナーIDを取得する
+		$data['agent_id'] = $this->app_ini['common']['agent_id'];
+		$data['banner_id'] = $this->app_ini['common']['banner_id'];
 
-		$this->load->view('about/ad', $data);
+		$this->load->view('about/faq', $data);
 	}
 
 	// お問い合わせページ
 	public function contact()
 	{
-		$data = array();
-		
-		// カテゴリーリスト
-		$category_csv = AppCsvLoader::load('category.csv');
-		$categories = array();
-		foreach ($category_csv as $key => $value)
-		{
-			if ($value['display_flag'])
-			{
-				$category['name'] = $value['name'];
-				$category['id'] = $value['id'];
-				$categories[] = $category;
-			}
-		}
-		$data['categories'] = $categories;
-
-		$this->load->view('about/contact', $data);
+		$this->load->view('about/contact');
 	}
 }

@@ -67,8 +67,7 @@ $route['label/(:num)'] = "label/index/$1/";
 $route['label/(:num)/(:num)'] = "label/index/$1/$2";
 
 // アバウトページ
-$route['about'] = "about/aboutus";
-$route['ad'] = "about/ad";
+$route['faq'] = "about/faq";
 $route['contact'] = "about/contact";
 
 /* End of file routes.php */
