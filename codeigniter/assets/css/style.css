@@ -1001,7 +1001,7 @@ PANELS CONFIGURATIONS
     padding: 10px;
 	text-align: center;
 	background: #FFFFFF;
-	color: #ccd1d9;
+	/*color: #ccd1d9;*/
 }
 
 .white-panel p {
@@ -1010,10 +1010,10 @@ PANELS CONFIGURATIONS
 	margin-left: 15px;
 }
 .white-panel .white-header {
-	background: #f4f4f4;
-	padding: 3px;
+	background: #4e4e4e;
+	padding: 2px;
 	margin-bottom: 15px;
-	color: #c6c6c6;
+	color: #ffffff;
 }
 .white-panel .small {
 	font-size: 10px;

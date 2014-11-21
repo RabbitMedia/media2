@@ -156,13 +156,14 @@
 									<div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 mb">
 										<div class="white-panel pn">
 											<div class="white-header">
-												<p><?=$ranks[$id]?>位 (前週<?=$product['prev_rank']?>位)</p>
+												<span class="fw"><?=$ranks[$id]?>位</span>
 											</div>
 											<div class="text-center">
 												<a href="/product/<?=$product['master_id']?>"><img src="<?=$product['main_thumbnail_url']?>" alt="<?=$product['title']?>" class="img-responsive" width="240" height="180"></a>
 											</div>
 											<div class="text-left">
 												<h2><a href="/product/<?=$product['master_id']?>"><?=$product['title']?></a></h2>
+												<p>前週<?=$product['prev_rank']?>位</p>
 											</div>
 										</div>
 									</div>
