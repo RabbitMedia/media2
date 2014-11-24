@@ -64,7 +64,7 @@ class LogicCrawler
 				$products[$cnt]['label_name']	= $value['レーベル名'];
 				$products[$cnt]['text']			= $value['紹介文'];
 				$products[$cnt]['actresses']	= explode(",", $value['出演者']);
-				$products[$cnt]['release_date']	= $value['公開開始日'];
+				$products[$cnt]['release_date']	= str_replace(array('年', '月', '日'), array('-', '-', ''), $value['公開開始日']);
 
 				// サブサムネイルを取得する
 				$products[$cnt]['sub_thumbnails'] = $this->_get_sub_thumbnails($value['商品ID']);
@@ -120,6 +120,7 @@ class LogicCrawler
 				'title'			=> $product['title'],
 				'product_url'	=> $product['product_url'],
 				'label_id'		=> $product['label_id'],
+				'release_date'	=> $product['release_date'],
 				);
 			$master_id = $this->CI->product_master_model->insert($data);
 
@@ -634,5 +635,40 @@ class LogicCrawler
 			// csvを出力する
 			file_put_contents(APPPATH.'resource/csv/label/'.$order.'.csv', $csv);
 		}
+	}
+
+	/**
+	 * サブサムネイルを取得する
+	 */
+	private function _get_sub_thumbnails($product_id)
+	{
+		// サブサムネイル配列
+		$sub_thumbnails = array();
+		// サムネイル連番は3桁もしくは4桁なのでまず3桁と仮定してURLを生成する
+		$product_id_url = str_replace('-', '/', $product_id);
+		$url_p = str_replace('%PRODUCT_ID%', $product_id_url, $this->app_ini['url']['sub_thumbnail']);
+		$url_n = str_replace('%NUM%', '001', $url_p);
+		// レスポンスを確認して連番の桁数を決定する
+		$response = @file_get_contents($url_n);
+		$prefix = ($response) ? '00' : '000';
+		// 最大枚画像数を20枚とする
+		for ($i=1; $i<=20; $i++)
+		{
+			// prefixが2桁になると'0'を1つ減らす必要がある
+			$re_prefix = ($i > 9) ? substr($prefix, 0, strlen($prefix) - 1) : $prefix;
+			$url = str_replace('%NUM%', $re_prefix.$i, $url_p);
+			$response = @file_get_contents($url);
+			// レスポンスが正常であればサブサムネイルを配列に入れる
+			if ($response)
+			{
+				$sub_thumbnails[] = $url;
+			}
+			// レスポンスが異常であれば処理を終了する
+			else
+			{
+				break;
+			}
+		}
+		return $sub_thumbnails;
 	}
 }

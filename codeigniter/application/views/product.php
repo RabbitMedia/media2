@@ -175,7 +175,7 @@
 											<div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
 												<h2><i class="fa fa-play-circle"></i> 動画紹介</h2>
 												<div class="text-left">
-													<p><?=$product['label_name']?>のレズ動画作品『<?=$product['title']?>』が<?=$product['create_time']?>にDUGAに公開されましたのでご紹介します。</p>
+													<p><?=$product['label_name']?>のレズ動画作品『<?=$product['title']?>』が<?=$product['release_date']?>にDUGAに公開されましたのでご紹介します。</p>
 													<p><?=$product['text']?></p>
 													<p>こちらの動画はマルチデバイス対応ですので、パソコンでもタブレットでもスマートフォンでもお楽しみいただけます。ぜひ、DUGAで高画質動画をダウンロードしてみてください。</p>
 												</div>
@@ -256,7 +256,7 @@
 									</div>
 									<div class="text-left">
 										<h2><a href="/product/<?=$product['master_id']?>"><?=$product['title']?></a></h2>
-										<p><?=$product['create_time']?></p>
+										<p><?=$product['release_date']?></p>
 									</div>
 								</div>
 							</div>

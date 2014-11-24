@@ -162,7 +162,7 @@
 											</div>
 											<div class="text-left">
 												<h2><a href="/product/<?=$product['master_id']?>"><?=$product['title']?></a></h2>
-												<p><?=$product['create_time']?></p>
+												<p><?=$product['release_date']?></p>
 											</div>
 										</div>
 									</div>

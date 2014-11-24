@@ -17,7 +17,7 @@ class Product_master_model extends CI_Model
 	public function get()
 	{
 		// select
-		$this->db->select('master_id, product_id, title, product_url, label_id, create_time');
+		$this->db->select('master_id, product_id, title, product_url, label_id, release_date');
 		// where
 		$this->db->where('delete_time', null);
 
@@ -40,7 +40,7 @@ class Product_master_model extends CI_Model
 	public function get_by_master_id($master_id)
 	{
 		// select
-		$this->db->select('master_id, product_id, title, product_url, label_id, create_time');
+		$this->db->select('master_id, product_id, title, product_url, label_id, release_date');
 		// where
 		$this->db->where('master_id', $master_id);
 
@@ -63,7 +63,7 @@ class Product_master_model extends CI_Model
 	public function get_by_master_id_range($from_master_id, $to_master_id)
 	{
 		// select
-		$this->db->select('master_id, product_id, title, product_url, label_id, create_time');
+		$this->db->select('master_id, product_id, title, product_url, label_id, release_date');
 		// where
 		$this->db->where('master_id >=', $from_master_id);
 		$this->db->where('master_id <=', $to_master_id);
@@ -87,7 +87,7 @@ class Product_master_model extends CI_Model
 	public function get_by_master_id_array($master_id_array)
 	{
 		// select
-		$this->db->select('master_id, product_id, title, product_url, label_id, create_time');
+		$this->db->select('master_id, product_id, title, product_url, label_id, release_date');
 		// where
 		$this->db->where_in('master_id', $master_id_array);
 
@@ -134,7 +134,7 @@ class Product_master_model extends CI_Model
 	public function get_by_label_id($label_id)
 	{
 		// select
-		$this->db->select('master_id, product_id, title, product_url, label_id, create_time');
+		$this->db->select('master_id, product_id, title, product_url, label_id, release_date');
 		// where
 		$this->db->where('label_id', $label_id);
 		$this->db->where('delete_time', null);

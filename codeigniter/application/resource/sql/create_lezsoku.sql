@@ -4,14 +4,15 @@ CREATE DATABASE IF NOT EXISTS `lezsoku`;
 USE lezsoku;
 
 CREATE TABLE `product_master` (
-  `master_id`   INT(10)     UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'マスターID',
-  `product_id`  VARCHAR(128)         NOT NULL                COMMENT '作品ID',
-  `title`       VARCHAR(128)         NOT NULL                COMMENT '作品タイトル',
-  `product_url` VARCHAR(128)         NOT NULL                COMMENT '作品URL',
-  `label_id`    SMALLINT(3) UNSIGNED NOT NULL                COMMENT 'レーベルID',
-  `create_time` DATETIME             NOT NULL                COMMENT '作成日時',
-  `update_time` DATETIME             NOT NULL                COMMENT '更新日時',
-  `delete_time` DATETIME             DEFAULT NULL            COMMENT '削除日時',
+  `master_id`    INT(10)     UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'マスターID',
+  `product_id`   VARCHAR(128)         NOT NULL                COMMENT '作品ID',
+  `title`        VARCHAR(128)         NOT NULL                COMMENT '作品タイトル',
+  `product_url`  VARCHAR(128)         NOT NULL                COMMENT '作品URL',
+  `label_id`     SMALLINT(3) UNSIGNED NOT NULL                COMMENT 'レーベルID',
+  `release_date` DATE                 NOT NULL                COMMENT '公開開始日',
+  `create_time`  DATETIME             NOT NULL                COMMENT '作成日時',
+  `update_time`  DATETIME             NOT NULL                COMMENT '更新日時',
+  `delete_time`  DATETIME             DEFAULT NULL            COMMENT '削除日時',
   PRIMARY KEY (`master_id`),
   KEY `product_master_idx_01` (`product_id`),
   KEY `product_master_idx_02` (`label_id`)
@@ -66,6 +67,7 @@ CREATE TABLE `actress_list` (
   PRIMARY KEY (`actress_id`),
   KEY `actress_list_idx_01` (`actress_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '女優リスト';
+INSERT INTO actress_list (actress_name, create_time, update_time) VALUES ('その他', now(), now());
 
 CREATE TABLE `label_list` (
   `label_id`    SMALLINT(3) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'レーベルID',
@@ -76,6 +78,7 @@ CREATE TABLE `label_list` (
   PRIMARY KEY (`label_id`),
   KEY `label_list_idx_01` (`label_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT 'レーベルリスト';
+INSERT INTO label_list (label_name, create_time, update_time) VALUES ('その他', now(), now());
 
 CREATE TABLE `ranking` (
   `id`          INT(10)      UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID',

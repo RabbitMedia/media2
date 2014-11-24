@@ -44,7 +44,7 @@ class LogicVideoManage
 			$products[$id]['main_thumbnail_url'] = str_replace('%PRODUCT_ID%', $product_id_url, $this->app_ini['url']['main_thumbnail']);
 
 			// 日付の形式を変更する
-			$products[$id]['create_time'] = date('Y年n月j日', strtotime($product['create_time']));
+			$products[$id]['release_date'] = date('Y年n月j日', strtotime($product['release_date']));
 		}
 
 		return array_reverse($products);
@@ -75,7 +75,7 @@ class LogicVideoManage
 			$products[$id]['main_thumbnail_url'] = str_replace('%PRODUCT_ID%', $product_id_url, $this->app_ini['url']['main_thumbnail']);
 
 			// 日付の形式を変更する
-			$products[$id]['create_time'] = date('Y年n月j日', strtotime($product['create_time']));
+			$products[$id]['release_date'] = date('Y年n月j日', strtotime($product['release_date']));
 		}
 
 		return $products;
@@ -166,7 +166,7 @@ class LogicVideoManage
 			$product['sub_thumbnail_url'] = $this->CI->product_thumbnail_model->get_by_master_id($master_id);
 
 			// 日付の形式を変更する
-			$product['create_time'] = date('Y年n月j日', strtotime($value['create_time']));
+			$product['release_date'] = date('Y年n月j日', strtotime($value['release_date']));
 		}
 
 		return $product;
@@ -256,7 +256,7 @@ class LogicVideoManage
 			$products[$id]['main_thumbnail_url'] = str_replace('%PRODUCT_ID%', $product_id_url, $this->app_ini['url']['main_thumbnail']);
 
 			// 日付の形式を変更する
-			$products[$id]['create_time'] = date('Y年n月j日', strtotime($product['create_time']));
+			$products[$id]['release_date'] = date('Y年n月j日', strtotime($product['release_date']));
 		}
 
 		return array_reverse($products);

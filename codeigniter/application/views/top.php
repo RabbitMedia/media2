@@ -124,7 +124,7 @@
 											</div>
 											<div class="text-left">
 												<h3><a href="/product/<?=$product['master_id']?>"><?=$product['title']?></a></h3>
-												<p><?=$product['create_time']?></p>
+												<p><?=$product['release_date']?></p>
 											</div>
 										</div>
 									</div>
@@ -175,7 +175,7 @@
 											</div>
 											<div class="text-left">
 												<h3><a href="/product/<?=$product['master_id']?>"><?=$product['title']?></a></h3>
-												<p><?=$product['create_time']?></p>
+												<p><?=$product['release_date']?></p>
 											</div>
 										</div>
 									</div>
