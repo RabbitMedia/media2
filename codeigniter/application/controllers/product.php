@@ -11,6 +11,7 @@ class Product extends CI_Controller
 
 		// ロード
 		$this->load->Library('LogicVideoManage');
+		$this->load->Library('LogicUserAgent');
 		$this->load->helper('url');
 		$this->app_ini = parse_ini_file(APPPATH.'resource/ini/app.ini', true);
 	}
@@ -54,6 +55,9 @@ class Product extends CI_Controller
 
 			break;
 		}
+
+		// ユーザーエージェントを判定する
+		$data['is_mobile'] = $this->logicuseragent->get_is_mobile();
 
 		// 代理店IDとバナーIDを取得する
 		$data['agent_id'] = $this->app_ini['common']['agent_id'];

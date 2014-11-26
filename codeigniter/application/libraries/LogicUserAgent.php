@@ -19,7 +19,7 @@ class LogicUserAgent
 
 		// モバイル判定
 		if ((strpos($user_agent, 'Android') !== false) && (strpos($user_agent, 'Mobile') !== false)
-			|| (strpos($user_agent, 'iPhone') !== false)
+			|| (strpos($user_agent, 'iPhone') !== false) || (strpos($user_agent, 'iPod') !== false)
 			|| (strpos($user_agent, 'Windows Phone') !== false))
 		{
 			$is_mobile = true;

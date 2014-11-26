@@ -117,17 +117,33 @@
 								<h2><i class="fa fa-chevron-circle-right"></i> 新着動画</h2>
 
 								<?php foreach ($latest_products as $id => $product): ?>
-									<div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 mb">
-										<div class="white-panel pn">
-											<div class="text-center">
-												<a href="/product/<?=$product['master_id']?>"><img src="<?=$product['main_thumbnail_url']?>" alt="<?=$product['title']?>" class="img-responsive" width="240" height="180"></a>
-											</div>
-											<div class="text-left">
-												<h3><a href="/product/<?=$product['master_id']?>"><?=$product['title']?></a></h3>
-												<p><?=$product['release_date']?></p>
+									<?php if($is_mobile): ?>
+										<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb">
+											<div class="white-panel pn">
+												<div class="row">
+													<div class="col-md-4 col-sm-4 col-xs-4">
+														<a href="/product/<?=$product['master_id']?>"><img src="<?=$product['main_thumbnail_url']?>" alt="<?=$product['title']?>" class="img-responsive" width="120" height="90"></a>
+													</div>
+													<div class="col-md-8 col-sm-8 col-xs-8 text-left">
+														<h3><a href="/product/<?=$product['master_id']?>"><?=$product['title']?></a></h3>
+														<p><small><?=$product['release_date']?></small></p>
+													</div>
+												</div>
 											</div>
 										</div>
-									</div>
+									<?php else: ?>
+										<div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 mb">
+											<div class="white-panel pn">
+												<div class="text-center">
+													<a href="/product/<?=$product['master_id']?>"><img src="<?=$product['main_thumbnail_url']?>" alt="<?=$product['title']?>" class="img-responsive" width="240" height="180"></a>
+												</div>
+												<div class="text-left">
+													<h3><a href="/product/<?=$product['master_id']?>"><?=$product['title']?></a></h3>
+													<p><small><?=$product['release_date']?></small></p>
+												</div>
+											</div>
+										</div>
+									<?php endif; ?>
 								<?php endforeach; ?>
 
 								<div class="text-right">
@@ -141,20 +157,39 @@
 								<h2><i class="fa fa-chevron-circle-right"></i> 人気ランキング</h2>
 
 								<?php foreach ($ranking_products as $id => $product): ?>
-									<div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 mb">
-										<div class="white-panel pn">
-											<div class="white-header">
-												<span class="fw"><?=$id+1?>位</span>
-											</div>
-											<div class="text-center">
-												<a href="/product/<?=$product['master_id']?>"><img src="<?=$product['main_thumbnail_url']?>" alt="<?=$product['title']?>" class="img-responsive" width="240" height="180"></a>
-											</div>
-											<div class="text-left">
-												<h3><a href="/product/<?=$product['master_id']?>"><?=$product['title']?></a></h3>
-												<p>前週<?=$product['prev_rank']?>位</p>
+									<?php if($is_mobile): ?>
+										<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb">
+											<div class="white-panel pn">
+												<div class="white-header">
+													<span class="fw"><?=$id+1?>位</span>
+												</div>
+												<div class="row">
+													<div class="col-md-4 col-sm-4 col-xs-4">
+														<a href="/product/<?=$product['master_id']?>"><img src="<?=$product['main_thumbnail_url']?>" alt="<?=$product['title']?>" class="img-responsive" width="120" height="90"></a>
+													</div>
+													<div class="col-md-8 col-sm-8 col-xs-8 text-left">
+														<h3><a href="/product/<?=$product['master_id']?>"><?=$product['title']?></a></h3>
+														<p><small>前週<?=$product['prev_rank']?>位</small></p>
+													</div>
+												</div>
 											</div>
 										</div>
-									</div>
+									<?php else: ?>
+										<div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 mb">
+											<div class="white-panel pn">
+												<div class="white-header">
+													<span class="fw"><?=$id+1?>位</span>
+												</div>
+												<div class="text-center">
+													<a href="/product/<?=$product['master_id']?>"><img src="<?=$product['main_thumbnail_url']?>" alt="<?=$product['title']?>" class="img-responsive" width="240" height="180"></a>
+												</div>
+												<div class="text-left">
+													<h3><a href="/product/<?=$product['master_id']?>"><?=$product['title']?></a></h3>
+													<p><small>前週<?=$product['prev_rank']?>位</small></p>
+												</div>
+											</div>
+										</div>
+									<?php endif; ?>
 								<?php endforeach; ?>
 
 								<div class="text-right">
@@ -168,17 +203,33 @@
 								<h2><i class="fa fa-chevron-circle-right"></i> ピックアップ</h2>
 
 								<?php foreach ($pickup_products as $id => $product): ?>
-									<div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 mb">
-										<div class="white-panel pn">
-											<div class="text-center">
-												<a href="/product/<?=$product['master_id']?>"><img src="<?=$product['main_thumbnail_url']?>" alt="<?=$product['title']?>" class="img-responsive" width="240" height="180"></a>
-											</div>
-											<div class="text-left">
-												<h3><a href="/product/<?=$product['master_id']?>"><?=$product['title']?></a></h3>
-												<p><?=$product['release_date']?></p>
+									<?php if($is_mobile): ?>
+										<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb">
+											<div class="white-panel pn">
+												<div class="row">
+													<div class="col-md-4 col-sm-4 col-xs-4">
+														<a href="/product/<?=$product['master_id']?>"><img src="<?=$product['main_thumbnail_url']?>" alt="<?=$product['title']?>" class="img-responsive" width="120" height="90"></a>
+													</div>
+													<div class="col-md-8 col-sm-8 col-xs-8 text-left">
+														<h3><a href="/product/<?=$product['master_id']?>"><?=$product['title']?></a></h3>
+														<p><small><?=$product['release_date']?></small></p>
+													</div>
+												</div>
 											</div>
 										</div>
-									</div>
+									<?php else: ?>
+										<div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 mb">
+											<div class="white-panel pn">
+												<div class="text-center">
+													<a href="/product/<?=$product['master_id']?>"><img src="<?=$product['main_thumbnail_url']?>" alt="<?=$product['title']?>" class="img-responsive" width="240" height="180"></a>
+												</div>
+												<div class="text-left">
+													<h3><a href="/product/<?=$product['master_id']?>"><?=$product['title']?></a></h3>
+													<p><small><?=$product['release_date']?></small></p>
+												</div>
+											</div>
+										</div>
+									<?php endif; ?>
 								<?php endforeach; ?>
 
 							</div>

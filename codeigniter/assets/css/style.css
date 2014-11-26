@@ -1003,11 +1003,14 @@ PANELS CONFIGURATIONS
 	background: #FFFFFF;
 	/*color: #ccd1d9;*/
 }
-
+.white-panel h3 {
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
 .white-panel p {
-	margin-top: 5px;
+	/*margin-top: 5px;*/
 	font-weight: 700;
-	margin-left: 15px;
+	/*margin-left: 15px;*/
 }
 .white-panel .white-header {
 	background: #4e4e4e;

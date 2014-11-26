@@ -152,17 +152,33 @@
 							<div class="row mt">
 
 								<?php foreach ($products as $id => $product): ?>
-									<div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 mb">
-										<div class="white-panel pn">
-											<div class="text-center">
-												<a href="/product/<?=$product['master_id']?>"><img src="<?=$product['main_thumbnail_url']?>" alt="<?=$product['title']?>" class="img-responsive" width="240" height="180"></a>
-											</div>
-											<div class="text-left">
-												<h2><a href="/product/<?=$product['master_id']?>"><?=$product['title']?></a></h2>
-												<p><?=$product['release_date']?></p>
+									<?php if($is_mobile): ?>
+										<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb">
+											<div class="white-panel pn">
+												<div class="row">
+													<div class="col-md-4 col-sm-4 col-xs-4">
+														<a href="/product/<?=$product['master_id']?>"><img src="<?=$product['main_thumbnail_url']?>" alt="<?=$product['title']?>" class="img-responsive" width="120" height="90"></a>
+													</div>
+													<div class="col-md-8 col-sm-8 col-xs-8 text-left">
+														<h3><a href="/product/<?=$product['master_id']?>"><?=$product['title']?></a></h3>
+														<p><small><?=$product['release_date']?></small></p>
+													</div>
+												</div>
 											</div>
 										</div>
-									</div>
+									<?php else: ?>
+										<div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 mb">
+											<div class="white-panel pn">
+												<div class="text-center">
+													<a href="/product/<?=$product['master_id']?>"><img src="<?=$product['main_thumbnail_url']?>" alt="<?=$product['title']?>" class="img-responsive" width="240" height="180"></a>
+												</div>
+												<div class="text-left">
+													<h2><a href="/product/<?=$product['master_id']?>"><?=$product['title']?></a></h2>
+													<p><small><?=$product['release_date']?></small></p>
+												</div>
+											</div>
+										</div>
+									<?php endif; ?>
 								<?php endforeach; ?>
 
 							</div>

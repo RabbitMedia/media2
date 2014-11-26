@@ -12,6 +12,7 @@ class Top extends CI_Controller
 		// ロード
 		$this->load->Library('LogicRanking');
 		$this->load->Library('LogicVideoManage');
+		$this->load->Library('LogicUserAgent');
 		$this->app_ini = parse_ini_file(APPPATH.'resource/ini/app.ini', true);
 	}
 
@@ -37,6 +38,9 @@ class Top extends CI_Controller
 
 		// ピックアップを取得する
 		$data['pickup_products'] = $this->logicvideomanage->get_pickup();
+
+		// ユーザーエージェントを判定する
+		$data['is_mobile'] = $this->logicuseragent->get_is_mobile();
 
 		$this->load->view('top', $data);
 	}
