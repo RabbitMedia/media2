@@ -4,7 +4,7 @@
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<meta name="copyright" content="&copy;セックル速報" />
+		<meta name="copyright" content="&copy;レズ動画セレクト" />
 		<meta name="robots" content="NOINDEX,NOFOLLOW" />
 		<title>ページが見つかりません</title>
 		<link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico" />
@@ -40,7 +40,7 @@
 					<div class="fa fa-bars"></div>
 				</div>
 
-				<h1><a href="/" class="logo"><img src="/images/logo.png" alt="セックル速報" width="160" height="25"></a><h1>
+				<h1><a href="/" class="logo"><img src="/images/logo.png" alt="レズ動画セレクト" width="160" height="25"></a><h1>
 
 			</header>
 
@@ -143,7 +143,7 @@
 			</section>
 
 			<footer class="site-footer text-center">
-				Copyright &copy; <?php echo date("Y"); ?> レズ動画速報 - レズ動画まとめ All Rights Reserved.
+				Copyright &copy; <?php echo date("Y"); ?> レズ動画セレクト All Rights Reserved.
 			</div>
 
 		</section>

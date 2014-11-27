@@ -4,40 +4,39 @@
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<meta name="copyright" content="&copy;セックル速報" />
+		<meta name="copyright" content="&copy;レズ動画セレクト" />
 		<?php if ($page <= 1): ?>
-			<meta name="description" content="セックル速報は、無料でセックス動画を楽しめるセックス動画まとめサイトです。" />
+			<meta name="description" content="このページではレズ動画を人気ランキングで探すことができます。レズ動画セレクトでは、おすすめのレズ動画をランキングや女優、カテゴリーで探すことができます。" />
 		<?php else: ?>
-			<meta name="description" content="セックル速報は、無料でセックス動画を楽しめるセックス動画まとめサイトです。 (<?=$page?>ページ目)" />
+			<meta name="robots" content="NOINDEX" />
+			<meta name="description" content="(<?=$page?>ページ目) このページではレズ動画を人気ランキングで探すことができます。レズ動画セレクトでは、おすすめのレズ動画をランキングや女優、カテゴリーで探すことができます。" />
 		<?php endif; ?>
-		<meta name="keywords" content="セックス動画,セックル速報" />
-		<meta property="og:title" content="セックル速報 - 無料セックス動画まとめ" />
+		<meta name="keywords" content="レズ動画,レズ動画セレクト" />
+		<meta property="og:title" content="人気ランキング | レズ動画セレクト" />
 		<meta property="og:type" content="website" />
-		<meta property="og:image" content="http://sekusoku.com/images/apple-touch-icon.png" />
-		<meta property="og:url" content="http://sekusoku.com/" />
-		<meta property="og:description" content="セックル速報は、無料でセックス動画を楽しめるセックス動画まとめサイトです。" />
-		<meta property="og:site_name" content="セックル速報 - 無料セックス動画まとめ" />
-		<meta name="twitter:card" content="summary">
-		<meta name="twitter:site" content="@sekusoku">
+		<meta property="og:image" content="http://lezselect.com/images/apple-touch-icon.png" />
+		<meta property="og:url" content="http://lezselect.com/ranking" />
+		<meta property="og:description" content="このページではレズ動画を人気ランキングで探すことができます。レズ動画セレクトでは、おすすめのレズ動画をランキングや女優、カテゴリーで探すことができます。" />
+		<meta property="og:site_name" content="レズ動画セレクト" />
 		<?php if ($page <= 1): ?>
-			<link rel="canonical" href="http://sekusoku.com/ranking" />
+			<link rel="canonical" href="http://lezselect.com/ranking" />
 		<?php else: ?>
-			<link rel="canonical" href="http://sekusoku.com/ranking/<?=$page?>" />
+			<link rel="canonical" href="http://lezselect.com/ranking/<?=$page?>" />
 		<?php endif; ?>
 		<?php if ($page > 1): ?>
 			<?php if ($page == 2): ?>
-				<link rel="prev" href="http://sekusoku.com/ranking" />
+				<link rel="prev" href="http://lezselect.com/ranking" />
 			<?php else: ?>
-				<link rel="prev" href="http://sekusoku.com/ranking/<?=$page-1?>" />
+				<link rel="prev" href="http://lezselect.com/ranking/<?=$page-1?>" />
 			<?php endif; ?>
 		<?php endif; ?>
 		<?php if ($page_next_flag): ?>
-			<link rel="next" href="http://sekusoku.com/ranking/<?=$page+1?>" />
+			<link rel="next" href="http://lezselect.com/ranking/<?=$page+1?>" />
 		<?php endif; ?>
 		<?php if ($page <= 1): ?>
-			<title>タイトル</title>
+			<title>人気ランキング | レズ動画セレクト</title>
 		<?php else: ?>
-			<title>タイトル (<?=$page?>ページ目)</title>
+			<title>人気ランキング (<?=$page?>ページ目) | レズ動画セレクト</title>
 		<?php endif; ?>
 		<link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico" />
 		<link rel="icon" type="image/png" href="/images/favicon.png" />
@@ -72,7 +71,7 @@
 					<div class="fa fa-bars"></div>
 				</div>
 
-				<h1><a href="/" class="logo"><img src="/images/logo.png" alt="セックル速報" width="160" height="25"></a><h1>
+				<h1><a href="/" class="logo"><img src="/images/logo.png" alt="レズ動画セレクト" width="160" height="25"></a><h1>
 
 			</header>
 
@@ -212,7 +211,7 @@
 			</section>
 
 			<footer class="site-footer text-center">
-				Copyright &copy; <?php echo date("Y"); ?> レズ動画速報 - レズ動画まとめ All Rights Reserved.
+				Copyright &copy; <?php echo date("Y"); ?> レズ動画セレクト All Rights Reserved.
 			</div>
 
 		</section>

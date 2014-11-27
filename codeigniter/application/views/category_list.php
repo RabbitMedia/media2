@@ -4,19 +4,17 @@
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<meta name="copyright" content="&copy;セックル速報" />
-		<meta name="description" content="セックル速報は、無料でセックス動画を楽しめるセックス動画まとめサイトです。" />
-		<meta name="keywords" content="セックス動画,セックル速報" />
-		<meta property="og:title" content="セックル速報 - 無料セックス動画まとめ" />
+		<meta name="copyright" content="&copy;レズ動画セレクト" />
+		<meta name="description" content="このページではレズ動画をカテゴリーで探すことができます。レズ動画セレクトでは、おすすめのレズ動画をランキングや女優、カテゴリーで探すことができます。" />
+		<meta name="keywords" content="レズ動画,レズ動画セレクト" />
+		<meta property="og:title" content="カテゴリーで探す | レズ動画セレクト" />
 		<meta property="og:type" content="website" />
-		<meta property="og:image" content="http://sekusoku.com/images/apple-touch-icon.png" />
-		<meta property="og:url" content="http://sekusoku.com/" />
-		<meta property="og:description" content="セックル速報は、無料でセックス動画を楽しめるセックス動画まとめサイトです。" />
-		<meta property="og:site_name" content="セックル速報 - 無料セックス動画まとめ" />
-		<meta name="twitter:card" content="summary">
-		<meta name="twitter:site" content="@sekusoku">
-		<link rel="canonical" href="http://sekusoku.com/category" />
-		<title>タイトル</title>
+		<meta property="og:image" content="http://lezselect.com/images/apple-touch-icon.png" />
+		<meta property="og:url" content="http://lezselect.com/category" />
+		<meta property="og:description" content="このページではレズ動画をカテゴリーで探すことができます。レズ動画セレクトでは、おすすめのレズ動画をランキングや女優、カテゴリーで探すことができます。" />
+		<meta property="og:site_name" content="レズ動画セレクト" />
+		<link rel="canonical" href="http://lezselect.com/category" />
+		<title>カテゴリーで探す | レズ動画セレクト</title>
 		<link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico" />
 		<link rel="icon" type="image/png" href="/images/favicon.png" />
 		<link rel="apple-touch-icon" href="/images/apple-touch-icon.png" />
@@ -50,7 +48,7 @@
 					<div class="fa fa-bars"></div>
 				</div>
 
-				<h1><a href="/" class="logo"><img src="/images/logo.png" alt="セックル速報" width="160" height="25"></a><h1>
+				<h1><a href="/" class="logo"><img src="/images/logo.png" alt="レズ動画セレクト" width="160" height="25"></a><h1>
 
 			</header>
 
@@ -144,7 +142,7 @@
 			</section>
 
 			<footer class="site-footer text-center">
-				Copyright &copy; <?php echo date("Y"); ?> レズ動画速報 - レズ動画まとめ All Rights Reserved.
+				Copyright &copy; <?php echo date("Y"); ?> レズ動画セレクト All Rights Reserved.
 			</div>
 
 		</section>

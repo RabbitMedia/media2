@@ -1,7 +1,7 @@
-DROP DATABASE IF EXISTS lezsoku;
-CREATE DATABASE IF NOT EXISTS `lezsoku`;
+DROP DATABASE IF EXISTS lezselect;
+CREATE DATABASE IF NOT EXISTS `lezselect`;
 
-USE lezsoku;
+USE lezselect;
 
 CREATE TABLE `product_master` (
   `master_id`    INT(10)     UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'マスターID',
